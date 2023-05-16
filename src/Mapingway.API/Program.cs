@@ -22,6 +22,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseGlobalExceptionHandling();
+
 app.UseAuthorization();
 
 app.MapControllers();
