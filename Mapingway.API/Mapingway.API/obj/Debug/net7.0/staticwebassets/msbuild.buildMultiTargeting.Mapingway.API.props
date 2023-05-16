@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Mapingway.API.props" />
+</Project>
