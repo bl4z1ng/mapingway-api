@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Mapingway.Domain.Consts;
 using Mapingway.Domain.Response;
 using Newtonsoft.Json;
 
@@ -29,7 +30,7 @@ public class ExceptionMiddleware
             _logger.LogError(reqEx, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), reqEx);
 
             await HandleException(
-                "Error while processing request from client",
+                ExceptionMessage.HTTP_REQUEST_EXCEPTION,
                 reqEx.Message,
                 reqEx.StatusCode ?? HttpStatusCode.BadRequest,
                 context,
@@ -42,7 +43,7 @@ public class ExceptionMiddleware
             _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
             
             await HandleException(
-                "Error while processing request from client",
+                ExceptionMessage.SERVER_ERROR_EXCEPTION,
                 ex.Message,
                 HttpStatusCode.InternalServerError,
                 context,
