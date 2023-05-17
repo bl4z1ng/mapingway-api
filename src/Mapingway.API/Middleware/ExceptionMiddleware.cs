@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Mapingway.Domain.Response;
 using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Mapingway.API.Middleware;
 
@@ -23,67 +24,44 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
-        catch (Exception reqException)
+        catch (HttpRequestException reqEx)
         {
             var timeSpan = DateTime.Now;
-            _logger.LogError(reqException, "{Exception} was caught in {Time}", reqException, timeSpan.ToLongTimeString());
+            _logger.LogError(reqEx, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), reqEx);
+
+            await HandleException(
+                "Error while processing request from client",
+                reqEx.Message,
+                reqEx.StatusCode ?? HttpStatusCode.BadRequest,
+                context,
+                timeSpan
+            );
+        }
+        catch (Exception ex)
+        {
+            var timeSpan = DateTime.Now;
+            _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
             
-            await HandleException(reqException, context, timeSpan);
+            await HandleException(
+                "Error while processing request from client",
+                ex.Message,
+                HttpStatusCode.InternalServerError,
+                context,
+                timeSpan
+            );
         }
     }
 
-    private async Task HandleException(Exception exception, HttpContext context, DateTime timeSpan)
+    private async Task HandleException(string message, string exceptionMessage, HttpStatusCode httpStatusCode, HttpContext context, DateTime timeSpan)
     {
-        int statusCode;
-        ExceptionResponse response;
-        
-        switch (exception)
+        var statusCode = (int)httpStatusCode;
+        var response = new ExceptionResponse
         {
-            case HttpRequestException requestException:
-            {
-                statusCode = (int)(requestException.StatusCode ?? HttpStatusCode.BadRequest);
-
-                response = new ExceptionResponse
-                {
-                    StatusCode = statusCode,
-                    //TODO: move to constants
-                    Message = "Error while processing request from client",
-                    ExceptionMessage = requestException.Message,
-                    TimeSpan = timeSpan
-                };
-
-                break;
-            }
-            case AggregateException:
-            {
-                statusCode = (int)HttpStatusCode.InternalServerError;
-
-                response = new ExceptionResponse
-                {
-                    StatusCode = statusCode,
-                    //TODO: move to constants
-                    Message = "Error while processing request from client",
-                    ExceptionMessage = exception.Message
-                };
-                break;
-            }
-            default:
-            {
-                statusCode = (int)HttpStatusCode.InternalServerError;
-
-                response = new ServerErrorResponse()
-                {
-                    StatusCode = statusCode,
-                    //TODO: move to constants
-                    Message = "Error while processing request from client",
-                    ExceptionMessage = exception.Message,
-                    InnerException = exception.InnerException?.Message,
-                    TimeSpan = timeSpan
-                };
-
-                break;
-            }
-        }
+            StatusCode = statusCode,
+            Message = message,
+            ExceptionMessage = exceptionMessage,
+            TimeSpan = timeSpan
+        };
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCode;
