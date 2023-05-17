@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using Mapingway.Domain.Response;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Mapingway.API.Middleware;
 
