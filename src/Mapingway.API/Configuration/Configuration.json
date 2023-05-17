@@ -1,0 +1,9 @@
+{
+  "DatabaseConfiguration": {
+    "ConnectionString": "Host=db;Port=5432;Database=pg;Username=postgres;Password=postgres",
+    "DefaultScheme":  "public",
+    "EnableLogging": true,
+    "EnableSensitiveDataLogging": false,
+    "EnableDetailedErrors": true
+  }
+}
