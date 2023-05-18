@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Mapingway.Domain.Response;
+﻿namespace Mapingway.Domain.Response;
 
 public class ExceptionResponse : BaseResponse
 {
