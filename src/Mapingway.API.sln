@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.API", "Mapingway.API\Mapingway.API.csproj", "{E8F17DD9-77ED-4437-B6F2-5B816E3E057B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Domain", "Mapingway.Domain\Mapingway.Domain.csproj", "{E1546923-9813-44B9-849A-105FFC9F548F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2CC709AC-0046-4C54-8492-4460155B158D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2F045628-E18A-423A-8483-D176D02E6DF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,13 @@ Global
 		{E8F17DD9-77ED-4437-B6F2-5B816E3E057B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8F17DD9-77ED-4437-B6F2-5B816E3E057B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8F17DD9-77ED-4437-B6F2-5B816E3E057B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1546923-9813-44B9-849A-105FFC9F548F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1546923-9813-44B9-849A-105FFC9F548F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1546923-9813-44B9-849A-105FFC9F548F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1546923-9813-44B9-849A-105FFC9F548F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8F17DD9-77ED-4437-B6F2-5B816E3E057B} = {2CC709AC-0046-4C54-8492-4460155B158D}
+		{E1546923-9813-44B9-849A-105FFC9F548F} = {2CC709AC-0046-4C54-8492-4460155B158D}
 	EndGlobalSection
 EndGlobal
