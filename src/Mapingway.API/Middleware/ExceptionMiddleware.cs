@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using Mapingway.Domain.Consts;
-using Mapingway.Domain.Response;
+using Mapingway.Common.Consts;
+using Mapingway.Common.Response;
 using Newtonsoft.Json;
 
 namespace Mapingway.API.Middleware;

@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Domain.Consts;
+﻿namespace Mapingway.Common.Consts;
 
 public static class ExceptionMessage
 {
