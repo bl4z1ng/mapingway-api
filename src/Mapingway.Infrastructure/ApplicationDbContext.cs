@@ -1,13 +1,14 @@
 ﻿using Mapingway.Common.Options;
 using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-    public DbSet<User>? Users { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
 
     protected readonly DbOptions Configuration;
     
