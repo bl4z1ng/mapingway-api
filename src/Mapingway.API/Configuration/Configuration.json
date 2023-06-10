@@ -5,5 +5,12 @@
     "EnableLogging": true,
     "EnableSensitiveDataLogging": false,
     "EnableDetailedErrors": true
+  },
+  "DevelopmentDatabaseConfiguration": {
+    "ConnectionString": "Data Source=Mapingway.Development.db",
+    "DefaultScheme":  "public",
+    "EnableLogging": true,
+    "EnableSensitiveDataLogging": false,
+    "EnableDetailedErrors": true
   }
 }

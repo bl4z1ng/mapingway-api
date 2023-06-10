@@ -1,4 +1,6 @@
 using Mapingway.API.Extensions;
+using Mapingway.Common.Options;
+using Mapingway.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,17 @@ builder.Configuration.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), 
 
 // Add services to the container.
 builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Development));
+    builder.Services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
+}
+else
+{
+    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Production));
+    builder.Services.AddDbContext<ApplicationDbContext>();
+}
 
 builder.Services.AddControllers();
 

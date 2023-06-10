@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Domain.Response;
+﻿namespace Mapingway.Common.Response;
 
 public class ExceptionResponse : BaseResponse
 {
