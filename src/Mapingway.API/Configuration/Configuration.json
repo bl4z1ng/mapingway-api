@@ -7,7 +7,7 @@
     "EnableDetailedErrors": true
   },
   "DevelopmentDatabaseConfiguration": {
-    "ConnectionString": "Host=db;Port=5432;Database=pg;Username=postgres;Password=postgres",
+    "ConnectionString": "Data Source=Mapingway.Development.db",
     "DefaultScheme":  "public",
     "EnableLogging": true,
     "EnableSensitiveDataLogging": false,

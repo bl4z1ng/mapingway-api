@@ -7,11 +7,18 @@ namespace Mapingway.Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-    public DbSet<User>? Users { get; set; } = null;
+    public DbSet<User>? Users { get; set; }
 
-    protected readonly DatabaseConfigurationOptions Configuration;
+    protected readonly DbOptions Configuration;
     
-    public ApplicationDbContext(IOptions<DatabaseConfigurationOptions> configuration)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<DbOptions> configuration):
+        base(options)
+    {
+        Configuration = configuration.Value;
+    }
+
+    protected ApplicationDbContext(DbContextOptions options, IOptions<DbOptions> configuration):
+        base(options)
     {
         Configuration = configuration.Value;
     }

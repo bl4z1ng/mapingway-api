@@ -3,33 +3,28 @@ using Mapingway.Common.Options;
 using Mapingway.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
-var services = builder.Services;
 
-
-configuration.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "Configuration", "Configuration.json"));
+builder.Configuration.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "Configuration", "Configuration.json"));
 
 // Add services to the container.
 builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
 
 if (builder.Environment.IsDevelopment())
 {
-    services.Configure<DatabaseConfigurationOptions>(
-        configuration.GetSection("DevelopmentDatabaseConfiguration"));
-    services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
+    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Development));
+    builder.Services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
 }
 else
 {
-    services.Configure<DatabaseConfigurationOptions>(
-        configuration.GetSection("DatabaseConfiguration"));
-    services.AddDbContext<ApplicationDbContext>();
+    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Production));
+    builder.Services.AddDbContext<ApplicationDbContext>();
 }
 
-services.AddControllers();
+builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
