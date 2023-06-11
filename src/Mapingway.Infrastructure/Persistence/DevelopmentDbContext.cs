@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace Mapingway.Infrastructure;
+namespace Mapingway.Infrastructure.Persistence;
 
 public class DevelopmentDbContext : ApplicationDbContext
 {

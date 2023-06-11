@@ -1,6 +1,7 @@
 using Mapingway.API.Extensions;
 using Mapingway.Common.Options;
 using Mapingway.Infrastructure;
+using Mapingway.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 

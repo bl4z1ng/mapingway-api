@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
+namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

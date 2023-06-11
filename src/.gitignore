@@ -526,3 +526,6 @@ FodyWeavers.xsd
 
 # custom
 /Mapingway.API/log.txt
+
+#Sqlite db
+*.db

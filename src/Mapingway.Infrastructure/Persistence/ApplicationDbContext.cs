@@ -1,10 +1,9 @@
 ﻿using Mapingway.Common.Options;
 using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Options;
 
-namespace Mapingway.Infrastructure;
+namespace Mapingway.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
 {

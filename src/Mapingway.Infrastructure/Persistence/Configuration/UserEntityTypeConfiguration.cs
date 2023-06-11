@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Mapingway.Infrastructure.Configuration;
+namespace Mapingway.Infrastructure.Persistence.Configuration;
 
 public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
