@@ -1,8 +1,8 @@
-﻿using Mapingway.Domain.User;
-using Mapingway.Infrastructure.Repositories.Interfaces;
+﻿using Mapingway.Common.Repository;
+using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mapingway.Infrastructure.Repositories;
+namespace Mapingway.Infrastructure.Persistence.Repositories;
 
 public class UserRepository : IRepository<User>
 {

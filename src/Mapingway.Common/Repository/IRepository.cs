@@ -1,6 +1,4 @@
-﻿using Mapingway.Domain.User;
-
-namespace Mapingway.Infrastructure.Repositories.Interfaces;
+﻿namespace Mapingway.Common.Repository;
 
 public interface IRepository<T>
 {

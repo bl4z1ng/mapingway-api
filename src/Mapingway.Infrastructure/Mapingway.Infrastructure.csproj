@@ -21,8 +21,4 @@
       <ProjectReference Include="..\Mapingway.Domain\Mapingway.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Migrations\SqliteMigrations\" />
-    </ItemGroup>
-
 </Project>
