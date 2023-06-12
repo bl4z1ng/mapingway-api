@@ -20,7 +20,7 @@ public class UserRepository : IRepository<User>
 
     public async Task<User?> GetByIdAsync(int id, CancellationToken ct = default)
     {
-        return await _context.Users.FindAsync(id, ct);
+        return await _context.Users.FindAsync(new object?[] {id}, cancellationToken: ct);
     }
 
     public async Task<List<User>> GetByConditionAsync(Func<User,bool> condition, CancellationToken ct = default)
@@ -36,9 +36,9 @@ public class UserRepository : IRepository<User>
         return user.Id;
     }
 
-    public async Task<bool> DeleteAsync(int userId, CancellationToken ct = default)
+    public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
     {
-        var user = await _context.Users.FindAsync(userId, ct);
+        var user = await _context.Users.FindAsync(new object?[] {id}, cancellationToken: ct);
         if (user is null) return false;
 
         _context.Entry(user).State = EntityState.Deleted;

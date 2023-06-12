@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Mapingway.Application\Mapingway.Application.csproj" />
       <ProjectReference Include="..\Mapingway.Domain\Mapingway.Domain.csproj" />
       <ProjectReference Include="..\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
     </ItemGroup>
