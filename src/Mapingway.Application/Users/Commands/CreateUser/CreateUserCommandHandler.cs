@@ -2,24 +2,15 @@
 using Mapingway.Domain.User;
 using MediatR;
 
-namespace Mapingway.Application.Users.Commands;
-
-public class CreateUserCommand : IRequest
-{
-    public string? Email { get; set; }
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public string? Password { get; set; }
-    public string? Role { get; set; }
-}
+namespace Mapingway.Application.Users.Commands.CreateUser;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
 {
     private readonly IRepository<User> _usersRepository;
 
-    public CreateUserCommandHandler(IRepository<User> userRepositoryRepository)
+    public CreateUserCommandHandler(IRepository<User> userRepository)
     {
-        _usersRepository = userRepositoryRepository;
+        _usersRepository = userRepository;
     }
     
     public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
