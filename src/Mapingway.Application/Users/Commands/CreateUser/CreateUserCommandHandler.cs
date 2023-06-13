@@ -2,7 +2,6 @@
 using Mapingway.Common.Repository;
 using Mapingway.Common.Result;
 using Mapingway.Domain.User;
-using MediatR;
 
 namespace Mapingway.Application.Users.Commands.CreateUser;
 
