@@ -1,15 +1,18 @@
 using Mapingway.API.Extensions;
+using Mapingway.Application;
 using Mapingway.Common.Options;
-using Mapingway.Infrastructure;
+using Mapingway.Common.Repository;
+using Mapingway.Domain.User;
 using Mapingway.Infrastructure.Persistence;
+using Mapingway.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "Configuration", "Configuration.json"));
+builder.Configuration.AddJsonFile(Path.Combine("Configuration", "Configuration.json"), optional: false, reloadOnChange: true);
 
-// Add services to the container.
 builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
 
+// Add services to the container.
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Development));
@@ -27,10 +30,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(ApplicationAssembly.AssemblyReference);
+});
+
+builder.Services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()) 
 {
     app.UseSwagger();
     app.UseSwaggerUI();
