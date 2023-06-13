@@ -50,7 +50,7 @@ public class UserRepository : IRepository<User>
         _context.Entry(user).State = EntityState.Modified;
     }
 
-    public async Task SaveAsync(CancellationToken cancellationToken)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
         await _context.SaveChangesAsync(cancellationToken);
     }

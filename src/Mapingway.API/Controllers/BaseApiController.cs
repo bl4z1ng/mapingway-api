@@ -7,12 +7,12 @@ namespace Mapingway.API.Controllers;
 [ApiController]
 public class BaseApiController : ControllerBase
 {
-    private readonly ILogger _logger;
-    private readonly IMediator _mediator;
+    protected readonly ILogger Logger;
+    protected readonly IMediator Mediator;
 
     public BaseApiController(ILoggerFactory loggerFactory, IMediator mediator, string controllerType = "BaseController")
     {
-        _logger = loggerFactory.CreateLogger(controllerType);
-        _mediator = mediator;
+        Mediator = mediator;
+        Logger = loggerFactory.CreateLogger(controllerType);
     }
 }

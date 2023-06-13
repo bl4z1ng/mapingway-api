@@ -1,10 +1,12 @@
-﻿using Mapingway.Common.Repository;
+﻿using Mapingway.Application.Messaging;
+using Mapingway.Common.Repository;
+using Mapingway.Common.Result;
 using Mapingway.Domain.User;
 using MediatR;
 
 namespace Mapingway.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
+public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, int>
 {
     private readonly IRepository<User> _usersRepository;
 
@@ -13,7 +15,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
         _usersRepository = userRepository;
     }
     
-    public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var user = new User()
         {
@@ -22,6 +24,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
             LastName = request.LastName
         };
 
-        await _usersRepository.CreateAsync(user, cancellationToken);
+        var id =  await _usersRepository.CreateAsync(user, cancellationToken);
+        await _usersRepository.SaveChangesAsync(cancellationToken);
+
+        return Result.Success(id);
     }
 }

@@ -1,12 +1,12 @@
-﻿using MediatR;
+﻿using Mapingway.Application.Messaging;
+using Mapingway.Common.Result;
+using MediatR;
 
 namespace Mapingway.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest
-{
-    public string? Email { get; set; }
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public string? Password { get; set; }
-    public string? Role { get; set; }
-}
+public sealed record CreateUserCommand(
+        string Email, 
+        string Password, 
+        string Role, 
+        string? FirstName, 
+        string? LastName) : ICommand<int>;
