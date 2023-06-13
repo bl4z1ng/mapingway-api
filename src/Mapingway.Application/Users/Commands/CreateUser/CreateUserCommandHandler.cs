@@ -2,7 +2,6 @@
 using Mapingway.Common.Repository;
 using Mapingway.Common.Result;
 using Mapingway.Domain.User;
-using MediatR;
 
 namespace Mapingway.Application.Users.Commands.CreateUser;
 
@@ -25,6 +24,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         };
 
         var id =  await _usersRepository.CreateAsync(user, cancellationToken);
+        await _usersRepository.SaveChangesAsync(cancellationToken);
 
         return Result.Success(id);
     }
