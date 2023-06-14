@@ -1,8 +1,7 @@
-﻿//using Mapingway.Common.Result;
-using Mapingway.Common.Result;
+﻿using Mapingway.Common.Result;
 using MediatR;
 
-namespace Mapingway.Application.Messaging;
+namespace Mapingway.Application.Messaging.Command;
 
 public interface ICommand : IRequest<Result>
 {

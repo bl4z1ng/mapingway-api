@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Mapingway.Application\Mapingway.Application.csproj" />
       <ProjectReference Include="..\Mapingway.Common\Mapingway.Common.csproj" />
       <ProjectReference Include="..\Mapingway.Domain\Mapingway.Domain.csproj" />
     </ItemGroup>

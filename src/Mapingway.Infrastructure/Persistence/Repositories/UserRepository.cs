@@ -1,10 +1,10 @@
-﻿using Mapingway.Common.Repository;
+﻿using Mapingway.Application.Users.Interfaces;
 using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;
 
-public class UserRepository : IRepository<User>
+public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
 
@@ -21,6 +21,11 @@ public class UserRepository : IRepository<User>
     public async Task<User?> GetByIdAsync(int id, CancellationToken ct = default)
     {
         return await _context.Users.FindAsync(new object?[] {id}, cancellationToken: ct);
+    }
+
+    public async Task<User?> GetByEmail(string email, CancellationToken ct = default)
+    {
+        return await _context.Users.FirstOrDefaultAsync(user => user.Email == email, ct);
     }
 
     public async Task<List<User>> GetByConditionAsync(Func<User,bool> condition, CancellationToken ct = default)
@@ -54,4 +59,5 @@ public class UserRepository : IRepository<User>
     {
         await _context.SaveChangesAsync(cancellationToken);
     }
+
 }

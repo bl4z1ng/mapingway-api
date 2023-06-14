@@ -1,9 +1,9 @@
-﻿using Mapingway.Application.Messaging;
+﻿using Mapingway.Application.Messaging.Command;
 using Mapingway.Common.Repository;
 using Mapingway.Common.Result;
 using Mapingway.Domain.User;
 
-namespace Mapingway.Application.Users.Commands.CreateUser;
+namespace Mapingway.Application.Users.Commands.Register;
 
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, int>
 {

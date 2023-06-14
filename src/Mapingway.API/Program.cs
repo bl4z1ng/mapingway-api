@@ -1,8 +1,7 @@
 using Mapingway.API.Extensions;
 using Mapingway.Application;
+using Mapingway.Application.Users.Interfaces;
 using Mapingway.Common.Options;
-using Mapingway.Common.Repository;
-using Mapingway.Domain.User;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Repositories;
 
@@ -35,7 +34,7 @@ builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(ApplicationAssembly.AssemblyReference);
 });
 
-builder.Services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
+builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 
 var app = builder.Build();
 

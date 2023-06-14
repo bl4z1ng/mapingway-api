@@ -1,21 +1,21 @@
-﻿using Mapingway.Application.Users.Commands;
-using Mapingway.Application.Users.Commands.CreateUser;
+﻿using Mapingway.Application.Users.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mapingway.API.Controllers;
 
-[Route("User")]
+[Route("[controller]")]
 public class UserController : BaseApiController
 {
-    public UserController(ILoggerFactory loggerFactory, IMediator mediator) : base(loggerFactory, mediator, typeof(UserController).ToString())
+    public UserController(ILoggerFactory loggerFactory, IMediator mediator) : 
+        base(loggerFactory, mediator, typeof(UserController).ToString())
     {
     }
     
-    [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterUser(CancellationToken cancellationToken)
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Register(CancellationToken cancellationToken)
     {
         var command = new CreateUserCommand(
             Email: "userDto@gmail.com",
@@ -26,6 +26,6 @@ public class UserController : BaseApiController
         
         var result = await Mediator.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.Message);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }
