@@ -1,8 +1,6 @@
-﻿using Mapingway.Application.Messaging;
-using Mapingway.Common.Result;
-using MediatR;
+﻿using Mapingway.Application.Messaging.Command;
 
-namespace Mapingway.Application.Users.Commands.CreateUser;
+namespace Mapingway.Application.Users.Commands.Register;
 
 public sealed record CreateUserCommand(
         string Email, 
