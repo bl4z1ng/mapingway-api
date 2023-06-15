@@ -1,4 +1,5 @@
-﻿using Mapingway.Application.Users.Commands.Register;
+﻿using Mapingway.Application.Users.Commands.Login;
+using Mapingway.Application.Users.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,5 +28,19 @@ public class UserController : BaseApiController
         var result = await Mediator.Send(command, cancellationToken);
 
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            //
+        }
+
+        return Ok(result.Value);
     }
 }

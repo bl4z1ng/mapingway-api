@@ -1,5 +1,5 @@
-﻿using Mapingway.Common.Options;
-using Mapingway.Domain.User;
+﻿using Mapingway.Domain.User;
+using Mapingway.Infrastructure.Persistence.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

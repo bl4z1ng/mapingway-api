@@ -1,16 +1,21 @@
 {
-  "DatabaseConfiguration": {
+  "ProductionDatabase": {
     "ConnectionString": "Host=db;Port=5432;Database=pg;Username=postgres;Password=postgres",
     "DefaultScheme":  "public",
     "EnableLogging": true,
     "EnableSensitiveDataLogging": false,
     "EnableDetailedErrors": true
   },
-  "DevelopmentDatabaseConfiguration": {
+  "DevelopmentDatabase": {
     "ConnectionString": "Data Source=Mapingway.Development.db",
     "DefaultScheme":  "public",
     "EnableLogging": true,
     "EnableSensitiveDataLogging": false,
     "EnableDetailedErrors": true
+  },
+  "Jwt": {
+    "Issuer" : "Mapingway",
+    "Audience": "Mapingway",
+    "SigningKey": "M4p1ngW4yy_Rul3zz"
   }
 }
