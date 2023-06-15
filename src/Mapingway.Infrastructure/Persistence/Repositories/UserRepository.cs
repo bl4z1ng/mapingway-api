@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Users.Interfaces;
+﻿using Mapingway.Application.Abstractions;
 using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 

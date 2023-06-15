@@ -1,4 +1,5 @@
-﻿using Mapingway.Application.Messaging.Command;
+﻿using Mapingway.Application.Abstractions;
+using Mapingway.Application.Messaging.Command;
 using Mapingway.Common.Repository;
 using Mapingway.Common.Result;
 using Mapingway.Domain.User;
@@ -7,9 +8,9 @@ namespace Mapingway.Application.Users.Commands.Register;
 
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, int>
 {
-    private readonly IRepository<User> _usersRepository;
+    private readonly IUserRepository _usersRepository;
 
-    public CreateUserCommandHandler(IRepository<User> userRepository)
+    public CreateUserCommandHandler(IUserRepository userRepository)
     {
         _usersRepository = userRepository;
     }

@@ -1,9 +1,12 @@
 using Mapingway.API.Extensions;
+using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
-using Mapingway.Application.Users.Interfaces;
-using Mapingway.Common.Options;
+using Mapingway.Application.Abstractions;
+using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Persistence;
+using Mapingway.Infrastructure.Persistence.Options;
 using Mapingway.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,14 +17,15 @@ builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log
 // Add services to the container.
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Development));
+    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
     builder.Services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
 }
 else
 {
-    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Production));
+    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
     builder.Services.AddDbContext<ApplicationDbContext>();
 }
+
 
 builder.Services.AddControllers();
 
@@ -29,12 +33,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Infrastructure services registration.
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
+// Application services registration.
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(ApplicationAssembly.AssemblyReference);
 });
 
-builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+// Authentication and authorization configuration.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
+builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
 var app = builder.Build();
 
@@ -49,6 +63,7 @@ app.UseHttpsRedirection();
 
 app.UseGlobalExceptionHandling();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
