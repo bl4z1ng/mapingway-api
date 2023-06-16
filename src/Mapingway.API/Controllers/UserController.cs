@@ -1,8 +1,8 @@
-﻿using Mapingway.Application.Users.Commands.Login;
-using Mapingway.Application.Users.Commands.Register;
-using MediatR;
+﻿using Mapingway.Application.Users.Commands.Register;
+using Mapingway.Application.Users.Commands.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MediatR;
 
 namespace Mapingway.API.Controllers;
 
