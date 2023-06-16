@@ -1,8 +1,8 @@
-﻿#nullable disable
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-using Microsoft.EntityFrameworkCore.Migrations;
+#nullable disable
 
-namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
+namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -19,6 +19,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordSalt = table.Column<string>(type: "TEXT", nullable: true),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
                     Role = table.Column<string>(type: "TEXT", nullable: true),
                     Created = table.Column<string>(type: "TEXT", nullable: true),

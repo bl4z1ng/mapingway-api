@@ -8,14 +8,14 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
 {
     private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
-    //private readonly IPasswordHasher _passwordHasher;
+    private readonly IPasswordHasher _passwordHasher;
 
 
-    public LoginCommandHandler(IUserRepository userRepository, IJwtProvider jwtProvider) //, IPasswordHasher passwordHasher
+    public LoginCommandHandler(IUserRepository userRepository, IJwtProvider jwtProvider, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _jwtProvider = jwtProvider;
-        //_passwordHasher = passwordHasher;
+        _passwordHasher = passwordHasher;
     }
 
 
@@ -26,16 +26,21 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
         if (user is null)
         {
             return Result.Failure<string>(new Error(
-                "404", 
-                "User with given e-mail is not found"));
+                ErrorCode.NotFound, 
+                "User with given e-mail is not found."));
         }
         
-        //check for password hash
-        //var hashedPassword = _passwordHasher.EncryptPassword(request.Password);
+        var passwordHash = _passwordHasher.GenerateHash(request.Password, user.PasswordSalt!);
         
-        //generate jwt
+        if (passwordHash != user.PasswordHash)
+        {
+            return Result.Failure<string>(new Error(
+                ErrorCode.InvalidCredentials, 
+                "Email or password is incorrect."));
+        }
+
         var token = _jwtProvider.GenerateToken(user);
-        
+
         return token;
     }
 }

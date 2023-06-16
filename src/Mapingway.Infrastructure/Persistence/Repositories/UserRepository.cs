@@ -36,7 +36,7 @@ public class UserRepository : IUserRepository
     public async Task<int> CreateAsync(User user, CancellationToken cancellationToken = default)
     {
         await _context.Users.AddAsync(user, cancellationToken: cancellationToken);
-        _context.Entry(user).State = EntityState.Added;
+        await _context.SaveChangesAsync(cancellationToken);
 
         return user.Id;
     }

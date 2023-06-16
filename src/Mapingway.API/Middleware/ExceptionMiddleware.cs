@@ -30,7 +30,7 @@ public class ExceptionMiddleware
             _logger.LogError(reqEx, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), reqEx);
 
             await HandleException(
-                ExceptionMessage.HTTP_REQUEST_EXCEPTION,
+                ExceptionMessage.HttpRequestException,
                 reqEx.Message,
                 reqEx.StatusCode ?? HttpStatusCode.BadRequest,
                 context,
@@ -43,7 +43,7 @@ public class ExceptionMiddleware
             _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
             
             await HandleException(
-                ExceptionMessage.SERVER_ERROR_EXCEPTION,
+                ExceptionMessage.ServerErrorException,
                 ex.Message,
                 HttpStatusCode.InternalServerError,
                 context,
