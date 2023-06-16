@@ -17,5 +17,9 @@
     "Issuer" : "Mapingway",
     "Audience": "Mapingway",
     "SigningKey": "M4p1ngW4yy_Rul3zz"
+  },
+  "Hash": {
+    "Pepper" : "p3PpErr0rS4lt",
+    "Iterations" : "2"
   }
 }
