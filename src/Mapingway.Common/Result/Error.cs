@@ -2,21 +2,23 @@
 {
     public sealed class Error : IEquatable<Error>
     {
-        public Error(string code, string message)
+        public Error(ErrorCode code, string message)
         {
             Code = code;
             Message = message;
         }
 
 
-        public static Error None => new(string.Empty, string.Empty);
+        public static Error None => new(ErrorCode.None, string.Empty);
 
-        public string Code { get; }
+        public ErrorCode Code { get; }
 
         public string Message { get; }
 
 
-        public static implicit operator string(Error? error) => error?.Code ?? string.Empty;
+        public static implicit operator string(Error? error) => error is null || error.Code == ErrorCode.None 
+            ? string.Empty 
+            : error.Code.ToString();
 
         public static bool operator ==(Error? a, Error? b)
         {

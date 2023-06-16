@@ -6,6 +6,7 @@ using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
 using Mapingway.Infrastructure.Persistence.Repositories;
+using Mapingway.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +38,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.ConfigureOptions<HashOptionsSetup>();
 
 // Application services registration.
 builder.Services.AddMediatR(config =>

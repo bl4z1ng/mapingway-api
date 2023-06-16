@@ -16,14 +16,10 @@ public class UserController : BaseApiController
     
     [AllowAnonymous]
     [HttpPost("[action]")]
-    public async Task<IActionResult> Register(CancellationToken cancellationToken)
+    public async Task<IActionResult> Register([FromBody] CreateUserCommand requestCommand, CancellationToken cancellationToken)
     {
-        var command = new CreateUserCommand(
-            Email: "userDto@gmail.com",
-            Password: "123",
-            Role: "Jija",
-            FirstName: "FirstName",
-            LastName: "LastName");
+        //add mapping
+        var command = requestCommand;
         
         var result = await Mediator.Send(command, cancellationToken);
 
@@ -32,15 +28,13 @@ public class UserController : BaseApiController
 
     [AllowAnonymous]
     [HttpPost("[action]")]
-    public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginCommand requestCommand, CancellationToken cancellationToken)
     {
+        //add mapping
+        var command = requestCommand;
+
         var result = await Mediator.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            //
-        }
-
-        return Ok(result.Value);
+        return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
 }

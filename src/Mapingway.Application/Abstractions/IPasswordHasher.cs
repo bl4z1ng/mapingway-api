@@ -2,5 +2,6 @@
 
 public interface IPasswordHasher
 {
-    string EncryptPassword(string pass);
+    string GenerateHash(string password, string salt);
+    string GenerateSalt();
 }
