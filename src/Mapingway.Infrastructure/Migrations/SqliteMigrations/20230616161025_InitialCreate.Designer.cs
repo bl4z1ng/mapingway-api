@@ -5,9 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
-namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
+namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     [DbContext(typeof(DevelopmentDbContext))]
     [Migration("20230616161025_InitialCreate")]

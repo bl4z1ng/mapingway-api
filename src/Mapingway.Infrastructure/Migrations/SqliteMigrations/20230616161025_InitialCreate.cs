@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
+namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
