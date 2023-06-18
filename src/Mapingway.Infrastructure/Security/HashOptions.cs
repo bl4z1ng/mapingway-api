@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-
-namespace Mapingway.Infrastructure.Security;
+﻿namespace Mapingway.Infrastructure.Security;
 
 public class HashOptions
 {
