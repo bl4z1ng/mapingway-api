@@ -1,5 +1,5 @@
 ﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Messaging.Command;
+using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Users.Commands.Login;
