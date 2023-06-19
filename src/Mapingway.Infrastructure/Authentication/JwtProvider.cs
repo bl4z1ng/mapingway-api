@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Mapingway.Application.Abstractions;
+using Mapingway.Common.Permission;
 using Mapingway.Domain.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,17 +20,22 @@ public class JwtProvider : IJwtProvider
     }
 
 
-    public string GenerateToken(User user)
+    public string GenerateToken(User user, IEnumerable<Permissions> permissions)
     {
-        var claims = new Claim[]
+        var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email!)
         };
 
+        foreach (var permission in permissions)
+        {
+            claims.Add(new Claim("permissions", permission.ToString()));
+        }
+
         var signingKey = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
-            SecurityAlgorithms.HmacSha256);
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
+        SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             _options.Issuer,

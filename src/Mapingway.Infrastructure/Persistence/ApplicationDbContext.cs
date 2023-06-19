@@ -8,6 +8,9 @@ namespace Mapingway.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
+    public DbSet<Permission> Permissions { get; set; } = null!;
+
 
     protected readonly DbOptions Configuration;
     

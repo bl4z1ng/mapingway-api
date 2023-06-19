@@ -28,7 +28,6 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
             LastName = request.LastName,
             PasswordSalt = salt,
             PasswordHash = passwordHash,
-            Role = "Biba"
         };
 
         var id =  await _usersRepository.CreateAsync(user, cancellationToken);
