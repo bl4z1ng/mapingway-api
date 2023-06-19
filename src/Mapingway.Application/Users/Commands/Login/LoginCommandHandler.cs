@@ -1,5 +1,6 @@
 ﻿using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Messaging.Command;
+using Mapingway.Common.Permission;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Users.Commands.Login;
@@ -39,7 +40,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
                 "Email or password is incorrect."));
         }
 
-        var token = _jwtProvider.GenerateToken(user);
+        var token = _jwtProvider.GenerateToken(user ,new List<Permissions>());
 
         return token;
     }
