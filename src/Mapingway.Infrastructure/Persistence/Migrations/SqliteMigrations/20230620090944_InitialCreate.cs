@@ -7,15 +7,11 @@
 namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     /// <inheritdoc />
-    public partial class PermissionBasedAuthorization : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Role",
-                table: "Users");
-
             migrationBuilder.CreateTable(
                 name: "Permissions",
                 columns: table => new
@@ -44,6 +40,25 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordSalt = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    Created = table.Column<string>(type: "TEXT", nullable: true),
+                    Updated = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RolePermission",
                 columns: table => new
                 {
@@ -68,24 +83,24 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleUser",
+                name: "UserRole",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsersId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleUser", x => new { x.RoleId, x.UsersId });
+                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_RoleUser_Roles_RoleId",
+                        name: "FK_UserRole_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoleUser_Users_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_UserRole_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -116,6 +131,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 values: new object[,]
                 {
                     { 1, 1 },
+                    { 1, 2 },
                     { 2, 2 },
                     { 3, 2 }
                 });
@@ -126,9 +142,9 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_UsersId",
-                table: "RoleUser",
-                column: "UsersId");
+                name: "IX_UserRole_RoleId",
+                table: "UserRole",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -138,7 +154,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 name: "RolePermission");
 
             migrationBuilder.DropTable(
-                name: "RoleUser");
+                name: "UserRole");
 
             migrationBuilder.DropTable(
                 name: "Permissions");
@@ -146,11 +162,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
             migrationBuilder.DropTable(
                 name: "Roles");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Role",
-                table: "Users",
-                type: "TEXT",
-                nullable: true);
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
