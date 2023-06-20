@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
+namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     [DbContext(typeof(DevelopmentDbContext))]
     partial class DevelopmentDbContextModelSnapshot : ModelSnapshot
@@ -100,6 +100,11 @@ namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
                         new
                         {
                             RoleId = 2,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 2,
                             PermissionId = 2
                         },
                         new
@@ -142,19 +147,19 @@ namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("Mapingway.Domain.User.UserRole", b =>
                 {
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.HasKey("RoleId", "UsersId");
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("RoleUser");
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Mapingway.Domain.User.RolePermission", b =>
@@ -172,7 +177,7 @@ namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("Mapingway.Domain.User.UserRole", b =>
                 {
                     b.HasOne("Mapingway.Domain.User.Role", null)
                         .WithMany()
@@ -182,7 +187,7 @@ namespace Mapingway.Infrastructure.Migrations.SqliteMigrations
 
                     b.HasOne("Mapingway.Domain.User.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

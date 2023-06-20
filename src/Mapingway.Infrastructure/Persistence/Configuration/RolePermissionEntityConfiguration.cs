@@ -11,18 +11,19 @@ public class RolePermissionEntityConfiguration: IEntityTypeConfiguration<RolePer
     {
         builder.HasKey(x => new { x.RoleId, x.PermissionId });
 
-        // builder.HasData(
-        //     Create(Role.User, new List<Permissions>
-        //     {
-        //         Permissions.ReadUser
-        //     }),
-        //     Create(Role.Admin, new List<Permissions>
-        //     {
-        //         Permissions.ReadUser,
-        //         Permissions.UpdateUser,
-        //         Permissions.DeleteUser
-        //     })
-        // );
+        var rolePermissions = new List<RolePermission>();
+        rolePermissions.AddRange(Create(Role.User, new List<Permissions>
+        {
+            Permissions.ReadUser
+        }));
+        rolePermissions.AddRange(Create(Role.Admin, new List<Permissions>
+        {
+            Permissions.ReadUser,
+            Permissions.UpdateUser,
+            Permissions.DeleteUser
+        }));
+        
+        builder.HasData(rolePermissions);
     }
 
 

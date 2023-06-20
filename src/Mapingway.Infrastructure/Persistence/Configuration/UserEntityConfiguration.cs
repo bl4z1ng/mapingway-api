@@ -11,5 +11,10 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder
             .Property(user => user.Email)
             .IsRequired();
+
+        builder
+            .HasMany(u => u.Roles)
+            .WithMany()
+            .UsingEntity<UserRole>();
     }
 }
