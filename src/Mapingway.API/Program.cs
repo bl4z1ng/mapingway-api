@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Mapingway.API.Extensions;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
@@ -85,6 +86,8 @@ builder.Services.AddMediatR(config =>
 });
 
 // Authentication and authorization configuration.
+Debugger.Launch();
+
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
@@ -93,6 +96,7 @@ builder.Services.AddAuthentication(x =>
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer();
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
