@@ -8,10 +8,12 @@ public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
 
+
     public UserRepository(ApplicationDbContext context)
     {
         _context = context;
     }
+
 
     public async Task<List<User>> GetAllAsync(CancellationToken ct = default)
     {
@@ -68,5 +70,4 @@ public class UserRepository : IUserRepository
     {
         await _context.SaveChangesAsync(cancellationToken);
     }
-
 }

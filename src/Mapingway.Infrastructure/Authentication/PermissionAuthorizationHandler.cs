@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,10 +8,12 @@ public sealed class PermissionAuthorizationHandler : AuthorizationHandler<Permis
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
+
     public PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
+
 
     protected override async Task HandleRequirementAsync(
         AuthorizationHandlerContext context, 

@@ -10,6 +10,7 @@ public class DevelopmentDbContext : ApplicationDbContext
     {
     }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(Configuration.ConnectionString);
