@@ -28,14 +28,12 @@ public class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.Email, user.Email!)
         };
 
-        foreach (var permission in permissions)
-        {
-            claims.Add(new Claim("permissions", permission.ToString()));
-        }
+        claims.AddRange(
+            permissions.Select(p => new Claim("permissions", p.ToString())));
 
         var signingKey = new SigningCredentials(
-        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
-        SecurityAlgorithms.HmacSha256);
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)), 
+            SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             _options.Issuer,

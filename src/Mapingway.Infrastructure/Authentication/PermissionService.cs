@@ -1,5 +1,4 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Infrastructure.Persistence;
+﻿using Mapingway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Authentication;

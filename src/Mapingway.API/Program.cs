@@ -74,9 +74,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.ConfigureOptions<HashOptionsSetup>();
 
 // Application services registration.
@@ -86,8 +86,6 @@ builder.Services.AddMediatR(config =>
 });
 
 // Authentication and authorization configuration.
-Debugger.Launch();
-
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
@@ -98,7 +96,6 @@ builder.Services.AddAuthentication(x =>
 }).AddJwtBearer();
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 

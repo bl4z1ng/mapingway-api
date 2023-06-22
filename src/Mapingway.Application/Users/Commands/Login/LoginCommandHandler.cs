@@ -30,9 +30,9 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
                 ErrorCode.NotFound, 
                 "User with given e-mail is not found."));
         }
-        
+
         var passwordHash = _passwordHasher.GenerateHash(request.Password, user.PasswordSalt!);
-        
+
         if (passwordHash != user.PasswordHash)
         {
             return Result.Failure<string>(new Error(

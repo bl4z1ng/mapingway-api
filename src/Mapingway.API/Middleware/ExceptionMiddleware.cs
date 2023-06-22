@@ -52,7 +52,13 @@ public class ExceptionMiddleware
         }
     }
 
-    private async Task HandleException(string message, string exceptionMessage, HttpStatusCode httpStatusCode, HttpContext context, DateTime timeSpan)
+
+    private async Task HandleException(
+        string message, 
+        string exceptionMessage, 
+        HttpStatusCode httpStatusCode, 
+        HttpContext context, 
+        DateTime timeSpan)
     {
         var statusCode = (int)httpStatusCode;
         var response = new ExceptionResponse

@@ -10,17 +10,19 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
     private readonly IUserRepository _usersRepository;
     private readonly IPasswordHasher _passwordHasher;
 
+
     public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
     {
         _usersRepository = userRepository;
         _passwordHasher = passwordHasher;
     }
-    
+
+
     public async Task<Result<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var salt = _passwordHasher.GenerateSalt();
         var passwordHash = _passwordHasher.GenerateHash(command.Password, salt);
-        
+
         var user = new User
         {
             Email = command.Email,
