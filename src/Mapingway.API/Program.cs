@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Mapingway.API.Extensions;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
@@ -14,19 +13,24 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile(Path.Combine("Configuration", "Configuration.json"), optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile(
+    Path.Combine("Configuration", "Configuration.json"), 
+    optional: false, 
+    reloadOnChange: true);
 
 builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
 
 // Add services to the container.
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
+    builder.Services.Configure<DbOptions>(
+        builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
     builder.Services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
 }
 else
 {
-    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
+    builder.Services.Configure<DbOptions>(
+        builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
     builder.Services.AddDbContext<ApplicationDbContext>();
 }
 

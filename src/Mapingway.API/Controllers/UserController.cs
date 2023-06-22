@@ -17,8 +17,8 @@ public class UserController : BaseApiController
         base(loggerFactory, mediator, typeof(UserController).ToString())
     {
     }
-    
-    
+
+
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
