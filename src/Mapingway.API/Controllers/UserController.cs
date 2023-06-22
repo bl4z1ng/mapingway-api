@@ -1,12 +1,15 @@
 ﻿using Mapingway.Application.Contracts.User;
 using Mapingway.Application.Users.Commands.Register;
 using Mapingway.Application.Users.Commands.Login;
+using Mapingway.Common.Permission;
+using Mapingway.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 
 namespace Mapingway.API.Controllers;
 
+[AllowAnonymous]
 [Route("[controller]")]
 public class UserController : BaseApiController
 {
@@ -14,8 +17,8 @@ public class UserController : BaseApiController
         base(loggerFactory, mediator, typeof(UserController).ToString())
     {
     }
-    
-    [AllowAnonymous]
+
+
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
@@ -31,7 +34,6 @@ public class UserController : BaseApiController
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
-    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
@@ -44,7 +46,7 @@ public class UserController : BaseApiController
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
 
-    [Authorize]
+    [HasPermission(Permissions.ReadUser)]
     [HttpGet("[action]")]
     public async Task<IActionResult> GetUserById([FromQuery] GetUserRequest request, CancellationToken cancellationToken)
     {

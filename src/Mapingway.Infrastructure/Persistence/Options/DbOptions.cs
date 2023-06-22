@@ -2,8 +2,8 @@
 
 public class DbOptions
 {
-    public string? ConnectionString { get; init; } = null!;
-    public string? DefaultScheme { get; init; } = null!;
+    public string? ConnectionString { get; init; }
+    public string? DefaultScheme { get; init; }
     public bool EnableLogging { get; init; }
     public bool EnableSensitiveDataLogging { get; init; }
     public bool EnableDetailedErrors { get; init; }

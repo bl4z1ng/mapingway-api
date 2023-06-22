@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Mapingway.API.Extensions;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
@@ -14,19 +13,24 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile(Path.Combine("Configuration", "Configuration.json"), optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile(
+    Path.Combine("Configuration", "Configuration.json"), 
+    optional: false, 
+    reloadOnChange: true);
 
 builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
 
 // Add services to the container.
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
+    builder.Services.Configure<DbOptions>(
+        builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
     builder.Services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
 }
 else
 {
-    builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
+    builder.Services.Configure<DbOptions>(
+        builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
     builder.Services.AddDbContext<ApplicationDbContext>();
 }
 
@@ -74,9 +78,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.ConfigureOptions<HashOptionsSetup>();
 
 // Application services registration.
@@ -86,8 +90,6 @@ builder.Services.AddMediatR(config =>
 });
 
 // Authentication and authorization configuration.
-Debugger.Launch();
-
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
@@ -98,7 +100,6 @@ builder.Services.AddAuthentication(x =>
 }).AddJwtBearer();
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
