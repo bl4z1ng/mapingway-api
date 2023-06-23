@@ -2,6 +2,7 @@
 using Mapingway.Application.Users.Commands.Register;
 using Mapingway.Application.Users.Commands.Login;
 using Mapingway.Common.Permission;
+using Mapingway.Common.Result;
 using Mapingway.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using MediatR;
 namespace Mapingway.API.Controllers;
 
 [AllowAnonymous]
+[Produces("application/json")]
 [Route("[controller]")]
 public class UserController : BaseApiController
 {
@@ -18,7 +20,12 @@ public class UserController : BaseApiController
     {
     }
 
-
+    /// <summary>
+    /// Registers new user.
+    /// </summary>
+    /// <returns>
+    /// JSON with data about user registration and user data for caching.
+    /// </returns>
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
@@ -34,6 +41,14 @@ public class UserController : BaseApiController
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
+    /// <summary>
+    /// Authenticates registered user.
+    /// </summary>
+    /// <returns>
+    /// A newly generated Bearer token.
+    /// </returns>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
@@ -47,9 +62,9 @@ public class UserController : BaseApiController
     }
 
     [HasPermission(Permissions.ReadUser)]
-    [HttpGet("[action]")]
-    public async Task<IActionResult> GetUserById([FromQuery] GetUserRequest request, CancellationToken cancellationToken)
+    [HttpGet("{userId:int?}")]
+    public async Task<IActionResult> GetUserById(int userId, CancellationToken cancellationToken)
     {
-        return Ok("User Access Granted");
+        return Ok($"User {userId} gets Access");
     }
 }
