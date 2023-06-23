@@ -1,7 +1,11 @@
-﻿namespace Mapingway.Application.Contracts.User;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Mapingway.Application.Contracts.User;
 
 public sealed class LoginRequest
 {
-    public string Email { get; init; }
-    public string Password { get; init; }
+    [Required]
+    public string Email { get; init; } = null!;
+    [Required]
+    public string Password { get; init; } = null!;
 }

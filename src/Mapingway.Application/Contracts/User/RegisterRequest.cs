@@ -1,9 +1,14 @@
-﻿namespace Mapingway.Application.Contracts.User;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Mapingway.Application.Contracts.User;
 
 public class RegisterRequest
 {
-    public string Email { get; init; }
-    public string Password { get; init; }
-    public string? FirstName { get; init; }
+    [Required] 
+    public string Email { get; init; } = null!;
+    [Required] 
+    public string Password { get; init; } = null!;
+    [Required] 
+    public string FirstName { get; init; } = null!;
     public string? LastName { get; init; }
 }
