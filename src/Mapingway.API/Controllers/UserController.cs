@@ -1,4 +1,5 @@
-﻿using Mapingway.Application.Contracts.User;
+﻿using System.Net.Mime;
+using Mapingway.Application.Contracts.User;
 using Mapingway.Application.Users.Commands.Register;
 using Mapingway.Application.Users.Commands.Login;
 using Mapingway.Common.Permission;
@@ -10,8 +11,7 @@ using MediatR;
 
 namespace Mapingway.API.Controllers;
 
-[AllowAnonymous]
-[Produces("application/json")]
+[Produces(MediaTypeNames.Application.Json)]
 [Route("[controller]")]
 public class UserController : BaseApiController
 {
@@ -26,6 +26,7 @@ public class UserController : BaseApiController
     /// <returns>
     /// JSON with data about user registration and user data for caching.
     /// </returns>
+    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
@@ -49,6 +50,7 @@ public class UserController : BaseApiController
     /// </returns>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
@@ -61,7 +63,7 @@ public class UserController : BaseApiController
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
 
-    [HasPermission(Permissions.ReadUser)]
+    [HasPermission(Permissions.UpdateUser)]
     [HttpGet("{userId:int?}")]
     public async Task<IActionResult> GetUserById(int userId, CancellationToken cancellationToken)
     {

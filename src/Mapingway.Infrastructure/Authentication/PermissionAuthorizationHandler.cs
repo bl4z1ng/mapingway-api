@@ -1,42 +1,24 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Mapingway.Common.Constants;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Mapingway.Infrastructure.Authentication;
 
 public sealed class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {
-    private readonly IServiceScopeFactory _serviceScopeFactory;
-
-
-    public PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFactory)
-    {
-        _serviceScopeFactory = serviceScopeFactory;
-    }
-
-
-    protected override async Task HandleRequirementAsync(
+    protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context, 
         PermissionRequirement requirement)
     {
-        var userId = context.User.Claims.FirstOrDefault(
-            claim => claim.Type == JwtRegisteredClaimNames.Sub)?.Value;
-        
-        if(!int.TryParse(userId, out var parsedUserId))
+        var permissions = context.User.Claims
+            .Where(p => p.Type == CustomClaimNames.Permissions)
+            .Select(p => p.Value)
+            .ToHashSet();
+
+        if (permissions.Contains(requirement.Permission))
         {
-            return;
+            context.Succeed(requirement);
         }
 
-        using (var scope = _serviceScopeFactory.CreateScope())
-        {
-            var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
-
-            var permissions = await permissionService.GetPermissions(parsedUserId);
-
-            if (permissions.Contains(requirement.Permission))
-            {
-                context.Succeed(requirement);
-            }
-        }
+        return Task.CompletedTask;
     }
 }

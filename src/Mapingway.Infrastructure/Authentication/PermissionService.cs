@@ -1,4 +1,6 @@
-﻿using Mapingway.Infrastructure.Persistence;
+﻿using Mapingway.Application.Abstractions;
+using Mapingway.Application.Abstractions.Authentication;
+using Mapingway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Authentication;
@@ -14,7 +16,7 @@ public class PermissionService : IPermissionService
     }
 
 
-    public async Task<HashSet<string>> GetPermissions(int userId)
+    public async Task<HashSet<string>> GetPermissionsAsync(int userId)
     {
         var user = await _dbContext.Users
             .Include(user => user.Roles)

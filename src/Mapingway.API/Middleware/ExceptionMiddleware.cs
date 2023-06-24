@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Mapingway.Common.Consts;
+using Mapingway.Common.Constants;
 using Mapingway.Common.Response;
 using Newtonsoft.Json;
 
