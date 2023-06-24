@@ -1,7 +1,9 @@
+using System.Net.Mime;
 using Mapingway.API.Extensions;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
 using Mapingway.Application.Abstractions;
+using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;

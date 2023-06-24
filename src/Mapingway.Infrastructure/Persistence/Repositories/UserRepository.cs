@@ -27,10 +27,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetByEmail(string email, CancellationToken ct = default)
     {
-        return await _context.Users
-            .Include(user => user.Roles)
-            .ThenInclude(role => role.Permissions)
-            .FirstOrDefaultAsync(user => user.Email == email, ct);
+        return await _context.Users.FirstOrDefaultAsync(user => user.Email == email, ct);
     }
 
     public async Task<List<User>> GetByConditionAsync(Func<User,bool> condition, CancellationToken ct = default)

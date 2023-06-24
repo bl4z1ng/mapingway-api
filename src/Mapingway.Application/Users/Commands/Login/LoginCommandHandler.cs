@@ -1,4 +1,5 @@
 ﻿using Mapingway.Application.Abstractions;
+using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Common.Permission;
 using Mapingway.Common.Result;
@@ -10,13 +11,19 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
     private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IPermissionService _permissionService;
 
 
-    public LoginCommandHandler(IUserRepository userRepository, IJwtProvider jwtProvider, IPasswordHasher passwordHasher)
+    public LoginCommandHandler(
+        IUserRepository userRepository, 
+        IJwtProvider jwtProvider, 
+        IPasswordHasher passwordHasher,
+        IPermissionService permissionService)
     {
         _userRepository = userRepository;
         _jwtProvider = jwtProvider;
         _passwordHasher = passwordHasher;
+        _permissionService = permissionService;
     }
 
 
@@ -40,7 +47,9 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
                 "Email or password is incorrect."));
         }
 
-        var token = _jwtProvider.GenerateToken(user ,new List<Permissions>());
+        var permissions = await _permissionService.GetPermissionsAsync(user.Id);
+
+        var token = _jwtProvider.GenerateToken(user , permissions);
 
         return token;
     }

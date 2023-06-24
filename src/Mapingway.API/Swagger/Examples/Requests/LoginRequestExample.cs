@@ -9,8 +9,8 @@ public class LoginRequestExample : IExamplesProvider<LoginRequest>
     {
         return new LoginRequest
             {
-                Email = "valid.email.@gmail.com",
-                Password = "eh*34Gr68J"
+                Email = "max.pyte@gmail.com",
+                Password = "Password"
             };
     }
 }
