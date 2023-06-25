@@ -17,6 +17,11 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     }
 
 
+    public void Configure(JwtBearerOptions options)
+    {
+        Configure(JwtBearerDefaults.AuthenticationScheme, options);
+    }
+
     // https://stackoverflow.com/questions/71132926/jwtbeareroptions-configure-method-not-getting-executed
     // The subtility here is that AddJwtBearer() uses a named options delegate.
     // Instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions
@@ -27,15 +32,10 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
-
             ValidIssuer = _jwtOptions.Issuer,
             ValidAudience = _jwtOptions.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey)),
+            ClockSkew = TimeSpan.FromSeconds(15),
         };
-    }
-
-    public void Configure(JwtBearerOptions options)
-    {
-        Configure(JwtBearerDefaults.AuthenticationScheme, options);
     }
 }
