@@ -1,10 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Common.Constants;
-using Mapingway.Common.Permission;
 using Mapingway.Domain.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
