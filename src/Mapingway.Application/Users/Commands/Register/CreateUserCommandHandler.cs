@@ -8,20 +8,20 @@ namespace Mapingway.Application.Users.Commands.Register;
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, int>
 {
     private readonly IUserRepository _usersRepository;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IHasher _hasher;
 
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    public CreateUserCommandHandler(IUserRepository userRepository, IHasher hasher)
     {
         _usersRepository = userRepository;
-        _passwordHasher = passwordHasher;
+        _hasher = hasher;
     }
 
 
     public async Task<Result<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var salt = _passwordHasher.GenerateSalt();
-        var passwordHash = _passwordHasher.GenerateHash(command.Password, salt);
+        var salt = _hasher.GenerateSalt();
+        var passwordHash = _hasher.GenerateHash(command.Password, salt);
 
         var user = new User
         {

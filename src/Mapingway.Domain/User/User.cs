@@ -9,6 +9,7 @@ public class User
     public string? PasswordSalt { get; set; }
     public string? PasswordHash { get; set; }
     public ICollection<Role> Roles { get; set; } = null!;
+    public RefreshToken? RefreshToken { get; set; }
     public string? Created { get; set; }
     public string? Updated { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Permission;
 
 public class PermissionRequirement : IAuthorizationRequirement
 {

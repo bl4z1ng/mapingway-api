@@ -2,5 +2,5 @@
 
 public interface IPermissionService
 {
-    Task<HashSet<string>> GetPermissionsAsync(int userId);
+    Task<HashSet<string>> GetPermissionsAsync(int userId, CancellationToken cancellationToken);
 }

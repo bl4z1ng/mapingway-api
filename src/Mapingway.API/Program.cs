@@ -5,12 +5,14 @@ using Mapingway.Application;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Authentication.Permission;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
 using Mapingway.Infrastructure.Persistence.Repositories;
 using Mapingway.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,10 +44,10 @@ builder.Services.ConfigureSwagger();
 // Infrastructure services registration.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.ConfigureOptions<HashOptionsSetup>();
 
 // Application services registration.
@@ -56,6 +58,7 @@ builder.Services.AddMediatR(config =>
 
 // Authentication and authorization configuration.
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<TokenValidationParametersSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
 builder.Services.AddAuthentication(x =>
