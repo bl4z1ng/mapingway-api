@@ -5,18 +5,18 @@ using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Security;
 
-public class PasswordHasher : IPasswordHasher
+public class Hasher : IHasher
 {
     private readonly HashOptions _hashOptions;
 
 
-    public PasswordHasher(IOptions<HashOptions> hashOptions)
+    public Hasher(IOptions<HashOptions> hashOptions)
     {
         _hashOptions = hashOptions.Value;
     }
 
 
-    public string GenerateHash(string password, string? salt)
+    public string GenerateHash(string rawValue, string? salt)
     {
         var iterations = _hashOptions.Iterations;
         
@@ -24,15 +24,15 @@ public class PasswordHasher : IPasswordHasher
         {
             iterations--;
 
-            var passwordSaltPepper = $"{password}{salt ?? ""}{_hashOptions.Pepper}";
+            var passwordSaltPepper = $"{rawValue}{salt ?? ""}{_hashOptions.Pepper}";
             var bytes = Encoding.UTF8.GetBytes(passwordSaltPepper);
             
             var byteHash = SHA256.HashData(bytes);
             
-            password = Convert.ToBase64String(byteHash);
+            rawValue = Convert.ToBase64String(byteHash);
         }
 
-        return password;
+        return rawValue;
     }
 
     public string GenerateSalt()

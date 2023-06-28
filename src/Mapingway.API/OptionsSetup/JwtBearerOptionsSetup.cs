@@ -8,11 +8,11 @@ namespace Mapingway.API.OptionsSetup;
 
 public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly JwtOptions _jwtOptions;
+    private readonly TokenValidationParameters _validationParameters;
 
-    public JwtBearerOptionsSetup(IOptions<JwtOptions> jwtOptions)
+    public JwtBearerOptionsSetup(IOptions<TokenValidationParameters> jwtOptions)
     {
-        _jwtOptions = jwtOptions.Value;
+        _validationParameters = jwtOptions.Value;
     }
 
 
@@ -26,15 +26,6 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     // Instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions
     public void Configure(string? name, JwtBearerOptions options)
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = _jwtOptions.Issuer,
-            ValidAudience = _jwtOptions.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey)),
-            ClockSkew = TimeSpan.FromSeconds(15),
-        };
+        options.TokenValidationParameters = _validationParameters;
     }
 }

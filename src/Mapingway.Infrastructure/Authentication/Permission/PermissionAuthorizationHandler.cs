@@ -1,7 +1,7 @@
 ﻿using Mapingway.Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Permission;
 
 public sealed class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {

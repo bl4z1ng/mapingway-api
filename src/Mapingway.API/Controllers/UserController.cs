@@ -1,18 +1,19 @@
 ﻿using System.Net.Mime;
-using Mapingway.Application.Contracts.User;
+using Mapingway.Application.Contracts.User.Request;
 using Mapingway.Application.Users.Commands.Register;
 using Mapingway.Application.Users.Commands.Login;
 using Mapingway.Common.Permission;
 using Mapingway.Common.Result;
-using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Authentication.Permission;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 
 namespace Mapingway.API.Controllers;
 
-[Produces(MediaTypeNames.Application.Json)]
+[ApiController]
 [Route("[controller]")]
+[Produces(MediaTypeNames.Application.Json)]
 public class UserController : BaseApiController
 {
     public UserController(ILoggerFactory loggerFactory, IMediator mediator) : 

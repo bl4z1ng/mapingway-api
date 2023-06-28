@@ -5,5 +5,5 @@ namespace Mapingway.Application.Abstractions;
 
 public interface IUserRepository : IRepository<User>
 {
-    Task<User?> GetByEmail(string email, CancellationToken ct);
+    Task<User?> GetByEmailAsync(string email, CancellationToken ct);
 }

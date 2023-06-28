@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Permission;
 
 public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {

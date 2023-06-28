@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mapingway.Application.Contracts.User;
+namespace Mapingway.Application.Contracts.User.Request;
 
 public class RegisterRequest
 {

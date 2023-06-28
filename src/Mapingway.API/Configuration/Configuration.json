@@ -16,7 +16,9 @@
   "Jwt": {
     "Issuer" : "Mapingway",
     "Audience": "Mapingway",
-    "SigningKey": "M4p1ngW4yy_Rul3zz"
+    "SigningKey": "M4p1ngW4yy_Rul3zz",
+    "AccessTokenLifetime" : "00:15:00",
+    "RefreshTokenLifetime" : "360:00:00"
   },
   "Hash": {
     "Pepper" : "p3PpErr0rS4lt",

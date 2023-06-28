@@ -1,9 +1,8 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
+﻿using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Permission;
 
 public class PermissionService : IPermissionService
 {
@@ -16,12 +15,12 @@ public class PermissionService : IPermissionService
     }
 
 
-    public async Task<HashSet<string>> GetPermissionsAsync(int userId)
+    public async Task<HashSet<string>> GetPermissionsAsync(int userId, CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
             .Include(user => user.Roles)
             .ThenInclude(role => role.Permissions)
-            .FirstOrDefaultAsync(user => user.Id == userId);
+            .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
 
         if (user is null) return new HashSet<string>();
 
