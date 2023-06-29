@@ -1,13 +1,13 @@
-﻿namespace Mapingway.Common.Repository;
+﻿using System.Linq.Expressions;
 
-public interface IRepository<T>
+namespace Mapingway.Common.Repository;
+
+public interface IRepository<TEntity>
 {
-    Task<List<T>> GetAllAsync(CancellationToken ct);
-    Task<T?> GetByIdAsync(int id, CancellationToken ct);
-    Task<List<T>> GetByConditionAsync(Func<T,bool> condition, CancellationToken ct);
-    Task<int> CreateAsync(T entity, CancellationToken cancellationToken);
-    Task<bool> DeleteAsync(int id, CancellationToken ct);
-    void UpdateAsync(T entity, CancellationToken ct);
-    
-    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter, CancellationToken? ct);
+    Task<TEntity?> GetByIdAsync(object id, CancellationToken? ct);
+    Task CreateAsync(TEntity user, CancellationToken? ct);
+    Task DeleteAsync(int id, CancellationToken? ct);
+    void Delete(TEntity entity);
+    void UpdateAsync(TEntity entity);
 }

@@ -6,7 +6,8 @@ namespace Mapingway.Infrastructure.Persistence;
 
 public class DevelopmentDbContext : ApplicationDbContext
 {
-    public DevelopmentDbContext(DbContextOptions<DevelopmentDbContext> options, IOptions<DbOptions> configuration) : base(options, configuration)
+    public DevelopmentDbContext(DbContextOptions<DevelopmentDbContext> options, IOptions<DbOptions> configuration) 
+        : base(options, configuration)
     {
     }
 
@@ -16,7 +17,6 @@ public class DevelopmentDbContext : ApplicationDbContext
         optionsBuilder.UseSqlite(Configuration.ConnectionString);
 
         optionsBuilder.EnableSensitiveDataLogging(Configuration?.EnableSensitiveDataLogging ?? false);
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

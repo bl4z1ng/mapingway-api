@@ -1,10 +1,9 @@
 ﻿using System.Net.Mime;
+using Mapingway.API.Internal;
 using Mapingway.Application.Contracts.User.Request;
 using Mapingway.Application.Users.Commands.Register;
 using Mapingway.Application.Users.Commands.Login;
-using Mapingway.Common.Permission;
 using Mapingway.Common.Result;
-using Mapingway.Infrastructure.Authentication.Permission;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
@@ -12,12 +11,12 @@ using MediatR;
 namespace Mapingway.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[ApiRoute("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-public class UserController : BaseApiController
+public class AuthController : BaseApiController
 {
-    public UserController(ILoggerFactory loggerFactory, IMediator mediator) : 
-        base(loggerFactory, mediator, typeof(UserController).ToString())
+    public AuthController(ILoggerFactory loggerFactory, IMediator mediator) : 
+        base(loggerFactory, mediator, typeof(AuthController).ToString())
     {
     }
 
@@ -62,12 +61,5 @@ public class UserController : BaseApiController
         
         //work out multiple errors
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
-    }
-
-    [HasPermission(Permissions.UpdateUser)]
-    [HttpGet("{userId:int?}")]
-    public async Task<IActionResult> GetUserById(int userId, CancellationToken cancellationToken)
-    {
-        return Ok($"User {userId} gets Access");
     }
 }

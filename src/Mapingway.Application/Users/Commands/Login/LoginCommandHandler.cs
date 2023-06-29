@@ -8,28 +8,30 @@ namespace Mapingway.Application.Users.Commands.Login;
 
 public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IHasher _hasher;
-    private readonly IJwtService _jwtService;
-    private readonly IPermissionService _permissionService;
+    private readonly IAuthenticationService _authenticationService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IPermissionRepository _permissions;
+    private readonly IUserRepository _users;
 
 
     public LoginCommandHandler(
-        IUserRepository userRepository, 
         IHasher hasher,
-        IJwtService jwtService,
-        IPermissionService permissionService)
+        IAuthenticationService authenticationService,
+        IUnitOfWork unitOfWork)
     {
-        _userRepository = userRepository;
         _hasher = hasher;
-        _jwtService = jwtService;
-        _permissionService = permissionService;
+        _authenticationService = authenticationService;
+
+        _unitOfWork = unitOfWork;
+        _users = unitOfWork.Users;
+        _permissions = unitOfWork.Permissions;
     }
 
 
     public async Task<Result<AuthenticationResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
+        var user = await _users.GetByEmailAsync(request.Email, cancellationToken);
         if (user is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
@@ -45,10 +47,18 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Email or password is incorrect."));
         }
 
-        var permissions = await _permissionService.GetPermissionsAsync(user.Id, cancellationToken);
+        var permissions = await _permissions.GetPermissionsAsync(user.Id, cancellationToken);
         
-        var tokenPair = await _jwtService.GenerateTokensAsync(user, permissions, cancellationToken);
-
-        return tokenPair;
+        var accessToken = _authenticationService.GenerateAccessToken(user, permissions);
+        var refreshToken = _authenticationService.GenerateRefreshToken();
+        
+        await _authenticationService.BindRefreshTokenToUserAsync(user, refreshToken, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
+        return new AuthenticationResult
+        {
+            Token = accessToken,
+            RefreshToken = refreshToken
+        };
     }
 }

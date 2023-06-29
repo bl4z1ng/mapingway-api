@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using Mapingway.API.Extensions;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
@@ -12,7 +11,7 @@ using Mapingway.Infrastructure.Persistence.Repositories;
 using Mapingway.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,13 +27,13 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.Configure<DbOptions>(
         builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
-    builder.Services.AddDbContext<ApplicationDbContext, DevelopmentDbContext>();
+    builder.Services.AddDbContext<DbContext, DevelopmentDbContext>();
 }
 else
 {
     builder.Services.Configure<DbOptions>(
         builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
-    builder.Services.AddDbContext<ApplicationDbContext>();
+    builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
 }
 
 builder.Services.AddControllers();
@@ -43,9 +42,11 @@ builder.Services.ConfigureSwagger();
 
 // Infrastructure services registration.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.ConfigureOptions<HashOptionsSetup>();
