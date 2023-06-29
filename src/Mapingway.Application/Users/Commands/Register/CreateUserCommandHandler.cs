@@ -1,24 +1,31 @@
 ﻿using Mapingway.Application.Abstractions;
+using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
+using Mapingway.Application.Contracts.User.Result;
 using Mapingway.Common.Result;
+using Mapingway.Domain.Auth;
 using Mapingway.Domain.User;
 
 namespace Mapingway.Application.Users.Commands.Register;
 
-public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, int>
+public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, RegistrationResult>
 {
-    private readonly IUserRepository _usersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _userRepository;
+    
     private readonly IHasher _hasher;
 
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IHasher hasher)
+    public CreateUserCommandHandler(IHasher hasher, IUnitOfWork unitOfWork)
     {
-        _usersRepository = userRepository;
         _hasher = hasher;
+        
+        _unitOfWork = unitOfWork;
+        _userRepository = unitOfWork.Users;
     }
 
 
-    public async Task<Result<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+    public async Task<Result<RegistrationResult>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var salt = _hasher.GenerateSalt();
         var passwordHash = _hasher.GenerateHash(command.Password, salt);
@@ -33,8 +40,14 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
             Roles = new List<Role> { Role.User }
         };
 
-        var id =  await _usersRepository.CreateAsync(user, cancellationToken);
+        await _userRepository.CreateAsync(user, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return id;
+        return new RegistrationResult
+        {
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user?.LastName ?? string.Empty
+        };
     }
 }

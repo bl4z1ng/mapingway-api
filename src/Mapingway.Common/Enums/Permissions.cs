@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Common.Permission;
+﻿namespace Mapingway.Common.Enums;
 
 public enum Permissions
 {

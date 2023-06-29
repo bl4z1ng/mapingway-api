@@ -1,4 +1,5 @@
-﻿using Mapingway.Domain.User;
+﻿using Mapingway.Domain.Auth;
+using Mapingway.Domain.User;
 using Mapingway.Infrastructure.Persistence.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -31,7 +32,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(Configuration?.ConnectionString);
+        optionsBuilder.UseNpgsql(Configuration.ConnectionString);
         
         optionsBuilder.EnableSensitiveDataLogging(Configuration?.EnableSensitiveDataLogging ?? false);
     }

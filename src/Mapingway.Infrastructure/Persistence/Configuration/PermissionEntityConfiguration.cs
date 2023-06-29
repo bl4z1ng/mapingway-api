@@ -1,4 +1,6 @@
-﻿using Mapingway.Domain.User;
+﻿using Mapingway.Common.Enums;
+using Mapingway.Domain.Auth;
+using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +14,7 @@ public class PermissionEntityConfiguration : IEntityTypeConfiguration<Permission
         
         builder.HasKey(permission => permission.Id);
 
-        var permissions = Enum.GetValues<Common.Permission.Permissions>()
+        var permissions = Enum.GetValues<Permissions>()
             .Select(permission => new Permission
             {
                 Id = (int)permission,

@@ -1,4 +1,4 @@
-﻿using Mapingway.Common.Permission;
+﻿using Mapingway.Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Mapingway.Infrastructure.Authentication.Permission;

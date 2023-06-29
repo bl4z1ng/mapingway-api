@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Domain.User;
+﻿namespace Mapingway.Domain.Auth;
 
 public class Permission
 {

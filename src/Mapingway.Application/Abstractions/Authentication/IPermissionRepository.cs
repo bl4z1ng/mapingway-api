@@ -1,6 +1,6 @@
 ﻿namespace Mapingway.Application.Abstractions.Authentication;
 
-public interface IPermissionService
+public interface IPermissionRepository
 {
     Task<HashSet<string>> GetPermissionsAsync(int userId, CancellationToken cancellationToken);
 }

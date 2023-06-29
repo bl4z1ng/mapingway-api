@@ -1,4 +1,5 @@
-﻿using Mapingway.Domain.User;
+﻿using Mapingway.Domain.Auth;
+using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

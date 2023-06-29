@@ -1,70 +1,28 @@
-﻿using Mapingway.Application.Abstractions;
+﻿using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository : GenericRepository<User>, IUserRepository
 {
-    private readonly ApplicationDbContext _context;
-
-
-    public UserRepository(ApplicationDbContext context)
+    public UserRepository(DbContext context) : base(context)
     {
-        _context = context;
     }
 
 
-    public async Task<List<User>> GetAllAsync(CancellationToken ct = default)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
     {
-        return await _context.Users.ToListAsync(ct);
+        return await DbSet.FirstOrDefaultAsync(user => user.Email == email, ct);
     }
 
-    public async Task<User?> GetByIdAsync(int id, CancellationToken ct = default)
+    public override async Task CreateAsync(User user, CancellationToken? ct = null)
     {
-        return await _context.Users.FindAsync(new object?[] {id}, cancellationToken: ct);
-    }
-
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
-    {
-        return await _context.Users.FirstOrDefaultAsync(user => user.Email == email, ct);
-    }
-
-    public async Task<List<User>> GetByConditionAsync(Func<User,bool> condition, CancellationToken ct = default)
-    {
-        return await _context.Users.Include(ent => condition).ToListAsync(ct);
-    }
-
-    public async Task<int> CreateAsync(User user, CancellationToken cancellationToken = default)
-    {
-        await _context.Users.AddAsync(user, cancellationToken: cancellationToken);
+        await DbSet.AddAsync(user, ct ?? CancellationToken.None);
         
         foreach (var role in user.Roles)
         {
-            _context.Entry(role).State = EntityState.Unchanged;
+            Context.Entry(role).State = EntityState.Unchanged;
         }
-        
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return user.Id;
-    }
-
-    public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
-    {
-        var user = await _context.Users.FindAsync(new object?[] {id}, cancellationToken: ct);
-        if (user is null) return false;
-
-        _context.Entry(user).State = EntityState.Deleted;
-        return true;
-    }
-
-    public void UpdateAsync(User user, CancellationToken ct = default)
-    {
-        _context.Entry(user).State = EntityState.Modified;
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
     }
 }

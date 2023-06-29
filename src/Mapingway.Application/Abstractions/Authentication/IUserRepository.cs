@@ -1,7 +1,7 @@
 ﻿using Mapingway.Common.Repository;
 using Mapingway.Domain.User;
 
-namespace Mapingway.Application.Abstractions;
+namespace Mapingway.Application.Abstractions.Authentication;
 
 public interface IUserRepository : IRepository<User>
 {
