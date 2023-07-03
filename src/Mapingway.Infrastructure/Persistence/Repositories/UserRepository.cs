@@ -1,5 +1,5 @@
 ﻿using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Domain.User;
+using Mapingway.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;
@@ -14,6 +14,13 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
     {
         return await DbSet.FirstOrDefaultAsync(user => user.Email == email, ct);
+    }
+
+    public async Task<User?> GetByEmailWithPermissionsAsync(string email, CancellationToken ct)
+    {
+        return await DbSet
+            .Include(user => user.Roles)
+            .FirstOrDefaultAsync(user => user.Email == email, ct);
     }
 
     public override async Task CreateAsync(User user, CancellationToken? ct = null)

@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
-using Mapingway.Domain.User;
+using Mapingway.Domain;
+using Mapingway.Domain.Auth;
 
 namespace Mapingway.Application.Abstractions.Authentication;
 
@@ -7,6 +8,6 @@ public interface IAuthenticationService
 {
     string GenerateAccessToken(User user, IEnumerable<string> permissions);
     string GenerateRefreshToken();
-    Task BindRefreshTokenToUserAsync(User user, string refreshToken, CancellationToken? cancellationToken = null);
+    Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, CancellationToken cancellationToken);
     ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken);
 }

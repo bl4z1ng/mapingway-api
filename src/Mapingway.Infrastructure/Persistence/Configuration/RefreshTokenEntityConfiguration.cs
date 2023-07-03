@@ -1,5 +1,4 @@
 ﻿using Mapingway.Domain.Auth;
-using Mapingway.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,7 +19,11 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
 
         builder
             .HasOne(token => token.User)
-            .WithMany(user => user.RefreshTokens)
+            .WithOne(user => user.RefreshToken);
+
+        builder
+            .HasOne(token => token.User)
+            .WithMany(user => user.UsedRefreshTokens)
             .HasForeignKey(token => token.UserId);
     }
 }
