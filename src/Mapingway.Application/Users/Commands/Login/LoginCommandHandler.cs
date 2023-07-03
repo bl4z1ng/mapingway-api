@@ -47,18 +47,22 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Email or password is incorrect."));
         }
 
+        var newRefreshToken = _authenticationService.GenerateRefreshToken();
+        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(user, newRefreshToken, cancellationToken);
+        if (activeRefreshToken is null)
+        {
+            return Result.Failure<AuthenticationResult>(new Error(
+                ErrorCode.RefreshTokenIsInvalid, 
+                "Refresh token is invalid, try to login again"));
+        }
+
         var permissions = await _permissions.GetPermissionsAsync(user.Id, cancellationToken);
-        
         var accessToken = _authenticationService.GenerateAccessToken(user, permissions);
-        var refreshToken = _authenticationService.GenerateRefreshToken();
-        
-        await _authenticationService.BindRefreshTokenToUserAsync(user, refreshToken, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
+
         return new AuthenticationResult
         {
             Token = accessToken,
-            RefreshToken = refreshToken
+            RefreshToken = activeRefreshToken.Value
         };
     }
 }

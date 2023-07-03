@@ -4,9 +4,11 @@ using System.Security.Cryptography;
 using System.Text;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Token.Result;
 using Mapingway.Common.Constants;
+using Mapingway.Common.Exceptions;
+using Mapingway.Domain;
 using Mapingway.Domain.Auth;
-using Mapingway.Domain.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,21 +16,26 @@ namespace Mapingway.Infrastructure.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
+    private readonly ITokenGenerator _tokenGenerator;
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
-    private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly IRefreshTokenRepository _refreshTokens;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthenticationService(
         IOptions<JwtOptions> jwtOptions, 
         IOptions<TokenValidationParameters> tokenValidationOptions, 
+        ITokenGenerator tokenGenerator,
         IUnitOfWork unitOfWork)
     {
+        _tokenGenerator = tokenGenerator;
         _jwtOptions = jwtOptions.Value;
 
         _tokenValidationParameters = tokenValidationOptions.Value;
         _tokenValidationParameters.ValidateLifetime = false;
 
-        _refreshTokenRepository = unitOfWork.RefreshTokens;
+        _unitOfWork = unitOfWork;
+        _refreshTokens = unitOfWork.RefreshTokens;
     }
 
 
@@ -42,45 +49,21 @@ public class AuthenticationService : IAuthenticationService
 
         claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
 
-        var signingKey = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey)), 
-            SecurityAlgorithms.HmacSha256);
+        var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
 
-        var token = new JwtSecurityToken(
+        var token = _tokenGenerator.GenerateAccessToken(
             _jwtOptions.Issuer,
             _jwtOptions.Audience,
-            claims,
-            DateTime.UtcNow,
-            DateTime.UtcNow.Add(_jwtOptions.AccessTokenLifetime),
-            signingKey);
-
-        var result = new JwtSecurityTokenHandler().WriteToken(token);
-
-        return result;
-    }
-
-    public string GenerateRefreshToken()
-    {
-        var rng = RandomNumberGenerator.Create();
-        var bytes = new byte[16];
-        rng.GetBytes(bytes);
-
-        var token = Convert.ToBase64String(bytes);
+            _jwtOptions.AccessTokenLifetime,
+            signingKey,
+            claims);
 
         return token;
     }
 
-    public async Task BindRefreshTokenToUserAsync(User user, string refreshToken, CancellationToken? cancellationToken = null)
+    public string GenerateRefreshToken()
     {
-        var refreshTokenEntity = new RefreshToken
-        {
-            Value = refreshToken,
-            User = user,
-            IsUsed = false,
-            ExpiresAt = DateTime.UtcNow.Add(_jwtOptions.RefreshTokenLifetime)
-        };
-
-        await _refreshTokenRepository.CreateAsync(refreshTokenEntity, cancellationToken ?? CancellationToken.None);
+        return _tokenGenerator.GenerateRefreshToken();
     }
 
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken)
@@ -92,13 +75,55 @@ public class AuthenticationService : IAuthenticationService
             _tokenValidationParameters, 
             out var securityToken);
 
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(
-                SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCultureIgnoreCase))
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+            !jwtSecurityToken.Header.Alg.Equals(
+                SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
         {
             throw new SecurityTokenException("Invalid token");
         }
 
         return principal;
+    }
+
+    public async Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, CancellationToken cancellationToken)
+    {
+        if (user.RefreshToken is not null && user.RefreshToken.Value != newRefreshToken)
+        {
+            var tokenIsUsed = user.UsedRefreshTokens.Any(token => token.Value == newRefreshToken);
+            if (tokenIsUsed)
+            {
+                //invalidate all tokens here
+                //log here
+                throw new RefreshTokenUsedException(newRefreshToken);
+            }
+            return null;
+        }
+
+        var refreshToken = await UpdateRefreshTokenAsync(user, newRefreshToken, cancellationToken);
+
+        return refreshToken;
+    }
+
+
+    private async Task<RefreshToken?> UpdateRefreshTokenAsync(User user, string newToken, CancellationToken cancellationToken)
+    {
+        if (user.RefreshToken is null)
+        {
+            return null;
+        }
+
+        user.RefreshToken.IsUsed = true;
+        user.UsedRefreshTokens.Add(user.RefreshToken);
+
+        var refreshToken = RefreshTokenExtensions.CreateNotUsed(
+            newToken,
+            user.Id,
+            _jwtOptions.RefreshTokenLifetime);
+
+        user.RefreshToken = refreshToken; 
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return refreshToken;
     }
 }

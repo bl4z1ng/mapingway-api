@@ -27,5 +27,7 @@ public class TokenController: BaseApiController
         );
 
         var result = await Mediator.Send(command, cancellationToken);
+        
+        return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
 }

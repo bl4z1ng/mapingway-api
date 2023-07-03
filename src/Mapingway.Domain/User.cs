@@ -1,6 +1,6 @@
 ﻿using Mapingway.Domain.Auth;
 
-namespace Mapingway.Domain.User;
+namespace Mapingway.Domain;
 
 public class User
 {
@@ -11,8 +11,8 @@ public class User
     public string? PasswordSalt { get; set; }
     public string? PasswordHash { get; set; }
     public ICollection<Role> Roles { get; set; } = null!;
-    
-    public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+    public RefreshToken? RefreshToken { get; set; }
+    public ICollection<RefreshToken> UsedRefreshTokens { get; set; } = new List<RefreshToken>();
     public string? Created { get; set; }
     public string? Updated { get; set; }
 }
