@@ -42,10 +42,10 @@ builder.Services.ConfigureSwagger();
 
 // Infrastructure services registration.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IHasher, Hasher>();

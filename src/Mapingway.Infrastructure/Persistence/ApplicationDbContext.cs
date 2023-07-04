@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Permission> Permissions { get; set; } = null!;
     public DbSet<RefreshToken> Tokens { get; set; } = null!;
+    public DbSet<RefreshTokenFamily> ExpiredTokenFamilies { get; set; } = null!;
 
 
     protected readonly DbOptions Configuration;
@@ -33,8 +34,8 @@ public class ApplicationDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(Configuration.ConnectionString);
-        
-        optionsBuilder.EnableSensitiveDataLogging(Configuration?.EnableSensitiveDataLogging ?? false);
+
+        optionsBuilder.EnableSensitiveDataLogging(Configuration.EnableSensitiveDataLogging);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -28,7 +28,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
     public async Task<Result<RefreshTokenResult>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
         var principal = _authenticationService.GetPrincipalFromExpiredToken(command.ExpiredToken);
-        var userEmail = principal.Claims.FirstOrDefault(c => c.Value == CustomClaimNames.Email)?.Value;
+        var userEmail = principal.Claims.FirstOrDefault(c => c.Value == CustomClaimName.Email)?.Value;
         if (string.IsNullOrEmpty(userEmail))
         {
             return Result.Failure<RefreshTokenResult>(new Error(
@@ -43,7 +43,8 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 ErrorCode.NotFound, 
                 "User not found"));
         }
-        
+
+        // TODO: validate expire time.
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
         var activeRefreshToken = await _authenticationService.RefreshTokenAsync(user, newRefreshToken, cancellationToken);
         if (activeRefreshToken is null)
