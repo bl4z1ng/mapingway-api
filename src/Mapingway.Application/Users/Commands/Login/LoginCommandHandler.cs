@@ -31,7 +31,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
 
     public async Task<Result<AuthenticationResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _users.GetByEmailAsync(request.Email, cancellationToken);
+        var user = await _users.GetByEmailWithRefreshTokensAsync(request.Email, cancellationToken);
         if (user is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
@@ -48,7 +48,8 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
         }
 
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(user, newRefreshToken, cancellationToken);
+        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(
+            user, newRefreshToken, null, cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(

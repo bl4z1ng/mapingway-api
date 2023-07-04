@@ -39,7 +39,7 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : c
         await DbSet.AddAsync(user, ct ?? CancellationToken.None);
     }
 
-    public virtual void UpdateAsync(TEntity entity)
+    public virtual void Update(TEntity entity)
     {
         DbSet.Attach(entity);
         DbSet.Entry(entity).State = EntityState.Modified;

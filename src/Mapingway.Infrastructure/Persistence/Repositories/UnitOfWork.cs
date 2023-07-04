@@ -9,17 +9,20 @@ public class UnitOfWork : IUnitOfWork
     private readonly DbContext _context;
     public IUserRepository Users { get; }
     public IPermissionRepository Permissions { get; }
+    public IRefreshTokenRepository RefreshTokens { get; }
 
 
     public UnitOfWork(
         DbContext context, 
         IUserRepository users, 
-        IPermissionRepository permissions)
+        IPermissionRepository permissions,
+        IRefreshTokenRepository refreshTokens)
     {
         _context = context;
 
         Users = users;
         Permissions = permissions;
+        RefreshTokens = refreshTokens;
     }
 
 

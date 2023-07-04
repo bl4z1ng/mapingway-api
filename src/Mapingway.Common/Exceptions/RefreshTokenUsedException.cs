@@ -2,8 +2,8 @@
 
 public class RefreshTokenUsedException : Exception
 {
-    public RefreshTokenUsedException(string token) : 
-        base(message: $"Token {token}, that was passed for refresh, is already used.")
+    public RefreshTokenUsedException(string message) : 
+        base(message: $"The message {message} was recieved when validation refresh token, try to log-in again")
     {
     }
 }

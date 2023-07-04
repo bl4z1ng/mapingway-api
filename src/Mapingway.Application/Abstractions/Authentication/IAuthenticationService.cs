@@ -8,6 +8,6 @@ public interface IAuthenticationService
 {
     string GenerateAccessToken(User user, IEnumerable<string> permissions);
     string GenerateRefreshToken();
-    Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, CancellationToken cancellationToken);
+    Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, string? oldRefreshToken = null, CancellationToken? cancellationToken = null);
     ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken);
 }

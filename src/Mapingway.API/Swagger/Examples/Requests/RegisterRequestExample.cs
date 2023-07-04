@@ -10,8 +10,8 @@ public class RegisterRequestExample : IExamplesProvider<RegisterRequest>
     {
         return new RegisterRequest
         {
-            Email = "valid.email.@gmail.com",
-            Password = "eh*34Gr68J",
+            Email = "max.pyte@gmail.com",
+            Password = "Password",
             FirstName = "Max",
             LastName = "Pyte"
         };

@@ -54,11 +54,16 @@ public class AuthController : BaseApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
+        if (User.Identity is { IsAuthenticated: true })
+        {
+            return Conflict("User is already authenticated");
+        }
+
         //add mapping
         var command = new LoginCommand(request.Email, request.Password);
 
         var result = await Mediator.Send(command, cancellationToken);
-        
+
         //work out multiple errors
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
