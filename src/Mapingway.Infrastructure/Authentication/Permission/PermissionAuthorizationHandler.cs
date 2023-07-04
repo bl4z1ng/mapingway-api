@@ -10,7 +10,7 @@ public sealed class PermissionAuthorizationHandler : AuthorizationHandler<Permis
         PermissionRequirement requirement)
     {
         var permissions = context.User.Claims
-            .Where(p => p.Type == CustomClaimNames.Permissions)
+            .Where(p => p.Type == CustomClaimName.Permissions)
             .Select(p => p.Value)
             .ToHashSet();
 

@@ -1,10 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Contracts.Token.Result;
 using Mapingway.Common.Constants;
 using Mapingway.Common.Exceptions;
 using Mapingway.Domain;
@@ -19,7 +17,6 @@ public class AuthenticationService : IAuthenticationService
     private readonly ITokenGenerator _tokenGenerator;
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
-    private readonly IRefreshTokenRepository _refreshTokens;
     private readonly IUnitOfWork _unitOfWork;
 
     public AuthenticationService(
@@ -35,7 +32,6 @@ public class AuthenticationService : IAuthenticationService
         _tokenValidationParameters.ValidateLifetime = false;
 
         _unitOfWork = unitOfWork;
-        _refreshTokens = unitOfWork.RefreshTokens;
     }
 
 
@@ -47,7 +43,7 @@ public class AuthenticationService : IAuthenticationService
             new(JwtRegisteredClaimNames.Email, user.Email!)
         };
 
-        claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
+        claims.AddRange(permissions.Select(p => new Claim(CustomClaimName.Permissions, p)));
 
         var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
 
@@ -89,8 +85,9 @@ public class AuthenticationService : IAuthenticationService
     {
         if (user.RefreshToken is not null && user.RefreshToken.Value != newRefreshToken)
         {
-            var tokenIsUsed = user.UsedRefreshTokens.Any(token => token.Value == newRefreshToken);
-            if (tokenIsUsed)
+            var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens.Any(token => token.Value == newRefreshToken);
+            
+            if (tokenAlreadyUsed)
             {
                 //invalidate all tokens here
                 //log here
@@ -113,14 +110,14 @@ public class AuthenticationService : IAuthenticationService
         }
 
         user.RefreshToken.IsUsed = true;
-        user.UsedRefreshTokens.Add(user.RefreshToken);
+        user.UsedRefreshTokensFamily.Tokens.Add(user.RefreshToken);
 
         var refreshToken = RefreshTokenExtensions.CreateNotUsed(
             newToken,
             user.Id,
             _jwtOptions.RefreshTokenLifetime);
 
-        user.RefreshToken = refreshToken; 
+        user.RefreshToken = refreshToken;
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
