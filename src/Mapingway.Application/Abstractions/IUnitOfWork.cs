@@ -6,6 +6,7 @@ public interface IUnitOfWork
 {
     IUserRepository Users { get; }
     IPermissionRepository Permissions { get; }
+    IRefreshTokenRepository RefreshTokens { get; }
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -36,7 +36,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Email is not valid"));
         }
 
-        var user = await _users.GetByEmailAsync(userEmail, cancellationToken);
+        var user = await _users.GetByEmailWithRefreshTokensAsync(userEmail, cancellationToken);
         if (user is null)
         {
             return Result.Failure<RefreshTokenResult>(new Error(
@@ -44,9 +44,12 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "User not found"));
         }
 
-        // TODO: validate expire time.
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(user, newRefreshToken, cancellationToken);
+        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(
+            user, 
+            command.RefreshToken, 
+            newRefreshToken, 
+            cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<RefreshTokenResult>(new Error(

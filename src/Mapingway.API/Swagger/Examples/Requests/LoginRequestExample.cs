@@ -1,5 +1,4 @@
-﻿using Mapingway.Application.Contracts.User;
-using Mapingway.Application.Contracts.User.Request;
+﻿using Mapingway.Application.Contracts.User.Request;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.API.Swagger.Examples.Requests;

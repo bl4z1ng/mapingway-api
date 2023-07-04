@@ -15,7 +15,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
             .Property(token => token.Value)
             .IsRequired();
 
-        builder.HasIndex(token => new { token.Value, token.UserId });
+        builder.HasAlternateKey(token => new { token.Value, token.UserId });
 
         builder
             .HasOne(token => token.User)

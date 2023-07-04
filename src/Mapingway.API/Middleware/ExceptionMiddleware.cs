@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Mapingway.Common.Constants;
+using Mapingway.Common.Exceptions;
 using Mapingway.Common.Response;
 using Newtonsoft.Json;
 
@@ -33,6 +34,19 @@ public class ExceptionMiddleware
                 ExceptionMessage.HttpRequestException,
                 reqEx.Message,
                 reqEx.StatusCode ?? HttpStatusCode.BadRequest,
+                context,
+                timeSpan
+            );
+        }
+        catch (RefreshTokenUsedException ex)
+        {
+            var timeSpan = DateTime.Now;
+            _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
+            
+            await HandleException(
+                ExceptionMessage.UsedRefreshTokenException,
+                ex.Message,
+                HttpStatusCode.Unauthorized,
                 context,
                 timeSpan
             );

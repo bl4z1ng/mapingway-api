@@ -7,6 +7,7 @@ using Mapingway.Common.Constants;
 using Mapingway.Common.Exceptions;
 using Mapingway.Domain;
 using Mapingway.Domain.Auth;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,13 +19,17 @@ public class AuthenticationService : IAuthenticationService
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger _logger;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
 
     public AuthenticationService(
+        ILoggerFactory loggerFactory,
         IOptions<JwtOptions> jwtOptions, 
         IOptions<TokenValidationParameters> tokenValidationOptions, 
         ITokenGenerator tokenGenerator,
         IUnitOfWork unitOfWork)
     {
+        _logger = loggerFactory.CreateLogger(typeof(AuthenticationService));
         _tokenGenerator = tokenGenerator;
         _jwtOptions = jwtOptions.Value;
 
@@ -32,6 +37,7 @@ public class AuthenticationService : IAuthenticationService
         _tokenValidationParameters.ValidateLifetime = false;
 
         _unitOfWork = unitOfWork;
+        _refreshTokenRepository = unitOfWork.RefreshTokens;
     }
 
 
@@ -81,46 +87,69 @@ public class AuthenticationService : IAuthenticationService
         return principal;
     }
 
-    public async Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, CancellationToken cancellationToken)
+    public async Task<RefreshToken?> RefreshTokenAsync(
+        User user, 
+        string newToken, 
+        string? oldToken = null, 
+        CancellationToken? cancellationToken = null)
     {
-        if (user.RefreshToken is not null && user.RefreshToken.Value != newRefreshToken)
+        // TODO: re-do validation.
+        if (
+            oldToken is null || 
+            user.RefreshToken is null || 
+            user.RefreshToken.Value == oldToken || 
+            user.RefreshToken.ExpiresAt < DateTime.UtcNow)
         {
-            var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens.Any(token => token.Value == newRefreshToken);
-            
-            if (tokenAlreadyUsed)
-            {
-                //invalidate all tokens here
-                //log here
-                throw new RefreshTokenUsedException(newRefreshToken);
-            }
-            return null;
+            var newRefreshToken = await UpdateRefreshTokenAsync(
+                user, 
+                newToken, 
+                cancellationToken ?? CancellationToken.None);
+
+            return newRefreshToken;
         }
 
-        var refreshToken = await UpdateRefreshTokenAsync(user, newRefreshToken, cancellationToken);
+        var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens.Any(token => token.Value == newToken);
+        if (tokenAlreadyUsed)
+        {
+            InvalidateRefreshToken(user);
+            await _unitOfWork.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
 
-        return refreshToken;
+            _logger.LogWarning("An attempt to use token, that is already used");
+            
+            throw new RefreshTokenUsedException($"Token {newToken} is already used");
+        }
+
+        return null;
     }
 
 
     private async Task<RefreshToken?> UpdateRefreshTokenAsync(User user, string newToken, CancellationToken cancellationToken)
     {
-        if (user.RefreshToken is null)
-        {
-            return null;
-        }
-
-        user.RefreshToken.IsUsed = true;
-        user.UsedRefreshTokensFamily.Tokens.Add(user.RefreshToken);
+        InvalidateRefreshToken(user);
 
         var refreshToken = RefreshTokenExtensions.CreateNotUsed(
             newToken,
             user.Id,
             _jwtOptions.RefreshTokenLifetime);
-
         user.RefreshToken = refreshToken;
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return refreshToken;
+    }
+
+    private bool InvalidateRefreshToken(User user)
+    {
+        if (user.RefreshToken is null)
+        {
+            return false;
+        }
+        //TODO: ?????????????? Unique constraint failed
+        user.RefreshToken.IsUsed = true;
+        user.UsedRefreshTokensFamily.Tokens.Add(user.RefreshToken);
+
+        _refreshTokenRepository.Update(user.RefreshToken);
+
+        return true;
     }
 }
