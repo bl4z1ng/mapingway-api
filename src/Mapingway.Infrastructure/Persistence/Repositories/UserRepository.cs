@@ -29,6 +29,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await DbSet
             .Include(user => user.RefreshToken)
             .Include(user => user.UsedRefreshTokensFamily)
+            .ThenInclude(family => family.Tokens)
             .FirstOrDefaultAsync(user => user.Email == email, ct);
     }
 

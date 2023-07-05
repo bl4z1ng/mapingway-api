@@ -37,7 +37,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: true),
                     IsUsed = table.Column<bool>(type: "INTEGER", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     RefreshTokenFamilyId = table.Column<int>(type: "INTEGER", nullable: true)
@@ -45,7 +45,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
-                    table.UniqueConstraint("AK_RefreshTokens_Value_UserId", x => new { x.Value, x.UserId });
+                    table.UniqueConstraint("AK_RefreshTokens_Value", x => x.Value);
                     table.ForeignKey(
                         name: "FK_RefreshTokens_RefreshTokenFamilies_RefreshTokenFamilyId",
                         column: x => x.RefreshTokenFamilyId,
@@ -55,8 +55,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

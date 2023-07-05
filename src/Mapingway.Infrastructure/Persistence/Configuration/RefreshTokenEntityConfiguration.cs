@@ -9,16 +9,18 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder.ToTable("RefreshTokens");
-        builder.HasKey(token => token.Id);
+        builder
+            .HasKey(token => token.Id);
+        builder
+            .Property(token => token.Id)
+            .UseIdentityColumn();
 
         builder
-            .Property(token => token.Value)
-            .IsRequired();
-
-        builder.HasAlternateKey(token => new { token.Value, token.UserId });
-
+            .HasAlternateKey(token => token.Value);
+        
         builder
             .HasOne(token => token.User)
-            .WithOne(user => user.RefreshToken);
+            .WithOne(user => user.RefreshToken)
+            .IsRequired(false);
     }
 }

@@ -44,6 +44,7 @@ builder.Services.ConfigureSwagger();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IUsedRefreshTokenFamilyRepository, UsedRefreshTokenFamilyRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();

@@ -10,19 +10,22 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository Users { get; }
     public IPermissionRepository Permissions { get; }
     public IRefreshTokenRepository RefreshTokens { get; }
+    public IUsedRefreshTokenFamilyRepository UsedRefreshTokenFamilies { get; }
 
 
     public UnitOfWork(
         DbContext context, 
         IUserRepository users, 
         IPermissionRepository permissions,
-        IRefreshTokenRepository refreshTokens)
+        IRefreshTokenRepository refreshTokens,
+        IUsedRefreshTokenFamilyRepository usedRefreshTokenFamilies)
     {
         _context = context;
 
         Users = users;
         Permissions = permissions;
         RefreshTokens = refreshTokens;
+        UsedRefreshTokenFamilies = usedRefreshTokenFamilies;
     }
 
 

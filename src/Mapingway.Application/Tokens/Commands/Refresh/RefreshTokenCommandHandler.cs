@@ -27,8 +27,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
     public async Task<Result<RefreshTokenResult>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
-        var principal = _authenticationService.GetPrincipalFromExpiredToken(command.ExpiredToken);
-        var userEmail = principal.Claims.FirstOrDefault(c => c.Value == CustomClaimName.Email)?.Value;
+        var userEmail = _authenticationService.GetEmailFromExpiredToken(command.ExpiredToken);
         if (string.IsNullOrEmpty(userEmail))
         {
             return Result.Failure<RefreshTokenResult>(new Error(
@@ -50,6 +49,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
             command.RefreshToken, 
             newRefreshToken, 
             cancellationToken);
+
         if (activeRefreshToken is null)
         {
             return Result.Failure<RefreshTokenResult>(new Error(

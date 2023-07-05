@@ -87,6 +87,27 @@ public class AuthenticationService : IAuthenticationService
         return principal;
     }
 
+    public string? GetEmailFromExpiredToken(string expiredToken)
+    {
+        var tokenValidationHandler = new JwtSecurityTokenHandler();
+
+        var principal = tokenValidationHandler.ValidateToken(
+            expiredToken, 
+            _tokenValidationParameters, 
+            out var securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+            !jwtSecurityToken.Header.Alg.Equals(
+                SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new SecurityTokenException("Invalid token");
+        }
+
+        var email = principal.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Email)?.Value;
+        
+        return email;
+    }
+
     public async Task<RefreshToken?> RefreshTokenAsync(
         User user, 
         string newToken, 
@@ -120,7 +141,7 @@ public class AuthenticationService : IAuthenticationService
         }
 
         return null;
-    }
+        }
 
 
     private async Task<RefreshToken?> UpdateRefreshTokenAsync(User user, string newToken, CancellationToken cancellationToken)
@@ -129,10 +150,12 @@ public class AuthenticationService : IAuthenticationService
 
         var refreshToken = RefreshTokenExtensions.CreateNotUsed(
             newToken,
-            user.Id,
             _jwtOptions.RefreshTokenLifetime);
         user.RefreshToken = refreshToken;
 
+        _unitOfWork.Users.Update(user);
+        await _refreshTokenRepository.CreateAsync(refreshToken, cancellationToken);
+        
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return refreshToken;
@@ -140,15 +163,20 @@ public class AuthenticationService : IAuthenticationService
 
     private bool InvalidateRefreshToken(User user)
     {
-        if (user.RefreshToken is null)
+        var refreshToken = user.RefreshToken;
+        
+        if (refreshToken is null)
         {
             return false;
         }
-        //TODO: ?????????????? Unique constraint failed
-        user.RefreshToken.IsUsed = true;
-        user.UsedRefreshTokensFamily.Tokens.Add(user.RefreshToken);
 
-        _refreshTokenRepository.Update(user.RefreshToken);
+        refreshToken.IsUsed = true;
+        user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
+        user.RefreshToken = null;
+        refreshToken.User = null;
+
+        _unitOfWork.Users.Update(user);
+        _refreshTokenRepository.Update(refreshToken);
 
         return true;
     }
