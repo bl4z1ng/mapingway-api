@@ -10,4 +10,5 @@ public interface IAuthenticationService
     string GenerateRefreshToken();
     Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, string? oldRefreshToken = null, CancellationToken? cancellationToken = null);
     ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken);
+    string? GetEmailFromExpiredToken(string expiredToken);
 }

@@ -4,6 +4,7 @@ using Mapingway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -53,7 +54,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("TEXT");
@@ -64,7 +66,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.Property<int?>("RefreshTokenFamilyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Value")
@@ -73,7 +75,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Value", "UserId");
+                    b.HasAlternateKey("Value");
 
                     b.HasIndex("RefreshTokenFamilyId");
 
@@ -222,9 +224,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
                     b.HasOne("Mapingway.Domain.User", "User")
                         .WithOne("RefreshToken")
-                        .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId");
 
                     b.Navigation("User");
                 });
