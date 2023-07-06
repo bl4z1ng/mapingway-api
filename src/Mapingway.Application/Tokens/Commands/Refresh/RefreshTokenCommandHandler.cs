@@ -2,7 +2,6 @@
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.Token.Result;
-using Mapingway.Common.Constants;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Tokens.Commands.Refresh;
@@ -46,8 +45,8 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
         var activeRefreshToken = await _authenticationService.RefreshTokenAsync(
             user, 
-            command.RefreshToken, 
             newRefreshToken, 
+            command.RefreshToken, 
             cancellationToken);
 
         if (activeRefreshToken is null)

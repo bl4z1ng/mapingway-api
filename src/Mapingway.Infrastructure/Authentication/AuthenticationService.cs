@@ -7,6 +7,7 @@ using Mapingway.Common.Constants;
 using Mapingway.Common.Exceptions;
 using Mapingway.Domain;
 using Mapingway.Domain.Auth;
+using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,12 +16,13 @@ namespace Mapingway.Infrastructure.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
-    private readonly ITokenGenerator _tokenGenerator;
+    private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
+    private readonly ITokenGenerator _tokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger _logger;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
+
 
     public AuthenticationService(
         ILoggerFactory loggerFactory,
@@ -77,9 +79,7 @@ public class AuthenticationService : IAuthenticationService
             _tokenValidationParameters, 
             out var securityToken);
 
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || 
-            !jwtSecurityToken.Header.Alg.Equals(
-                SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        if (securityToken is not JwtSecurityToken)
         {
             throw new SecurityTokenException("Invalid token");
         }
@@ -89,21 +89,10 @@ public class AuthenticationService : IAuthenticationService
 
     public string? GetEmailFromExpiredToken(string expiredToken)
     {
-        var tokenValidationHandler = new JwtSecurityTokenHandler();
+        var principal = GetPrincipalFromExpiredToken(expiredToken);
 
-        var principal = tokenValidationHandler.ValidateToken(
-            expiredToken, 
-            _tokenValidationParameters, 
-            out var securityToken);
-
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || 
-            !jwtSecurityToken.Header.Alg.Equals(
-                SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-        {
-            throw new SecurityTokenException("Invalid token");
-        }
-
-        var email = principal.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Email)?.Value;
+        var email = principal.Claims.FirstOrDefault(
+            claim => claim.Type == WsDecodedClaimTypes.Keys[JwtRegisteredClaimNames.Email])?.Value;
         
         return email;
     }
@@ -114,6 +103,21 @@ public class AuthenticationService : IAuthenticationService
         string? oldToken = null, 
         CancellationToken? cancellationToken = null)
     {
+        var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens.Any(token => token.Value == oldToken);
+        if (tokenAlreadyUsed)
+        {
+            InvalidateRefreshToken(user);
+            await _unitOfWork.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
+
+            _logger.LogWarning(
+                "An attempt to use token {OldToken} " +
+                "(for user: id {UserId}, email {UserEmail}), " +
+                "that is already used", 
+                oldToken, user.Id, user.Email);
+            
+            throw new RefreshTokenUsedException($"Token is already used");
+        }
+        
         // TODO: re-do validation.
         if (
             oldToken is null || 
@@ -129,19 +133,27 @@ public class AuthenticationService : IAuthenticationService
             return newRefreshToken;
         }
 
-        var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens.Any(token => token.Value == newToken);
-        if (tokenAlreadyUsed)
-        {
-            InvalidateRefreshToken(user);
-            await _unitOfWork.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
-
-            _logger.LogWarning("An attempt to use token, that is already used");
-            
-            throw new RefreshTokenUsedException($"Token {newToken} is already used");
-        }
-
         return null;
+    }
+
+    public bool InvalidateRefreshToken(User user)
+    {
+        var refreshToken = user.RefreshToken;
+        if (refreshToken is null)
+        {
+            return false;
         }
+
+        refreshToken.IsUsed = true;
+        user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
+        user.RefreshToken = null;
+        refreshToken.User = null;
+
+        _unitOfWork.Users.Update(user);
+        _refreshTokenRepository.Update(refreshToken);
+
+        return true;
+    }
 
 
     private async Task<RefreshToken?> UpdateRefreshTokenAsync(User user, string newToken, CancellationToken cancellationToken)
@@ -159,25 +171,5 @@ public class AuthenticationService : IAuthenticationService
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return refreshToken;
-    }
-
-    private bool InvalidateRefreshToken(User user)
-    {
-        var refreshToken = user.RefreshToken;
-        
-        if (refreshToken is null)
-        {
-            return false;
-        }
-
-        refreshToken.IsUsed = true;
-        user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
-        user.RefreshToken = null;
-        refreshToken.User = null;
-
-        _unitOfWork.Users.Update(user);
-        _refreshTokenRepository.Update(refreshToken);
-
-        return true;
     }
 }

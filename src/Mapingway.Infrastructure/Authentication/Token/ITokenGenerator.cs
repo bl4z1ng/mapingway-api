@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Token;
 
 public interface ITokenGenerator
 {

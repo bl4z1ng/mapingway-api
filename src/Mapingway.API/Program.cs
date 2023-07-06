@@ -5,6 +5,7 @@ using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Permission;
+using Mapingway.Infrastructure.Authentication.Token;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
 using Mapingway.Infrastructure.Persistence.Repositories;
