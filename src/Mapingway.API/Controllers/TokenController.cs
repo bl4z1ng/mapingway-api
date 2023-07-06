@@ -1,8 +1,12 @@
-﻿using System.Net.Mime;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mime;
 using Mapingway.API.Internal;
 using Mapingway.Application.Contracts.Token.Request;
 using Mapingway.Application.Tokens.Commands.Refresh;
+using Mapingway.Application.Tokens.Commands.Revoke;
+using Mapingway.Common.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mapingway.API.Controllers;
@@ -17,6 +21,7 @@ public class TokenController: BaseApiController
     {
     }
 
+    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
@@ -29,5 +34,19 @@ public class TokenController: BaseApiController
         var result = await Mediator.Send(command, cancellationToken);
         
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
+    }
+
+    [Authorize]
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Revoke(CancellationToken cancellationToken)
+    {
+        var email = User.Claims.FirstOrDefault(
+            claim => claim.Type == WsDecodedClaimTypes.Keys[JwtRegisteredClaimNames.Email])?.Value;
+
+        var command = new RevokeTokenCommand(email);
+
+        var result = await Mediator.Send(command, cancellationToken);
+
+        return result.IsSuccess ? Ok() : BadRequest(result.Error);
     }
 }

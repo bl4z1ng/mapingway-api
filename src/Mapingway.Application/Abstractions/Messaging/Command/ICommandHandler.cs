@@ -4,7 +4,7 @@ using MediatR;
 namespace Mapingway.Application.Abstractions.Messaging.Command;
 
 public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand, Result> 
-    where TCommand : ICommand<Result>
+    where TCommand : ICommand
 {
 }
 

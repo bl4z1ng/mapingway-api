@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 using Mapingway.Infrastructure.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -21,9 +22,12 @@ public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationP
         options.ValidateIssuer = true;
         options.ValidateAudience = true;
         options.ValidateIssuerSigningKey = true;
+
         options.ValidIssuer = _jwtOptions.Issuer;
         options.ValidAudience = _jwtOptions.Audience;
+        options.ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 };
         options.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey));
+
         options.ClockSkew = TimeSpan.FromSeconds(15);
     }
 }
