@@ -27,10 +27,11 @@ public class RevokeTokenCommandHandler : ICommandHandler<RevokeTokenCommand>
         if (user is null)
         {
             return Result.Failure(new Error(
-                ErrorCode.NotFound, 
-                "User not found"));
+                ErrorCode.InvalidCredentials, 
+                "Access token is invalid"));
         }
-
+        
+        // TODO: add validation for token.isUsed + expired token
         var userHadActiveToken = _authenticationService.InvalidateRefreshToken(user);
         if (!userHadActiveToken)
         {

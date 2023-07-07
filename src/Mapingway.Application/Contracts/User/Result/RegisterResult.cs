@@ -1,6 +1,6 @@
 ﻿namespace Mapingway.Application.Contracts.User.Result;
 
-public class RegistrationResult
+public class RegisterResult
 {
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;

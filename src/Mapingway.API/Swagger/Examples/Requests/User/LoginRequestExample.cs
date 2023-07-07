@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Contracts.User.Request;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.API.Swagger.Examples.Requests;
+namespace Mapingway.API.Swagger.Examples.Requests.User;
 
 public class LoginRequestExample : IExamplesProvider<LoginRequest>
 {

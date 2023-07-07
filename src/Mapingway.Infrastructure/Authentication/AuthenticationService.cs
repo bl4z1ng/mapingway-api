@@ -18,10 +18,10 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
-    private readonly TokenValidationParameters _tokenValidationParameters;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly TokenValidationParameters _expiredTokenValidationParameters;
 
 
     public AuthenticationService(
@@ -34,9 +34,22 @@ public class AuthenticationService : IAuthenticationService
         _logger = loggerFactory.CreateLogger(typeof(AuthenticationService));
         _tokenGenerator = tokenGenerator;
         _jwtOptions = jwtOptions.Value;
+        
+        var tokenValidationParameters = tokenValidationOptions.Value;
+        _expiredTokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = tokenValidationParameters.ValidateIssuer,
+            ValidateAudience = tokenValidationParameters.ValidateAudience,
+            ValidateIssuerSigningKey = tokenValidationParameters.ValidateIssuerSigningKey,
+            ValidateLifetime = false,
 
-        _tokenValidationParameters = tokenValidationOptions.Value;
-        _tokenValidationParameters.ValidateLifetime = false;
+            ValidIssuer = tokenValidationParameters.ValidIssuer,
+            ValidAudience = tokenValidationParameters.ValidAudience,
+            ValidAlgorithms = tokenValidationParameters.ValidAlgorithms,
+            IssuerSigningKey = tokenValidationParameters.IssuerSigningKey,
+
+            ClockSkew = tokenValidationParameters.ClockSkew
+        };
 
         _unitOfWork = unitOfWork;
         _refreshTokenRepository = unitOfWork.RefreshTokens;
@@ -76,7 +89,7 @@ public class AuthenticationService : IAuthenticationService
 
         var principal = tokenValidationHandler.ValidateToken(
             expiredToken, 
-            _tokenValidationParameters, 
+            _expiredTokenValidationParameters, 
             out var securityToken);
 
         if (securityToken is not JwtSecurityToken)

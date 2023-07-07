@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 using Mapingway.Infrastructure.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +21,7 @@ public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationP
         options.ValidateIssuer = true;
         options.ValidateAudience = true;
         options.ValidateIssuerSigningKey = true;
+        options.ValidateLifetime = false;
 
         options.ValidIssuer = _jwtOptions.Issuer;
         options.ValidAudience = _jwtOptions.Audience;
