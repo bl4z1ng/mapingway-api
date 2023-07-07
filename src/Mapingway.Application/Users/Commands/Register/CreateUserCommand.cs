@@ -7,4 +7,4 @@ public sealed record CreateUserCommand(
         string Email, 
         string Password, 
         string FirstName, 
-        string? LastName) : ICommand<RegistrationResult>;
+        string? LastName) : ICommand<RegisterResult>;

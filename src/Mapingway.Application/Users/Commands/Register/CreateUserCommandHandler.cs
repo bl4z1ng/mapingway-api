@@ -8,7 +8,7 @@ using Mapingway.Domain.Auth;
 
 namespace Mapingway.Application.Users.Commands.Register;
 
-public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, RegistrationResult>
+public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, RegisterResult>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
@@ -25,7 +25,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
     }
 
 
-    public async Task<Result<RegistrationResult>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+    public async Task<Result<RegisterResult>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var salt = _hasher.GenerateSalt();
         var passwordHash = _hasher.GenerateHash(command.Password, salt);
@@ -43,7 +43,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         await _userRepository.CreateAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RegistrationResult
+        return new RegisterResult
         {
             Email = user.Email,
             FirstName = user.FirstName,
