@@ -13,7 +13,6 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.API.Controllers;
 
-[ApiController]
 [ApiRoute("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 public class AuthController : BaseApiController

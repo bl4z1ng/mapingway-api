@@ -17,5 +17,5 @@ public class HashOptionsSetup : IConfigureOptions<HashOptions>
     public void Configure(HashOptions options)
     {
         _configuration.GetSection(HashOptions.ConfigurationSection).Bind(options);
-        }
+    }
 }

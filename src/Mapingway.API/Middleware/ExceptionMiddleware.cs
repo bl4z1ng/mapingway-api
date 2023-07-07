@@ -41,7 +41,7 @@ public class ExceptionMiddleware
         catch (RefreshTokenUsedException ex)
         {
             var timeSpan = DateTime.Now;
-            _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
+            _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
             
             await HandleException(
                 ExceptionMessage.UsedRefreshTokenException,
@@ -54,7 +54,7 @@ public class ExceptionMiddleware
         catch (Exception ex)
         {
             var timeSpan = DateTime.Now;
-            _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
+            _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
             
             await HandleException(
                 ExceptionMessage.ServerErrorException,
