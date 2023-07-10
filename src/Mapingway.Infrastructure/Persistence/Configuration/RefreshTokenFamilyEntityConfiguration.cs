@@ -16,5 +16,14 @@ public class RefreshTokenFamilyEntityConfiguration : IEntityTypeConfiguration<Re
         builder
             .HasOne(family => family.User)
             .WithOne(user => user.UsedRefreshTokensFamily);
+
+        builder.HasData(new List<RefreshTokenFamily>
+        {
+            new()
+            {
+                Id = -1,
+                UserId = -1
+            }
+        });
     }
 }

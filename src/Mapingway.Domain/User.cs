@@ -12,7 +12,7 @@ public class User
     public string? PasswordHash { get; set; }
     public ICollection<Role> Roles { get; set; } = null!;
     public RefreshToken? RefreshToken { get; set; }
-    public RefreshTokenFamily UsedRefreshTokensFamily { get; set; } = new();
+    public RefreshTokenFamily UsedRefreshTokensFamily { get; set; } = null!;
     public string? Created { get; set; }
     public string? Updated { get; set; }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     [DbContext(typeof(DevelopmentDbContext))]
-    [Migration("20230705141444_RefreshTokenRotation")]
+    [Migration("20230710124606_RefreshTokenRotation")]
     partial class RefreshTokenRotation
     {
         /// <inheritdoc />
@@ -103,6 +103,13 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         .IsUnique();
 
                     b.ToTable("RefreshTokenFamilies", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            UserId = -1
+                        });
                 });
 
             modelBuilder.Entity("Mapingway.Domain.Auth.Role", b =>
@@ -184,6 +191,13 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRole");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = -1,
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("Mapingway.Domain.User", b =>
@@ -217,6 +231,17 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Email = "admin.map@rambler.ru",
+                            FirstName = "Admin",
+                            LastName = "Super",
+                            PasswordHash = "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=",
+                            PasswordSalt = "u4ya35ZFIvfkqC+ObHlNFQ=="
+                        });
                 });
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshToken", b =>

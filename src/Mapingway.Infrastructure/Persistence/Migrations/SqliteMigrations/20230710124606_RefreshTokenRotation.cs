@@ -58,6 +58,21 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated" },
+                values: new object[] { -1, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null });
+
+            migrationBuilder.InsertData(
+                table: "RefreshTokenFamilies",
+                columns: new[] { "Id", "UserId" },
+                values: new object[] { -1, -1 });
+
+            migrationBuilder.InsertData(
+                table: "UserRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 2, -1 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokenFamilies_UserId",
                 table: "RefreshTokenFamilies",
@@ -84,6 +99,16 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             migrationBuilder.DropTable(
                 name: "RefreshTokenFamilies");
+
+            migrationBuilder.DeleteData(
+                table: "UserRole",
+                keyColumns: new[] { "RoleId", "UserId" },
+                keyValues: new object[] { 2, -1 });
+
+            migrationBuilder.DeleteData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: -1);
         }
     }
 }
