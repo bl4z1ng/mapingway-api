@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
 using Mapingway.API.Internal;
-using Mapingway.API.Swagger.Examples.Responses.User;
+using Mapingway.API.Swagger.Examples.Results.User;
 using Mapingway.Application.Contracts.User.Request;
 using Mapingway.Application.Contracts.User.Result;
 using Mapingway.Application.Users.Commands.Register;

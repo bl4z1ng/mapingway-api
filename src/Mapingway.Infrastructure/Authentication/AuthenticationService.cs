@@ -128,7 +128,7 @@ public class AuthenticationService : IAuthenticationService
                 "that is already used", 
                 oldToken, user.Id, user.Email);
             
-            throw new RefreshTokenUsedException($"Token is already used");
+            throw new RefreshTokenUsedException($"{oldToken}");
         }
         
         // TODO: re-do validation.

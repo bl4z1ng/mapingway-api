@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
 using Mapingway.API.Internal;
-using Mapingway.API.Swagger.Examples.Responses.Token;
+using Mapingway.API.Swagger.Examples.Results.Token;
 using Mapingway.Application.Contracts.Token.Request;
 using Mapingway.Application.Contracts.Token.Result;
 using Mapingway.Application.Tokens.Commands.Refresh;
@@ -54,7 +54,7 @@ public class TokenController: BaseApiController
     /// Invalidates refresh token for current user.
     /// </summary>
     /// <response code="200">Token is successfully invalidated</response>
-    /// <response code="400">If the user has no valid refresh token</response>
+    /// <response code="400">If the user's access token is invalid</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RevokeToken400ErrorResultExample))]

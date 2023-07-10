@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Mapingway.API.Extensions;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
@@ -37,7 +38,9 @@ else
     builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
 }
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.ConfigureSwagger();
 

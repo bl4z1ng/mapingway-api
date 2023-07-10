@@ -1,7 +1,7 @@
 ﻿using Mapingway.Common.Result;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.API.Swagger.Examples.Responses.Token;
+namespace Mapingway.API.Swagger.Examples.Results.Token;
 
 public class RefreshToken400ErrorResultExample : IExamplesProvider<Error>
 {

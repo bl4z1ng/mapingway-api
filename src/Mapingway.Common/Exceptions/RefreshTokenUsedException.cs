@@ -2,9 +2,8 @@
 
 public class RefreshTokenUsedException : Exception
 {
-    //TODO: get message into
     public RefreshTokenUsedException(string usedToken) : 
-        base(message: $"Refresh token was already used, try to log-in again")
+        base(message: $"Refresh token {usedToken} was already used, try to log-in again")
     {
     }
 }
