@@ -1,7 +1,7 @@
 ﻿using Mapingway.Common.Result;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.API.Swagger.Examples.Responses.User;
+namespace Mapingway.API.Swagger.Examples.Results.User;
 
 public class Authentication401ErrorResultExample : IMultipleExamplesProvider<Error>
 {
@@ -11,7 +11,7 @@ public class Authentication401ErrorResultExample : IMultipleExamplesProvider<Err
             "Invalid Credentials",
             new Error(
                 ErrorCode.InvalidCredentials, 
-                "Email or password ais incorrect."));
+                "Email or password are incorrect."));
 
         yield return SwaggerExample.Create(
             "No Active Refresh Token",

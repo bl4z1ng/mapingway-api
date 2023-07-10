@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Contracts.User.Result;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.API.Swagger.Examples.Responses.User;
+namespace Mapingway.API.Swagger.Examples.Results.User;
 
 public class AuthenticationResultExample : IExamplesProvider<AuthenticationResult>
 {

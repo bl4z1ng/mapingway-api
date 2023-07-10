@@ -1,4 +1,6 @@
-﻿namespace Mapingway.Common.Result
+﻿using System.Text.Json.Serialization;
+
+namespace Mapingway.Common.Result
 {
     public sealed class Error : IEquatable<Error>
     {
@@ -11,6 +13,7 @@
 
         public static Error None => new(ErrorCode.None, string.Empty);
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ErrorCode Code { get; }
 
         public string Message { get; }
