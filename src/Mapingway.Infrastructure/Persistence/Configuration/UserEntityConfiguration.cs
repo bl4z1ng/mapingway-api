@@ -17,5 +17,16 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .HasMany(u => u.Roles)
             .WithMany()
             .UsingEntity<UserRole>();
+        
+        // P4$$w0rd
+        builder.HasData(new User
+        {
+            Id = -1,
+            Email = "admin.map@rambler.ru",
+            FirstName = "Admin",
+            LastName = "Super",
+            PasswordHash = "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=",
+            PasswordSalt = "u4ya35ZFIvfkqC+ObHlNFQ=="
+        });
     }
 }
