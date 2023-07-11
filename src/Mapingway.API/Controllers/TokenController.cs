@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
+using Mapingway.API.Extensions;
 using Mapingway.API.Internal;
+using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Swagger.Examples.Results.Token;
 using Mapingway.Application.Contracts.Token.Request;
 using Mapingway.Application.Contracts.Token.Result;
@@ -19,10 +21,15 @@ namespace Mapingway.API.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 public class TokenController: BaseApiController
 {
-    public TokenController(ILoggerFactory loggerFactory, IMediator mediator) 
+    private readonly IMapper _mapper;
+
+
+    public TokenController(ILoggerFactory loggerFactory, IMediator mediator, IMapper mapper) 
         : base(loggerFactory, mediator, typeof(TokenController).ToString())
     {
+        _mapper = mapper;
     }
+
 
     /// <summary>
     /// Refreshes access and refresh tokens and invalidates passed refresh token.
@@ -39,11 +46,7 @@ public class TokenController: BaseApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var command = new RefreshTokenCommand
-        (
-            request.ExpiredToken,
-            request.RefreshToken
-        );
+        var command = _mapper.Map(request);
 
         var result = await Mediator.Send(command, cancellationToken);
         
@@ -62,10 +65,8 @@ public class TokenController: BaseApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Revoke(CancellationToken cancellationToken)
     {
-        var email = User.Claims.FirstOrDefault(
-            claim => claim.Type == WsDecodedClaimTypes.Keys[JwtRegisteredClaimNames.Email])?.Value;
-
-        var command = new RevokeTokenCommand(email);
+        var email = User.GetEmailClaim();
+        var command = _mapper.Map(email);
 
         var result = await Mediator.Send(command, cancellationToken);
 

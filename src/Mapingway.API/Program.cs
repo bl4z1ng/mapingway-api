@@ -1,9 +1,11 @@
 using System.Text.Json.Serialization;
 using Mapingway.API.Extensions;
+using Mapingway.API.Internal.Mapping;
 using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
+using Mapingway.Common.Interfaces;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Permission;
 using Mapingway.Infrastructure.Authentication.Token;
@@ -43,6 +45,8 @@ builder.Services
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.ConfigureSwagger();
+
+builder.Services.AddScoped<IMapper, MapperlyMapper>();
 
 // Infrastructure services registration.
 builder.Services.AddScoped<IUserRepository, UserRepository>();

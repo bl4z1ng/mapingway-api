@@ -1,4 +1,4 @@
-﻿using Mapingway.Common.Repository;
+﻿using Mapingway.Common.Interfaces;
 using Mapingway.Domain;
 
 namespace Mapingway.Application.Abstractions.Authentication;
