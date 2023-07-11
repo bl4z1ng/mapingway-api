@@ -529,3 +529,5 @@ FodyWeavers.xsd
 
 #Sqlite db
 *.db
+Mapingway.Development.db-shm
+Mapingway.Development.db-wal
