@@ -21,7 +21,7 @@ public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationP
         options.ValidateIssuer = true;
         options.ValidateAudience = true;
         options.ValidateIssuerSigningKey = true;
-        options.ValidateLifetime = false;
+        options.ValidateLifetime = true;
 
         options.ValidIssuer = _jwtOptions.Issuer;
         options.ValidAudience = _jwtOptions.Audience;
