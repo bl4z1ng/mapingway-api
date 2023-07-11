@@ -1,8 +1,8 @@
 ﻿using Mapingway.API.Middleware;
 
-namespace Mapingway.API.Extensions;
+namespace Mapingway.API.Extensions.Installers;
 
-public static class ExceptionMiddlewareExtensions
+public static class ExceptionMiddlewareInstaller
 {
     public static IApplicationBuilder UseGlobalExceptionHandling(this IApplicationBuilder app)
     {
