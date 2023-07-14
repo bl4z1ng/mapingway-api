@@ -1,16 +1,15 @@
-using System.Text.Json.Serialization;
-using Mapingway.API.Extensions;
-using Mapingway.API.OptionsSetup;
+using FluentValidation;
+using Mapingway.API.Extensions.Configuration;
+using Mapingway.API.Extensions.Installers;
+using Mapingway.API.Internal.Mapping;
 using Mapingway.Application;
 using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Infrastructure.Authentication;
+using Mapingway.Application.Behaviors;
 using Mapingway.Infrastructure.Authentication.Permission;
-using Mapingway.Infrastructure.Authentication.Token;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
-using Mapingway.Infrastructure.Persistence.Repositories;
-using Mapingway.Infrastructure.Security;
+using Mapingway.Infrastructure.Validation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -38,45 +37,48 @@ else
     builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
 }
 
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<IMapper, MapperlyMapper>();
 
 builder.Services.ConfigureSwagger();
 
-// Infrastructure services registration.
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
-builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-builder.Services.AddScoped<IUsedRefreshTokenFamilyRepository, UsedRefreshTokenFamilyRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// Infrastructure.
+builder.Services.AddRepositoriesAndUnitOfWork();
 
-builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddAuthenticationService();
 
-builder.Services.AddScoped<IHasher, Hasher>();
-builder.Services.ConfigureOptions<HashOptionsSetup>();
+builder.Services.ConfigureHashing();
 
-// Application services registration.
+// Application.
+ValidatorOptions.Global.LanguageManager.Enabled = false;
+
+builder.Services.AddScoped(
+    typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+builder.Services.AddScoped<IValidationRulesProvider, ValidationRulesProvider>();
+//Data Property validation Options
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
+
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(ApplicationAssembly.AssemblyReference);
 });
 
 // Authentication and authorization configuration.
-builder.Services.ConfigureOptions<JwtOptionsSetup>();
-builder.Services.ConfigureOptions<TokenValidationParametersSetup>();
-builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+builder.Services
+    .ConfigureJwt()
+    .AddAuthentication(x =>
+    {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer();
 
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer();
-
-builder.Services.AddAuthorization();
-builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
-builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+builder.Services
+    .AddAuthorization()
+    .AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>()
+    .AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
 var app = builder.Build();
 
@@ -87,11 +89,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
     // if need dark theme
-    // app.UseStaticFiles();
-    // app.UseSwaggerUI(options =>
-    // {
-    //     options.InjectStylesheet("/swagger-dark.css");
-    // });
+    // app.UseSwaggerDarkTheme();
 }
 
 app.UseHttpsRedirection();

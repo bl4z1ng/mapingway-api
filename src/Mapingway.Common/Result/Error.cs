@@ -1,10 +1,14 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Mapingway.Common.Result
+﻿namespace Mapingway.Common.Result
 {
     public sealed class Error : IEquatable<Error>
     {
         public Error(ErrorCode code, string message)
+        {
+            Code = code.ToString();
+            Message = message;
+        }
+
+        public Error(string code, string message)
         {
             Code = code;
             Message = message;
@@ -13,15 +17,14 @@ namespace Mapingway.Common.Result
 
         public static Error None => new(ErrorCode.None, string.Empty);
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public ErrorCode Code { get; }
+        public string Code { get; }
 
         public string Message { get; }
 
 
-        public static implicit operator string(Error? error) => error is null || error.Code == ErrorCode.None 
+        public static implicit operator string(Error? error) => error is null || error.Code == ErrorCode.None.ToString() 
             ? string.Empty 
-            : error.Code.ToString();
+            : error.Code;
 
         public static bool operator ==(Error? a, Error? b)
         {

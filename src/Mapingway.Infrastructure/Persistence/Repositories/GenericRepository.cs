@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Mapingway.Common.Repository;
+using Mapingway.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;

@@ -1,8 +1,8 @@
 ﻿using Mapingway.API.Internal.Logging;
 
-namespace Mapingway.API.Extensions;
+namespace Mapingway.API.Extensions.Installers;
 
-public static class FIleLoggerExtensions
+public static class FIleLoggerInstaller
 {
     public static ILoggingBuilder AddFileLogger(this ILoggingBuilder builder, string filePath)
     {

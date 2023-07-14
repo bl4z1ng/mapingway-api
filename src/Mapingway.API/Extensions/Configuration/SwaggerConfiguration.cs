@@ -2,9 +2,9 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.API.Extensions;
+namespace Mapingway.API.Extensions.Configuration;
 
-public static class SwaggerConfigurationExtensions
+public static class SwaggerConfiguration
 {
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     public static IServiceCollection ConfigureSwagger(this IServiceCollection services)

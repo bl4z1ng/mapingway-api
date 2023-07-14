@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Mapingway.Common.Repository;
+namespace Mapingway.Common.Interfaces;
 
 public interface IRepository<TEntity>
 {

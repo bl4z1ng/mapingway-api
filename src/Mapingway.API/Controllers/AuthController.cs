@@ -1,10 +1,9 @@
 ﻿using System.Net.Mime;
 using Mapingway.API.Internal;
+using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Swagger.Examples.Results.User;
 using Mapingway.Application.Contracts.User.Request;
 using Mapingway.Application.Contracts.User.Result;
-using Mapingway.Application.Users.Commands.Register;
-using Mapingway.Application.Users.Commands.Login;
 using Mapingway.Common.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +16,15 @@ namespace Mapingway.API.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 public class AuthController : BaseApiController
 {
-    public AuthController(ILoggerFactory loggerFactory, IMediator mediator) : 
+    private readonly IMapper _mapper;
+
+
+    public AuthController(ILoggerFactory loggerFactory, IMediator mediator, IMapper mapper) : 
         base(loggerFactory, mediator, typeof(AuthController).ToString())
     {
+        _mapper = mapper;
     }
+
 
     /// <summary>
     /// Registers new user.
@@ -37,12 +41,7 @@ public class AuthController : BaseApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
-        //add mapping
-        var command = new CreateUserCommand(
-            request.Email, 
-            request.Password, 
-            request.FirstName, 
-            request.LastName);
+        var command = _mapper.Map(request);
 
         var result = await Mediator.Send(command, cancellationToken);
 
@@ -71,12 +70,11 @@ public class AuthController : BaseApiController
             return Conflict("User is already authenticated");
         }
 
-        //add mapping
-        var command = new LoginCommand(request.Email, request.Password);
+        var command = _mapper.Map(request);
 
         var result = await Mediator.Send(command, cancellationToken);
 
-        //work out multiple errors
+        // TODO: work out multiple errors and validation errors
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
 }
