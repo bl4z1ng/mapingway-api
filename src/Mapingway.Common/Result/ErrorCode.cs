@@ -5,5 +5,6 @@ public enum ErrorCode
     NotFound,
     InvalidCredentials,
     RefreshTokenIsInvalid,
-    None
+    ValidationError,
+    None,
 }

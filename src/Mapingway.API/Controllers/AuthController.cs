@@ -74,7 +74,7 @@ public class AuthController : BaseApiController
 
         var result = await Mediator.Send(command, cancellationToken);
 
-        // TODO: work out multiple errors
+        // TODO: work out multiple errors and validation errors
         return result.IsSuccess ? Ok(result.Value) : Unauthorized(result.Error);
     }
 }

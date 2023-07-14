@@ -1,14 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using Mapingway.API.Extensions;
 using Mapingway.API.Internal;
 using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Swagger.Examples.Results.Token;
 using Mapingway.Application.Contracts.Token.Request;
 using Mapingway.Application.Contracts.Token.Result;
-using Mapingway.Application.Tokens.Commands.Refresh;
-using Mapingway.Application.Tokens.Commands.Revoke;
-using Mapingway.Common.Constants;
 using Mapingway.Common.Result;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

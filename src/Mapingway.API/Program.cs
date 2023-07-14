@@ -1,11 +1,15 @@
-using System.Text.Json.Serialization;
+using FluentValidation;
 using Mapingway.API.Extensions.Configuration;
 using Mapingway.API.Extensions.Installers;
 using Mapingway.API.Internal.Mapping;
 using Mapingway.Application;
+using Mapingway.Application.Abstractions;
+using Mapingway.Application.Behaviors;
 using Mapingway.Infrastructure.Authentication.Permission;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
+using Mapingway.Infrastructure.Validation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -33,12 +37,7 @@ else
     builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
 }
 
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+builder.Services.AddControllers();
 
 builder.Services.AddScoped<IMapper, MapperlyMapper>();
 
@@ -52,6 +51,16 @@ builder.Services.AddAuthenticationService();
 builder.Services.ConfigureHashing();
 
 // Application.
+ValidatorOptions.Global.LanguageManager.Enabled = false;
+
+builder.Services.AddScoped(
+    typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+builder.Services.AddScoped<IValidationRulesProvider, ValidationRulesProvider>();
+//Data Property validation Options
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
+
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(ApplicationAssembly.AssemblyReference);
