@@ -1,28 +1,30 @@
 ﻿using System.Text.RegularExpressions;
 using Mapingway.Application.Abstractions;
+using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Validation;
 
 public class ValidationRulesProvider : IValidationRulesProvider
 {
-    private readonly string _emailPattern;
-    private readonly string _threeOrMoreLetters;
+    private readonly PasswordValidationRules _passwordRules;
+    private readonly EmailValidationRules _emailRules;
 
-
-    public ValidationRulesProvider()
+    public ValidationRulesProvider(
+        IOptions<PasswordValidationRules> passwordRules, 
+        IOptions<EmailValidationRules> emailRules)
     {
-        _emailPattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
-        _threeOrMoreLetters = @"^(?:[a-zA-Z]){3,}$";
+        _passwordRules = passwordRules.Value;
+        _emailRules = emailRules.Value;
     }
 
 
     public bool IsValidEmail(string email)
     {
-        return Regex.IsMatch(email, _emailPattern);
+        return Regex.IsMatch(email, _emailRules.Pattern);
     }
 
-    public bool Has3OrMoreLetters(string str)
+    public bool HasNOrMoreLetters(string str)
     {
-        return Regex.IsMatch(str, _threeOrMoreLetters);
+        return Regex.IsMatch(str, _passwordRules.NOrMoreLettersPattern);
     }
 }

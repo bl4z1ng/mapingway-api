@@ -23,5 +23,14 @@
   "Hash": {
     "Pepper" : "p3PpErr0rS4lt",
     "Iterations" : "2"
+  },
+  "Validation" : {
+    "Password" : {
+      "NumberOfLetters" : "3",
+      "NOrMoreLettersPattern" : "^(?:[a-zA-Z]){3,}$"
+    },
+    "Email" : {
+      "ValidEmailPattern" : "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+    }
   }
 }

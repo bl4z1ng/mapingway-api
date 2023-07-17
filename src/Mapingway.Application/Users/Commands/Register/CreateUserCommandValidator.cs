@@ -16,7 +16,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .NotEmpty()
             .MinimumLength(8)
             .MaximumLength(30)
-            .Must((c, _) => rulesProvider.Has3OrMoreLetters(c.Password))
+            .Must((c, _) => rulesProvider.HasNOrMoreLetters(c.Password))
                 .WithMessage("Password must have at least 3 letters.");
 
         RuleFor(c => c.FirstName)
