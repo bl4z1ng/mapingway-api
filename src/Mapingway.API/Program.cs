@@ -2,6 +2,7 @@ using FluentValidation;
 using Mapingway.API.Extensions.Configuration;
 using Mapingway.API.Extensions.Installers;
 using Mapingway.API.Internal.Mapping;
+using Mapingway.API.OptionsSetup.Validation;
 using Mapingway.Application;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Behaviors;
@@ -56,6 +57,8 @@ ValidatorOptions.Global.LanguageManager.Enabled = false;
 builder.Services.AddScoped(
     typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+builder.Services.ConfigureOptions<PasswordValidationRulesSetup>();
+
 builder.Services.AddScoped<IValidationRulesProvider, ValidationRulesProvider>();
 //Data Property validation Options
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -3,5 +3,5 @@
 public interface IValidationRulesProvider
 {
     bool IsValidEmail(string email);
-    bool Has3OrMoreLetters(string str);
+    bool HasNOrMoreLetters(string str);
 }
