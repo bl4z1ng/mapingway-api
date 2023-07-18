@@ -1,4 +1,5 @@
 ﻿using Mapingway.Infrastructure.Validation;
+using Mapingway.Infrastructure.Validation.Password;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.API.OptionsSetup.Validation;

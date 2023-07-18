@@ -4,13 +4,13 @@ using Mapingway.API.Extensions.Installers;
 using Mapingway.API.Internal.Mapping;
 using Mapingway.API.OptionsSetup.Validation;
 using Mapingway.Application;
-using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Validation;
 using Mapingway.Application.Behaviors;
 using Mapingway.Infrastructure.Authentication.Permission;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
-using Mapingway.Infrastructure.Validation;
+using Mapingway.Infrastructure.Validation.Email;
+using Mapingway.Infrastructure.Validation.Password;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -57,12 +57,13 @@ ValidatorOptions.Global.LanguageManager.Enabled = false;
 
 builder.Services.AddScoped(
     typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-builder.Services.ConfigureOptions<PasswordValidationRulesSetup>();
 
-builder.Services.AddScoped<IValidationRulesProvider, ValidationRulesProvider>();
-//Data Property validation Options
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+builder.Services.ConfigureOptions<PasswordValidationRulesSetup>();
+builder.Services.AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
+
+builder.Services.ConfigureOptions<EmailValidationRulesSetup>();
+builder.Services.AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
+
 builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
 
 builder.Services.AddMediatR(config =>
