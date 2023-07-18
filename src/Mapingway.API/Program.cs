@@ -5,6 +5,7 @@ using Mapingway.API.Internal.Mapping;
 using Mapingway.API.OptionsSetup.Validation;
 using Mapingway.Application;
 using Mapingway.Application.Abstractions;
+using Mapingway.Application.Abstractions.Validation;
 using Mapingway.Application.Behaviors;
 using Mapingway.Infrastructure.Authentication.Permission;
 using Mapingway.Infrastructure.Persistence;

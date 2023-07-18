@@ -1,6 +1,8 @@
-﻿namespace Mapingway.Infrastructure.Validation;
+﻿using Mapingway.Application.Abstractions.Validation;
 
-public class PasswordValidationRules
+namespace Mapingway.Infrastructure.Validation;
+
+public class PasswordValidationRules : IPasswordValidationRules
 {
     public const string ConfigurationSection = "Password";
 

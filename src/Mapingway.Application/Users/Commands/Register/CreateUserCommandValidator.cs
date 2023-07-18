@@ -1,12 +1,18 @@
 ﻿using FluentValidation;
 using Mapingway.Application.Abstractions;
+using Mapingway.Application.Abstractions.Validation;
 
 namespace Mapingway.Application.Users.Commands.Register;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserCommandValidator(IValidationRulesProvider rulesProvider)
+    private readonly IPasswordValidationRules _validationRules;
+
+    public CreateUserCommandValidator(
+        IValidationRulesProvider rulesProvider,
+        IPasswordValidationRules validationRules)
     {
+        _validationRules = validationRules;
         RuleFor(c => c.Email)
             .NotEmpty()
             .Must((c, _) => rulesProvider.IsValidEmail(c.Email))
@@ -17,10 +23,11 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .MinimumLength(8)
             .MaximumLength(30)
             .Must((c, _) => rulesProvider.HasNOrMoreLetters(c.Password))
-                .WithMessage("Password must have at least 3 letters.");
+                .WithMessage($"Password must have at least {rulesProvider.PasswordNumberOfLetters} letters.");
 
         RuleFor(c => c.FirstName)
             .NotEmpty()
-            .MinimumLength(2);
+            .MinimumLength(2)
+            .MaximumLength(256);
     }
 }
