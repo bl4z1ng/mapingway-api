@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Infrastructure.Validation;
+﻿namespace Mapingway.Infrastructure.Validation.Email;
 
 public class EmailValidationRules
 {

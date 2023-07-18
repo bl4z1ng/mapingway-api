@@ -16,7 +16,7 @@ public static class SwaggerConfiguration
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Mapingway API",
-                Description = "An ASP.NET Core Web API for managing routes and checkpoints of Mapingway Web-client",
+                Description = "An ASP.NET Core Web API for managing routes and checkpoints of Mapingway Web Cient",
                 Version = "v1",
                 Contact = new OpenApiContact()
                 {
