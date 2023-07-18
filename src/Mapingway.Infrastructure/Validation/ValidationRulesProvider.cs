@@ -23,6 +23,7 @@ public class ValidationRulesProvider : IValidationRulesProvider
         return Regex.IsMatch(email, _emailRules.Pattern);
     }
 
+    public int PasswordNumberOfLetters => _passwordRules.NumberOfLetters;
     public bool HasNOrMoreLetters(string str)
     {
         return Regex.IsMatch(str, _passwordRules.NOrMoreLettersPattern);
