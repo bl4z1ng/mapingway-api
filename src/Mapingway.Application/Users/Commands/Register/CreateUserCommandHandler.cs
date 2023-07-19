@@ -47,7 +47,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         {
             Email = user.Email,
             FirstName = user.FirstName,
-            LastName = user?.LastName ?? string.Empty
+            LastName = user.LastName ?? string.Empty
         };
     }
 }

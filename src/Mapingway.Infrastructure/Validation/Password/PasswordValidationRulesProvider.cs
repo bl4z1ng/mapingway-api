@@ -20,7 +20,6 @@ public class PasswordValidationRulesProvider : IPasswordValidationRulesProvider
 
     public bool HasNOrMoreLetters(string password)
     {
-        var r = Regex.IsMatch(password, _passwordValidationRules.NOrMoreLettersPattern);
-        return r;
+        return Regex.IsMatch(password, _passwordValidationRules.NOrMoreLettersPattern);
     }
 }
