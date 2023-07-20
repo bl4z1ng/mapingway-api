@@ -1,8 +1,7 @@
 ﻿namespace Mapingway.Infrastructure.Validation.Email;
 
-public class EmailValidationRules
+public class EmailValidationRules : IValidationRules
 {
-    public const string ConfigurationSection = "Email";
-
+    public static string ConfigurationSection => "Email";
     public string Pattern { get; init; } = null!;
 }

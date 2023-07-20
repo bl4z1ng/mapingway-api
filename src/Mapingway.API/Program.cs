@@ -42,10 +42,10 @@ builder.Services.AddRepositoriesAndUnitOfWork();
 
 builder.Services.AddAuthenticationService();
 
-builder.Services.ConfigureHashing();
+builder.ConfigureHashing();
 
 // Application.
-builder.Services.ConfigureValidation();
+builder.ConfigureValidation();
 
 builder.Services.AddMediatR(config =>
 {
@@ -53,8 +53,8 @@ builder.Services.AddMediatR(config =>
 });
 
 // Authentication and authorization configuration.
+builder.ConfigureJwt();
 builder.Services
-    .ConfigureJwt()
     .AddAuthentication(x =>
     {
         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,7 +69,7 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) 
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

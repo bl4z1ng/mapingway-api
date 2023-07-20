@@ -1,15 +1,23 @@
 ﻿using Mapingway.API.OptionsSetup;
+using Mapingway.Infrastructure.Authentication;
 
 namespace Mapingway.API.Extensions.Configuration;
 
 public static class JwtConfiguration
 {
-    public static IServiceCollection ConfigureJwt(this IServiceCollection services)
+    public static WebApplicationBuilder ConfigureJwt(this WebApplicationBuilder builder)
     {
-        services.ConfigureOptions<JwtOptionsSetup>();
+        var services = builder.Services;
+        var configuration = builder.Configuration;
+
+        services
+            .AddOptions<JwtOptions>()
+            .Bind(configuration.GetSection(JwtOptions.ConfigurationSection))
+            .ValidateOnStart();
+        
         services.ConfigureOptions<TokenValidationParametersSetup>();
         services.ConfigureOptions<JwtBearerOptionsSetup>();
 
-        return services;
+        return builder;
     }
 }

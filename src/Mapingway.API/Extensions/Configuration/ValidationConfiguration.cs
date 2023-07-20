@@ -1,8 +1,10 @@
-﻿using FluentValidation;
-using Mapingway.API.OptionsSetup.Validation;
+﻿using System.Reflection;
+using FluentValidation;
+using Mapingway.API.OptionsSetup;
 using Mapingway.Application;
 using Mapingway.Application.Abstractions.Validation;
 using Mapingway.Application.Behaviors;
+using Mapingway.Infrastructure.Validation;
 using Mapingway.Infrastructure.Validation.Email;
 using Mapingway.Infrastructure.Validation.Password;
 using MediatR;
@@ -11,21 +13,39 @@ namespace Mapingway.API.Extensions.Configuration;
 
 public static class ValidationConfiguration
 {
-    public static IServiceCollection ConfigureValidation(this IServiceCollection services)
+    public static WebApplicationBuilder ConfigureValidation(this WebApplicationBuilder builder)
     {
         ValidatorOptions.Global.LanguageManager.Enabled = false;
 
-        services.AddScoped(
-            typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+        builder.Services.AddScoped(
+            typeof(IPipelineBehavior<,>), 
+            typeof(ValidationPipelineBehavior<,>));
 
-        services.ConfigureOptions<PasswordValidationRulesSetup>();
-        services.AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
+        builder
+            .AddValidationRules<PasswordValidationRules>()
+            .Services.AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
 
-        services.ConfigureOptions<EmailValidationRulesSetup>();
-        services.AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
+        builder
+            .AddValidationRules<PasswordValidationRules>()
+            .Services.AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
 
-        services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
+        builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
 
-        return services;
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddValidationRules<TRules>(this WebApplicationBuilder builder) 
+        where TRules : class, IValidationRules
+    {
+        var configurationSectionProperty = typeof(TRules).GetProperty(
+            nameof(IValidationRules.ConfigurationSection), BindingFlags.Public | BindingFlags.Static);
+
+        builder.Services
+            .AddOptions<TRules>()
+            .Bind(builder.Configuration.GetSection(
+                $"{ValidationOptions.ConfigurationSection}:{configurationSectionProperty!.GetValue(null)}"))
+            .ValidateOnStart();
+
+        return builder;
     }
 }
