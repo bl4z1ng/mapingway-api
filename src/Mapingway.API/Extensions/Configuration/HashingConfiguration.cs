@@ -1,16 +1,22 @@
-﻿using Mapingway.API.OptionsSetup;
-using Mapingway.Application.Abstractions;
+﻿using Mapingway.Application.Abstractions;
 using Mapingway.Infrastructure.Security;
 
 namespace Mapingway.API.Extensions.Configuration;
 
 public static class HashingConfiguration
 {
-    public static IServiceCollection ConfigureHashing(this IServiceCollection services)
+    public static WebApplicationBuilder ConfigureHashing(this WebApplicationBuilder builder)
     {
-        services.ConfigureOptions<HashOptionsSetup>();
+        var services = builder.Services;
+        var configuration = builder.Configuration;
+
+        services
+            .AddOptions<HashOptions>()
+            .Bind(configuration.GetSection(HashOptions.ConfigurationSection))
+            .ValidateOnStart();
+
         services.AddScoped<IHasher, Hasher>();
 
-        return services;
+        return builder;
     }
 }

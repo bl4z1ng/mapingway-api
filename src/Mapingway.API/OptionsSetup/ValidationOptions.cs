@@ -1,4 +1,4 @@
-﻿namespace Mapingway.API.OptionsSetup.Validation;
+﻿namespace Mapingway.API.OptionsSetup;
 
 public static class ValidationOptions
 {

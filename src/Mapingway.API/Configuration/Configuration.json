@@ -22,7 +22,7 @@
   },
   "Hash": {
     "Pepper" : "p3PpErr0rS4lt",
-    "Iterations" : "2"
+    "Iterations" : ""
   },
   "Validation" : {
     "Password" : {
