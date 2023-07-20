@@ -1,8 +1,8 @@
 ﻿namespace Mapingway.Infrastructure.Validation.Password;
 
-public class PasswordValidationRules
+public class PasswordValidationRules : IValidationRules
 {
-    public const string ConfigurationSection = "Password";
+    public static string ConfigurationSection => "Password";
 
     public string NOrMoreLettersPattern { get; init; } = null!;
     public int NumberOfLetters { get; init; }
