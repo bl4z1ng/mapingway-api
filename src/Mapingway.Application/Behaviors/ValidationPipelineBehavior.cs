@@ -29,8 +29,8 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
         }
 
         var errors = _validators
-            .Select(v => v.Validate(command))
-            .SelectMany(vr => vr.Errors)
+            .Select(v => v.ValidateAsync(command, cancellationToken))
+            .SelectMany(vr => vr.Result.Errors)
             .Where(vr => vr is not null)
             .Select(failure => new Error(failure.PropertyName, failure.ErrorMessage))
             .Distinct()

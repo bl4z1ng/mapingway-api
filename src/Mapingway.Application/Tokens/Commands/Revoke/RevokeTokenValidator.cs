@@ -10,7 +10,7 @@ public class RevokeTokenValidator : AbstractValidator<RevokeTokenCommand>
     {
         RuleFor(c => c.Email)
             .NotEmpty()
-            .Must((c, _) => emailRules.IsValidEmail(c.Email))
+            .Must((c, _) => emailRules.IsEmailValid(c.Email))
             .WithMessage("You passed an invalid email.");
     }
 }

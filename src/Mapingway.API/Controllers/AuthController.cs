@@ -16,13 +16,13 @@ namespace Mapingway.API.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 public class AuthController : BaseApiController
 {
-    private readonly IMapper _mapper;
+    private readonly IRequestToCommandMapper _requestToCommandMapper;
 
 
-    public AuthController(ILoggerFactory loggerFactory, IMediator mediator, IMapper mapper) : 
+    public AuthController(ILoggerFactory loggerFactory, IMediator mediator, IRequestToCommandMapper requestToCommandMapper) : 
         base(loggerFactory, mediator, typeof(AuthController).ToString())
     {
-        _mapper = mapper;
+        _requestToCommandMapper = requestToCommandMapper;
     }
 
 
@@ -41,7 +41,7 @@ public class AuthController : BaseApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map(request);
+        var command = _requestToCommandMapper.Map(request);
 
         var result = await Mediator.Send(command, cancellationToken);
 
@@ -70,7 +70,7 @@ public class AuthController : BaseApiController
             return Conflict("User is already authenticated");
         }
 
-        var command = _mapper.Map(request);
+        var command = _requestToCommandMapper.Map(request);
 
         var result = await Mediator.Send(command, cancellationToken);
 

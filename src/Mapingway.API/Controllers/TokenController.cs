@@ -17,13 +17,13 @@ namespace Mapingway.API.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 public class TokenController: BaseApiController
 {
-    private readonly IMapper _mapper;
+    private readonly IRequestToCommandMapper _requestToCommandMapper;
 
 
-    public TokenController(ILoggerFactory loggerFactory, IMediator mediator, IMapper mapper) 
+    public TokenController(ILoggerFactory loggerFactory, IMediator mediator, IRequestToCommandMapper requestToCommandMapper) 
         : base(loggerFactory, mediator, typeof(TokenController).ToString())
     {
-        _mapper = mapper;
+        _requestToCommandMapper = requestToCommandMapper;
     }
 
 
@@ -42,7 +42,7 @@ public class TokenController: BaseApiController
     [HttpPost("[action]")]
     public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map(request);
+        var command = _requestToCommandMapper.Map(request);
 
         var result = await Mediator.Send(command, cancellationToken);
         
@@ -62,7 +62,7 @@ public class TokenController: BaseApiController
     public async Task<IActionResult> Revoke(CancellationToken cancellationToken)
     {
         var email = User.GetEmailClaim();
-        var command = _mapper.Map(email);
+        var command = _requestToCommandMapper.Map(email);
 
         var result = await Mediator.Send(command, cancellationToken);
 
