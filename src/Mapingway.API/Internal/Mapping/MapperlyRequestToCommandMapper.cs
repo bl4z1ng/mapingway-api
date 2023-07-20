@@ -9,7 +9,7 @@ using Riok.Mapperly.Abstractions;
 namespace Mapingway.API.Internal.Mapping;
 
 [Mapper]
-public partial class MapperlyMapper : IMapper
+public partial class MapperlyRequestToCommandMapper : IRequestToCommandMapper
 {
     public partial LoginCommand Map(LoginRequest request);
     public partial CreateUserCommand Map(RegisterRequest request);

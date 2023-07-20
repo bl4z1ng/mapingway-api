@@ -7,7 +7,7 @@ using Mapingway.Application.Users.Commands.Register;
 
 namespace Mapingway.API.Internal.Mapping;
 
-public interface IMapper
+public interface IRequestToCommandMapper
 {
     LoginCommand Map(LoginRequest request);
     CreateUserCommand Map(RegisterRequest request);

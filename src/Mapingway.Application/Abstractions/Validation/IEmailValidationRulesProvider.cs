@@ -2,5 +2,6 @@
 
 public interface IEmailValidationRulesProvider
 {
-    bool IsValidEmail(string email);
+    bool IsEmailValid(string email);
+    public Task<bool> IsEmailUnique(string email);
 }

@@ -1,17 +1,9 @@
-using FluentValidation;
 using Mapingway.API.Extensions.Configuration;
 using Mapingway.API.Extensions.Installers;
-using Mapingway.API.Internal.Mapping;
-using Mapingway.API.OptionsSetup.Validation;
 using Mapingway.Application;
-using Mapingway.Application.Abstractions.Validation;
-using Mapingway.Application.Behaviors;
 using Mapingway.Infrastructure.Authentication.Permission;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Persistence.Options;
-using Mapingway.Infrastructure.Validation.Email;
-using Mapingway.Infrastructure.Validation.Password;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +33,7 @@ else
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IMapper, MapperlyMapper>();
+builder.Services.AddRequestToCommandMapper();
 
 builder.Services.ConfigureSwagger();
 
@@ -53,18 +45,7 @@ builder.Services.AddAuthenticationService();
 builder.Services.ConfigureHashing();
 
 // Application.
-ValidatorOptions.Global.LanguageManager.Enabled = false;
-
-builder.Services.AddScoped(
-    typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-
-builder.Services.ConfigureOptions<PasswordValidationRulesSetup>();
-builder.Services.AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
-
-builder.Services.ConfigureOptions<EmailValidationRulesSetup>();
-builder.Services.AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
-
-builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
+builder.Services.ConfigureValidation();
 
 builder.Services.AddMediatR(config =>
 {
