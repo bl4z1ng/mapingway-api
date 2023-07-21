@@ -23,18 +23,18 @@ public static class ValidationConfiguration
 
         builder
             .AddValidationRules<PasswordValidationRules>()
-            .Services.AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
+            .AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
 
         builder
             .AddValidationRules<PasswordValidationRules>()
-            .Services.AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
+            .AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
 
         builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
 
         return builder;
     }
 
-    private static WebApplicationBuilder AddValidationRules<TRules>(this WebApplicationBuilder builder) 
+    private static IServiceCollection AddValidationRules<TRules>(this WebApplicationBuilder builder) 
         where TRules : class, IValidationRules
     {
         var configurationSectionProperty = typeof(TRules).GetProperty(
@@ -46,6 +46,6 @@ public static class ValidationConfiguration
                 $"{ValidationOptions.ConfigurationSection}:{configurationSectionProperty!.GetValue(null)}"))
             .ValidateOnStart();
 
-        return builder;
+        return builder.Services;
     }
 }
