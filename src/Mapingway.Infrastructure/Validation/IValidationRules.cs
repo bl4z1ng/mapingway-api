@@ -2,5 +2,5 @@
 
 public interface IValidationRules
 {
-    public static string? ConfigurationSection { get; }
+    public static string? ConfigurationSection { get; } = null!;
 }
