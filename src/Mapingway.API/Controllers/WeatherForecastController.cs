@@ -1,6 +1,5 @@
 using Mapingway.Common.Enums;
 using Mapingway.Infrastructure.Authentication.Permission;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mapingway.API.Controllers;
