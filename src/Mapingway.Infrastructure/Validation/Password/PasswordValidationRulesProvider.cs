@@ -12,9 +12,9 @@ public class PasswordValidationRulesProvider : IPasswordValidationRulesProvider
     public int NumberOfLetters => _passwordValidationRules.NumberOfLetters;
 
 
-    public PasswordValidationRulesProvider(IOptions<PasswordValidationRules> options)
+    public PasswordValidationRulesProvider(IOptions<PasswordValidationRules> passwordRules)
     {
-        _passwordValidationRules = options.Value;
+        _passwordValidationRules = passwordRules.Value;
     }
 
 

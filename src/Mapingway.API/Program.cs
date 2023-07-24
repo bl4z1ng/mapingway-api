@@ -7,6 +7,7 @@ using Mapingway.Infrastructure.Persistence.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,11 @@ builder.Configuration.AddJsonFile(
     reloadOnChange: true);
 
 builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
+
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+});
 
 // Add services to the container.
 if (builder.Environment.IsDevelopment())
@@ -45,7 +51,8 @@ builder.Services.AddAuthenticationService();
 builder.ConfigureHashing();
 
 // Application.
-builder.ConfigureValidation();
+builder.ConfigureValidationBehavior();
+builder.ConfigureLoggingBehavior();
 
 builder.Services.AddMediatR(config =>
 {
@@ -77,6 +84,8 @@ if (app.Environment.IsDevelopment())
     // if need dark theme
     // app.UseSwaggerDarkTheme();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

@@ -13,7 +13,7 @@ namespace Mapingway.API.Extensions.Configuration;
 
 public static class ValidationConfiguration
 {
-    public static WebApplicationBuilder ConfigureValidation(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder ConfigureValidationBehavior(this WebApplicationBuilder builder)
     {
         ValidatorOptions.Global.LanguageManager.Enabled = false;
 
@@ -26,7 +26,7 @@ public static class ValidationConfiguration
             .AddScoped<IPasswordValidationRulesProvider, PasswordValidationRulesProvider>();
 
         builder
-            .AddValidationRules<PasswordValidationRules>()
+            .AddValidationRules<EmailValidationRules>()
             .AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
 
         builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);

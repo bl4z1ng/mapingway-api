@@ -12,9 +12,7 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
         RuleFor(c => c.Email)
             .NotEmpty()
             .Must((c, _) => emailRules.IsEmailValid(c.Email))
-                .WithMessage("Email is invalid.")
-            .MustAsync((email, _) => emailRules.IsEmailUnique(email))
-            .WithMessage("Email is already taken.");
+            .WithMessage("Email is invalid.");
 
         RuleFor(c => c.Password)
             .NotEmpty()
