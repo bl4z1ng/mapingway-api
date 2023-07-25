@@ -8,6 +8,7 @@ namespace Mapingway.API.Controllers;
 [ApiController]
 public class BaseApiController : ControllerBase
 {
+    protected delegate IActionResult FailureResultDelegate(object? value);
     protected readonly ILogger Logger;
     protected readonly IMediator Mediator;
 
@@ -37,7 +38,6 @@ public class BaseApiController : ControllerBase
     }
 
 
-    protected delegate IActionResult FailureResultDelegate(object? value);
 
 
     private static ProblemDetails CreateProblemDetails(
