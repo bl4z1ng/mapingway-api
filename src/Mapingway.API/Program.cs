@@ -16,8 +16,6 @@ builder.Configuration.AddJsonFile(
     optional: false, 
     reloadOnChange: true);
 
-builder.Logging.AddFileLogger(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
-
 builder.Host.UseSerilog((context, configuration) =>
 {
     configuration.ReadFrom.Configuration(context.Configuration);
