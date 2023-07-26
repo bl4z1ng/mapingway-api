@@ -56,8 +56,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(

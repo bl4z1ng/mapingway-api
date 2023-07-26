@@ -10,6 +10,7 @@ public class User
     public string? LastName { get; set; }
     public string? PasswordSalt { get; set; }
     public string? PasswordHash { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = null!;
     public ICollection<Role> Roles { get; set; } = null!;
     public RefreshToken? RefreshToken { get; set; }
     public RefreshTokenFamily UsedRefreshTokensFamily { get; set; } = null!;
