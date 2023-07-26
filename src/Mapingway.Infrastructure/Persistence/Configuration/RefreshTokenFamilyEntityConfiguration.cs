@@ -16,6 +16,11 @@ public class RefreshTokenFamilyEntityConfiguration : IEntityTypeConfiguration<Re
         builder
             .HasOne(family => family.User)
             .WithOne(user => user.UsedRefreshTokensFamily);
+        
+        builder
+            .HasMany(family => family.Tokens)
+            .WithOne(token => token.TokenFamily)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasData(new List<RefreshTokenFamily>
         {

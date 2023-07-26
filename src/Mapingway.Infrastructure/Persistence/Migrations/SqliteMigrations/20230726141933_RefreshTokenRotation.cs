@@ -38,19 +38,20 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    TokenFamilyId = table.Column<int>(type: "INTEGER", nullable: true),
                     IsUsed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    RefreshTokenFamilyId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.UniqueConstraint("AK_RefreshTokens_Value", x => x.Value);
                     table.ForeignKey(
-                        name: "FK_RefreshTokens_RefreshTokenFamilies_RefreshTokenFamilyId",
-                        column: x => x.RefreshTokenFamilyId,
+                        name: "FK_RefreshTokens_RefreshTokenFamilies_TokenFamilyId",
+                        column: x => x.TokenFamilyId,
                         principalTable: "RefreshTokenFamilies",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
@@ -80,9 +81,9 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_RefreshTokenFamilyId",
+                name: "IX_RefreshTokens_TokenFamilyId",
                 table: "RefreshTokens",
-                column: "RefreshTokenFamilyId");
+                column: "TokenFamilyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",

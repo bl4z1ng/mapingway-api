@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     [DbContext(typeof(DevelopmentDbContext))]
-    [Migration("20230710124606_RefreshTokenRotation")]
+    [Migration("20230726141933_RefreshTokenRotation")]
     partial class RefreshTokenRotation
     {
         /// <inheritdoc />
@@ -66,7 +66,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.Property<bool>("IsUsed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RefreshTokenFamilyId")
+                    b.Property<int?>("TokenFamilyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("UserId")
@@ -80,7 +80,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
                     b.HasAlternateKey("Value");
 
-                    b.HasIndex("RefreshTokenFamilyId");
+                    b.HasIndex("TokenFamilyId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -246,13 +246,16 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshToken", b =>
                 {
-                    b.HasOne("Mapingway.Domain.Auth.RefreshTokenFamily", null)
+                    b.HasOne("Mapingway.Domain.Auth.RefreshTokenFamily", "TokenFamily")
                         .WithMany("Tokens")
-                        .HasForeignKey("RefreshTokenFamilyId");
+                        .HasForeignKey("TokenFamilyId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Mapingway.Domain.User", "User")
                         .WithOne("RefreshToken")
                         .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId");
+
+                    b.Navigation("TokenFamily");
 
                     b.Navigation("User");
                 });
@@ -285,22 +288,31 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.Auth.UserRole", b =>
                 {
-                    b.HasOne("Mapingway.Domain.Auth.Role", null)
-                        .WithMany()
+                    b.HasOne("Mapingway.Domain.Auth.Role", "Role")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mapingway.Domain.User", null)
-                        .WithMany()
+                    b.HasOne("Mapingway.Domain.User", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshTokenFamily", b =>
                 {
                     b.Navigation("Tokens");
+                });
+
+            modelBuilder.Entity("Mapingway.Domain.Auth.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Mapingway.Domain.User", b =>
@@ -309,6 +321,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
                     b.Navigation("UsedRefreshTokensFamily")
                         .IsRequired();
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
