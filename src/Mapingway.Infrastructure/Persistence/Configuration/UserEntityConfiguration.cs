@@ -12,11 +12,16 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder
             .Property(user => user.Email)
             .IsRequired();
-
+        
         builder
             .HasMany(u => u.Roles)
             .WithMany()
             .UsingEntity<UserRole>();
+        
+        builder
+            .HasOne(user => user.UsedRefreshTokensFamily)
+            .WithOne(user => user.User)
+            .OnDelete(DeleteBehavior.Cascade);
         
         // P4$$w0rd
         builder.HasData(new User
