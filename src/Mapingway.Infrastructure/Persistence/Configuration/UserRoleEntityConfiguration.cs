@@ -10,6 +10,10 @@ public class UserRoleEntityConfiguration : IEntityTypeConfiguration<UserRole>
     public void Configure(EntityTypeBuilder<UserRole> builder)
     {
         builder.HasKey(x => new { x.UserId, x.RoleId });
+        
+        builder
+            .Property(p => p.UserId)
+            .IsRequired();
 
         builder.HasData(Create(-1, new List<Role> { Role.Admin }));
     }

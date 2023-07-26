@@ -63,7 +63,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.Property<bool>("IsUsed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RefreshTokenFamilyId")
+                    b.Property<int?>("TokenFamilyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("UserId")
@@ -77,7 +77,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
                     b.HasAlternateKey("Value");
 
-                    b.HasIndex("RefreshTokenFamilyId");
+                    b.HasIndex("TokenFamilyId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -243,13 +243,17 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshToken", b =>
                 {
-                    b.HasOne("Mapingway.Domain.Auth.RefreshTokenFamily", null)
+                    b.HasOne("Mapingway.Domain.Auth.RefreshTokenFamily", "TokenFamily")
                         .WithMany("Tokens")
-                        .HasForeignKey("RefreshTokenFamilyId");
+                        .HasForeignKey("TokenFamilyId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Mapingway.Domain.User", "User")
                         .WithOne("RefreshToken")
-                        .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId");
+                        .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("TokenFamily");
 
                     b.Navigation("User");
                 });

@@ -21,6 +21,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
         builder
             .HasOne(token => token.User)
             .WithOne(user => user.RefreshToken)
-            .IsRequired(false);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

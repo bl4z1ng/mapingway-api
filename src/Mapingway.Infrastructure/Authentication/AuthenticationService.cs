@@ -116,7 +116,8 @@ public class AuthenticationService : IAuthenticationService
         string? oldToken = null, 
         CancellationToken? cancellationToken = null)
     {
-        var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens.Any(token => token.Value == oldToken);
+        var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens
+            .Any(token => token.Value == oldToken && token.IsUsed);
         if (tokenAlreadyUsed)
         {
             InvalidateRefreshToken(user);
@@ -176,11 +177,13 @@ public class AuthenticationService : IAuthenticationService
         var refreshToken = RefreshTokenExtensions.CreateNotUsed(
             newToken,
             _jwtOptions.RefreshTokenLifetime);
+
         user.RefreshToken = refreshToken;
+        user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
 
         _unitOfWork.Users.Update(user);
         await _refreshTokenRepository.CreateAsync(refreshToken, cancellationToken);
-        
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return refreshToken;
