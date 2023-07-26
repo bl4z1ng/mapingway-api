@@ -2,11 +2,8 @@ using Mapingway.API.Extensions.Configuration;
 using Mapingway.API.Extensions.Installers;
 using Mapingway.Application;
 using Mapingway.Infrastructure.Authentication.Permission;
-using Mapingway.Infrastructure.Persistence;
-using Mapingway.Infrastructure.Persistence.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,11 +19,7 @@ builder.Host.UseSerilog((context, configuration) =>
 });
 
 // Add services to the container.
-builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.ConfigurationSection));
-if (builder.Environment.IsDevelopment())
-    builder.Services.AddDbContext<DbContext, DevelopmentDbContext>();
-else 
-    builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
+builder.ConfigureDbContext();
 
 builder.Services.AddControllers();
 
