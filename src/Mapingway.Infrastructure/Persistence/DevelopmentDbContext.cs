@@ -16,7 +16,7 @@ public class DevelopmentDbContext : ApplicationDbContext
     {
         optionsBuilder.UseSqlite(Configuration.ConnectionString);
 
-        optionsBuilder.EnableSensitiveDataLogging(Configuration?.EnableSensitiveDataLogging ?? false);
+        optionsBuilder.EnableSensitiveDataLogging(Configuration.EnableSensitiveDataLogging);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
