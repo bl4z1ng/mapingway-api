@@ -22,18 +22,11 @@ builder.Host.UseSerilog((context, configuration) =>
 });
 
 // Add services to the container.
+builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.ConfigurationSection));
 if (builder.Environment.IsDevelopment())
-{
-    builder.Services.Configure<DbOptions>(
-        builder.Configuration.GetSection(DbOptions.DevelopmentConfigurationSection));
     builder.Services.AddDbContext<DbContext, DevelopmentDbContext>();
-}
-else
-{
-    builder.Services.Configure<DbOptions>(
-        builder.Configuration.GetSection(DbOptions.ProductionConfigurationSection));
+else 
     builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
-}
 
 builder.Services.AddControllers();
 
