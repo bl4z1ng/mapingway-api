@@ -6,9 +6,14 @@ namespace Mapingway.Application.Users.Commands.Register;
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator(
-        IPasswordValidationRulesProvider passwordRules,
-        IEmailValidationRulesProvider emailRules)
+        INameValidationRulesProvider nameRules,
+        IEmailValidationRulesProvider emailRules,
+        IPasswordValidationRulesProvider passwordRules)
     {
+        RuleFor(c => c.FirstName)
+            .NotEmpty()
+            .MaximumLength(nameRules.MaxLength);
+        
         RuleFor(c => c.Email)
             .NotEmpty()
             .Must((c, _) => emailRules.IsEmailValid(c.Email))
@@ -22,10 +27,5 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .MaximumLength(30)
             .Must((c, _) => passwordRules.HasNOrMoreLetters(c.Password))
                 .WithMessage($"Password must have at least {passwordRules.NumberOfLetters} letters.");
-
-        RuleFor(c => c.FirstName)
-            .NotEmpty()
-            .MinimumLength(2)
-            .MaximumLength(256);
     }
 }
