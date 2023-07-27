@@ -13,6 +13,8 @@ public class PermissionEntityConfiguration : IEntityTypeConfiguration<Permission
         
         builder.HasKey(permission => permission.Id);
 
+        builder.Property(permission => permission.Name).IsRequired();
+
         var permissions = Enum.GetValues<Permissions>()
             .Select(permission => new Permission
             {

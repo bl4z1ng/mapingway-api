@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 {
     [DbContext(typeof(DevelopmentDbContext))]
-    [Migration("20230726141933_RefreshTokenRotation")]
+    [Migration("20230727112828_RefreshTokenRotation")]
     partial class RefreshTokenRotation
     {
         /// <inheritdoc />

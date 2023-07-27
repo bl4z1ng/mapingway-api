@@ -6,6 +6,7 @@ using Mapingway.Application.Abstractions.Validation;
 using Mapingway.Application.Behaviors;
 using Mapingway.Infrastructure.Validation;
 using Mapingway.Infrastructure.Validation.Email;
+using Mapingway.Infrastructure.Validation.Name;
 using Mapingway.Infrastructure.Validation.Password;
 using MediatR;
 
@@ -20,6 +21,10 @@ public static class ValidationConfiguration
         builder.Services.AddScoped(
             typeof(IPipelineBehavior<,>), 
             typeof(ValidationPipelineBehavior<,>));
+
+        builder
+            .AddValidationRules<NameValidationRules>()
+            .AddScoped<INameValidationRulesProvider, NameValidationRulesProvider>();
 
         builder
             .AddValidationRules<PasswordValidationRules>()

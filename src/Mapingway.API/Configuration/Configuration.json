@@ -11,6 +11,9 @@
     "Iterations" : "2"
   },
   "Validation" : {
+    "Name" : {
+      "MaxLength" : "256"
+    },
     "Password" : {
       "NumberOfLetters" : "3",
       "NOrMoreLettersPattern" : "^(?:[^a-zA-Z]*[a-zA-Z]){3}.*$"
