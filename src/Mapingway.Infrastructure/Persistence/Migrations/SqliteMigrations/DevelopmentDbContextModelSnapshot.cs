@@ -52,7 +52,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshToken", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -63,10 +63,10 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.Property<bool>("IsUsed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("TokenFamilyId")
+                    b.Property<long?>("TokenFamilyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Value")
@@ -87,11 +87,11 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshTokenFamily", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -104,8 +104,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
-                            UserId = -1
+                            Id = -1L,
+                            UserId = -1L
                         });
                 });
 
@@ -177,7 +177,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.Auth.UserRole", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("RoleId")
@@ -192,14 +192,14 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasData(
                         new
                         {
-                            UserId = -1,
+                            UserId = -1L,
                             RoleId = 2
                         });
                 });
 
             modelBuilder.Entity("Mapingway.Domain.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -232,7 +232,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = -1L,
                             Email = "admin.map@rambler.ru",
                             FirstName = "Admin",
                             LastName = "Super",

@@ -15,7 +15,7 @@ public class PermissionRepository : IPermissionRepository
     }
 
 
-    public async Task<HashSet<string>> GetPermissionsAsync(int userId, CancellationToken cancellationToken)
+    public async Task<HashSet<string>> GetPermissionsAsync(long userId, CancellationToken cancellationToken)
     { 
         var user = await _dbContext.Set<User>()
             .Include(user => user.Roles)

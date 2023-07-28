@@ -21,6 +21,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder
             .HasOne(user => user.UsedRefreshTokensFamily)
             .WithOne(user => user.User)
+            .HasForeignKey<RefreshTokenFamily>(family => family.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
         // P4$$w0rd

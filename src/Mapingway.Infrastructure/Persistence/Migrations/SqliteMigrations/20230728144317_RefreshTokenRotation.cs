@@ -15,9 +15,9 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 name: "RefreshTokenFamilies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,11 +34,11 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                 name: "RefreshTokens",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    TokenFamilyId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    TokenFamilyId = table.Column<long>(type: "INTEGER", nullable: true),
                     IsUsed = table.Column<bool>(type: "INTEGER", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -62,17 +62,17 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated" },
-                values: new object[] { -1, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null });
+                values: new object[] { -1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null });
 
             migrationBuilder.InsertData(
                 table: "RefreshTokenFamilies",
                 columns: new[] { "Id", "UserId" },
-                values: new object[] { -1, -1 });
+                values: new object[] { -1L, -1L });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 2, -1 });
+                values: new object[] { 2, -1L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokenFamilies_UserId",
@@ -104,12 +104,12 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
             migrationBuilder.DeleteData(
                 table: "UserRole",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { 2, -1 });
+                keyValues: new object[] { 2, -1L });
 
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Id",
-                keyValue: -1);
+                keyValue: -1L);
         }
     }
 }

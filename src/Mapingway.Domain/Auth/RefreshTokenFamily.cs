@@ -2,8 +2,8 @@
 
 public class RefreshTokenFamily
 {
-    public int Id { get; init; }
-    public int UserId { get; init; }
+    public long Id { get; init; }
+    public long UserId { get; init; }
     public User User { get; init; } = null!;
     public ICollection<RefreshToken> Tokens { get; set; } = new List<RefreshToken>();
 }
