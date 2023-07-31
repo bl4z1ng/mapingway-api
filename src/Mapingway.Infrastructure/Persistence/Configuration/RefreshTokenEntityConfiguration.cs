@@ -11,6 +11,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
         builder.ToTable("RefreshTokens");
         builder
             .HasKey(token => token.Id);
+
         builder
             .Property(token => token.Id)
             .UseIdentityColumn();
@@ -21,6 +22,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
         builder
             .HasOne(token => token.User)
             .WithOne(user => user.RefreshToken)
+            .HasForeignKey<RefreshToken>(token => token.UserId)
             .IsRequired(false);
     }
 }
