@@ -1,3 +1,4 @@
+using Mapingway.API.Extensions;
 using Mapingway.API.Extensions.Configuration;
 using Mapingway.API.Extensions.Installers;
 using Mapingway.Application;
@@ -66,7 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
     // if need dark theme
-    // app.UseSwaggerDarkTheme();
+    app.UseSwaggerDarkTheme();
 }
 
 app.UseSerilogRequestLogging();
