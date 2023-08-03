@@ -10,10 +10,11 @@ public static class DbContextConfiguration
     {
         builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.ConfigurationSection));
 
-        if (builder.Environment.IsDevelopment()) 
+        #if DEBUG
             builder.Services.AddDbContext<DbContext, DevelopmentDbContext>();
-        else 
+        #else 
             builder.Services.AddDbContext<DbContext, ApplicationDbContext>();
+        #endif
 
         return builder;
     }
