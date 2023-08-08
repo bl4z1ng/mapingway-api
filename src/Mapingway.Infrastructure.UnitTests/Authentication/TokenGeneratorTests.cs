@@ -99,8 +99,7 @@ public class TokenGeneratorTests
         // assert
         Assert.Null(accessToken);
     }
-    
-    
+
     [Fact]
     public void GenerateAccessToken_NegativeTimeSpan_AccessTokenIsNull()
     {
