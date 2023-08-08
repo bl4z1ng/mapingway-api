@@ -75,7 +75,7 @@ public class AuthenticationService : IAuthenticationService
             signingKey,
             claims);
 
-        return token;
+        return token ?? "";
     }
 
     public string GenerateRefreshToken()
