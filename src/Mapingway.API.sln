@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Application", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Common", "Mapingway.Common\Mapingway.Common.csproj", "{69550FA3-16A9-495D-9BCA-60E6FFDDBE97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Infrastructure.Tests", "Mapingway.Infrastructure.Tests\Mapingway.Infrastructure.Tests.csproj", "{E577218A-1A3A-4B3E-ADD4-B7548A12D764}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Infrastructure.UnitTests", "Mapingway.Infrastructure.UnitTests\Mapingway.Infrastructure.UnitTests.csproj", "{E577218A-1A3A-4B3E-ADD4-B7548A12D764}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

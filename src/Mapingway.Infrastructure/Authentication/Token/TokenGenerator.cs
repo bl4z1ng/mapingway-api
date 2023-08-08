@@ -7,13 +7,21 @@ namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class TokenGenerator : ITokenGenerator
 {
-    public string GenerateAccessToken(
+    public string? GenerateAccessToken(
         string issuer, 
         string audience, 
         TimeSpan tokenLifespan, 
         byte[] signingKeyBytes, 
         IEnumerable<Claim> claims)
     {
+        if(string.IsNullOrEmpty(issuer) ||
+           string.IsNullOrEmpty(audience) ||
+           tokenLifespan.Ticks < 0 ||
+           signingKeyBytes.Length < 16)
+        {
+            return null;
+        }
+        
         var signingKey = new SigningCredentials(
             new SymmetricSecurityKey(signingKeyBytes), 
             SecurityAlgorithms.HmacSha256);

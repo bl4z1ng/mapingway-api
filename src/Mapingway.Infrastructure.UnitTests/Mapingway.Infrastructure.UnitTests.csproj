@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>Mapingway.Infrastructure.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,10 +25,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Authentication\" />
     </ItemGroup>
 
 </Project>
