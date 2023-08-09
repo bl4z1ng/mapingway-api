@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
@@ -7,31 +6,26 @@ namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class TokenGenerator : ITokenGenerator
 {
-    public string? GenerateAccessToken(
-        string issuer, 
-        string audience, 
-        TimeSpan tokenLifespan, 
-        byte[] signingKeyBytes, 
-        IEnumerable<Claim> claims)
+    public string? GenerateAccessToken(AccessTokenDetails details)
     {
-        if(string.IsNullOrEmpty(issuer) ||
-           string.IsNullOrEmpty(audience) ||
-           tokenLifespan.Ticks < 0 ||
-           signingKeyBytes.Length < 16)
+        if(string.IsNullOrEmpty(details.Issuer) ||
+           string.IsNullOrEmpty(details.Audience) ||
+           details.TokenLifeSpan.Ticks < 0 ||
+           details.SigningKeyBytes.Length < 16)
         {
             return null;
         }
         
         var signingKey = new SigningCredentials(
-            new SymmetricSecurityKey(signingKeyBytes), 
+            new SymmetricSecurityKey(details.SigningKeyBytes), 
             SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer,
-            audience,
-            claims,
+            details.Issuer,
+            details.Audience,
+            details.Claims,
             DateTime.UtcNow,
-            DateTime.UtcNow.Add(tokenLifespan),
+            DateTime.UtcNow.Add(details.TokenLifeSpan),
             signingKey);
 
         var result = new JwtSecurityTokenHandler().WriteToken(token);

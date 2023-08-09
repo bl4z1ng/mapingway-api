@@ -7,133 +7,87 @@ namespace Mapingway.Infrastructure.Tests.Authentication;
 
 public class TokenGeneratorTests
 {
+    private static AccessTokenDetails ValidAccessTokenData => new(
+        Issuer: "testIssuer",
+        Audience: "testAudience",
+        TokenLifeSpan: TimeSpan.FromHours(1),
+        SigningKeyBytes: "signingKeyS1gningk3y123!"u8.ToArray(),
+        Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
+
+    private static AccessTokenDetails InvalidAccessTokenData => new (
+        Issuer: "",
+        Audience: "",
+        TokenLifeSpan: TimeSpan.FromHours(-1),
+        SigningKeyBytes: ""u8.ToArray(),
+        Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
+
+
+    private static TokenGenerator Subject()
+    {
+        return new TokenGenerator();
+    }
+
+    public static List<object?[]> GenerateInvalidAccessTokenData()
+    {
+        return new List<object?[]>
+        {
+            new object?[] { ValidAccessTokenData with { Audience = InvalidAccessTokenData.Audience }, null },
+            new object?[] { ValidAccessTokenData with { Issuer = InvalidAccessTokenData.Issuer }, null },
+            new object?[]
+                { ValidAccessTokenData with { SigningKeyBytes = InvalidAccessTokenData.SigningKeyBytes }, null },
+            new object?[]
+                { ValidAccessTokenData with { TokenLifeSpan = InvalidAccessTokenData.TokenLifeSpan }, null },
+        };
+    }
+
     [Fact]
-    public void GenerateAccessToken_ValidInput_AccessTokenIsValid()
+    public void GenerateAccessToken_ValidDetails_AccessTokenIsValid()
     {
         // arrange
-        var generator = new TokenGenerator();
-        const string issuer = "testIssuer";
-        const string audience = "testAudience";
-        var tokenLifespan = TimeSpan.FromHours(1);
-        var signingKeyBytes = "signingKeyS1gningk3y123!"u8.ToArray();
-        var claims = new List<Claim> { new(ClaimTypes.Name, "testUser") };
-
+        var generator = Subject();
+        var tokenHandler = new JwtSecurityTokenHandler();
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = issuer,
+            ValidIssuer = ValidAccessTokenData.Issuer,
             ValidateAudience = true,
-            ValidAudience = audience,
+            ValidAudience = ValidAccessTokenData.Audience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
+            IssuerSigningKey = new SymmetricSecurityKey(ValidAccessTokenData.SigningKeyBytes)
         };
 
         // act
-        var accessToken = generator.GenerateAccessToken(
-            issuer, 
-            audience, 
-            tokenLifespan, 
-            signingKeyBytes, 
-            claims);
-        
+        var accessToken = generator.GenerateAccessToken(ValidAccessTokenData);
+
         // assert
         Assert.NotNull(accessToken);
         Assert.NotEmpty(accessToken);
-        
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var validatedToken);
-        
-        Assert.IsType<JwtSecurityToken>(validatedToken);
-        var jwtToken = (JwtSecurityToken)validatedToken;
 
-        Assert.NotNull(jwtToken);
-        Assert.Equal(issuer, jwtToken.Issuer);
-        Assert.Equal(audience, jwtToken.Audiences.First());
-        Assert.True(jwtToken.ValidFrom <= DateTime.UtcNow && jwtToken.ValidTo >= DateTime.UtcNow);
-        Assert.Equal("testUser", principal.Identity?.Name);
+        var exception = Record.Exception(
+            () => tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out _));
+
+        Assert.Null(exception);
+    }
+
+    [Theory]
+    [MemberData(nameof(GenerateInvalidAccessTokenData))]
+    public void GenerateAccessToken_InvalidDetails_AccessTokenIsNull(AccessTokenDetails details, string? expected)
+    {
+        var generator = Subject();
+
+        var accessToken = generator.GenerateAccessToken(details);
+
+        Assert.Equal(accessToken, expected);
     }
 
     [Fact]
-    public void GenerateAccessToken_ShortSigningKey_AccessTokenIsNull()
+    public void GenerateRefreshToken_Valid_RefreshTokenIsValid()
     {
-        // arrange
-        var generator = new TokenGenerator();
-        const string issuer = "testIssuer";
-        const string audience = "testAudience";
-        var tokenLifespan = TimeSpan.FromHours(1);
-        var signingKeyBytes = "123"u8.ToArray();
-        var claims = new List<Claim> { new(ClaimTypes.Name, "testUser") };
-
-        // act
-        var accessToken = generator.GenerateAccessToken(
-            issuer, 
-            audience, 
-            tokenLifespan, 
-            signingKeyBytes, 
-            claims);
-        
-        // assert
-        Assert.Null(accessToken);
-    }
-
-    [Fact]
-    public void GenerateAccessToken_EmptyIssuerOrAudience_AccessTokenIsNull()
-    {
-        // arrange
-        var generator = new TokenGenerator();
-        const string issuer = "";
-        const string audience = "";
-        var tokenLifespan = TimeSpan.FromHours(1);
-        var signingKeyBytes = "1234567812345678"u8.ToArray();
-        var claims = new List<Claim> { new(ClaimTypes.Name, "testUser") };
-
-        // act
-        var accessToken = generator.GenerateAccessToken(
-            issuer, 
-            audience, 
-            tokenLifespan, 
-            signingKeyBytes, 
-            claims);
-        
-        // assert
-        Assert.Null(accessToken);
-    }
-    
-    
-    [Fact]
-    public void GenerateAccessToken_NegativeTimeSpan_AccessTokenIsNull()
-    {
-        // arrange
-        var generator = new TokenGenerator();
-        const string issuer = "testIssuer";
-        const string audience = "testAudience";
-        var tokenLifespan = TimeSpan.FromHours(-1);
-        var signingKeyBytes = "1234567812345678"u8.ToArray();
-        var claims = new List<Claim> { new(ClaimTypes.Name, "testUser") };
-
-        // act
-        var accessToken = generator.GenerateAccessToken(
-            issuer, 
-            audience, 
-            tokenLifespan, 
-            signingKeyBytes, 
-            claims);
-        
-        // assert
-        Assert.Null(accessToken);
-    }
-
-    [Fact]
-    public void GenerateRefreshToken_Invoked_RefreshTokenIsValid()
-    {
-        // arrange
         var generator = new TokenGenerator();
 
-        // act
         var refreshToken = generator.GenerateRefreshToken();
 
-        // assert
         Assert.NotNull(refreshToken);
         Assert.NotEmpty(refreshToken);
     }
