@@ -68,12 +68,13 @@ public class AuthenticationService : IAuthenticationService
 
         var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
 
-        var token = _tokenGenerator.GenerateAccessToken(
+        var details = new AccessTokenDetails(
             _jwtOptions.Issuer,
             _jwtOptions.Audience,
             _jwtOptions.AccessTokenLifetime,
             signingKey,
             claims);
+        var token = _tokenGenerator.GenerateAccessToken(details);
 
         return token ?? "";
     }
