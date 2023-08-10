@@ -19,9 +19,10 @@ public class AuthenticationService : IAuthenticationService
     private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
     private readonly ITokenGenerator _tokenGenerator;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly TokenValidationParameters _expiredTokenValidationParameters;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRefreshTokenRepository _refreshTokens;
+    private readonly IPermissionRepository _permissions;
 
 
     public AuthenticationService(
@@ -52,18 +53,20 @@ public class AuthenticationService : IAuthenticationService
         };
 
         _unitOfWork = unitOfWork;
-        _refreshTokenRepository = unitOfWork.RefreshTokens;
+        _refreshTokens = unitOfWork.RefreshTokens;
+        _permissions = unitOfWork.Permissions;
     }
 
 
-    public string GenerateAccessToken(User user, IEnumerable<string> permissions)
+    public async Task<string?> GenerateAccessToken(long userId, string email, CancellationToken? ct = null)
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email!)
+            new(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new(JwtRegisteredClaimNames.Email, email)
         };
 
+        var permissions = await _permissions.GetPermissionsAsync(userId, ct ?? CancellationToken.None);
         claims.AddRange(permissions.Select(p => new Claim(CustomClaimName.Permissions, p)));
 
         var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
@@ -76,7 +79,7 @@ public class AuthenticationService : IAuthenticationService
             claims);
         var token = _tokenGenerator.GenerateAccessToken(details);
 
-        return token ?? "";
+        return token;
     }
 
     public string GenerateRefreshToken()
@@ -165,7 +168,7 @@ public class AuthenticationService : IAuthenticationService
         refreshToken.User = null;
 
         _unitOfWork.Users.Update(user);
-        _refreshTokenRepository.Update(refreshToken);
+        _refreshTokens.Update(refreshToken);
 
         return true;
     }
@@ -183,7 +186,7 @@ public class AuthenticationService : IAuthenticationService
         user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
 
         _unitOfWork.Users.Update(user);
-        await _refreshTokenRepository.CreateAsync(refreshToken, cancellationToken);
+        await _refreshTokens.CreateAsync(refreshToken, cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
