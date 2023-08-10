@@ -5,8 +5,12 @@ namespace Mapingway.Application.Abstractions.Authentication;
 
 public interface IAuthenticationService : IAccessTokenParser
 {
-    string GenerateAccessToken(User user, IEnumerable<string> permissions);
+    Task<string?> GenerateAccessToken(long userId, string email, CancellationToken? cancellationToken = null);
     string GenerateRefreshToken();
-    Task<RefreshToken?> RefreshTokenAsync(User user, string newRefreshToken, string? oldRefreshToken = null, CancellationToken? cancellationToken = null);
+    Task<RefreshToken?> RefreshTokenAsync(
+        User user, 
+        string newRefreshToken, 
+        string? oldRefreshToken = null, 
+        CancellationToken? cancellationToken = null);
     public bool InvalidateRefreshToken(User user);
 }

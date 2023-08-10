@@ -2,6 +2,7 @@
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.Token.Result;
+using Mapingway.Application.Contracts.User.Result;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Tokens.Commands.Refresh;
@@ -11,7 +12,6 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
     private readonly IAuthenticationService _authenticationService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
-    private readonly IPermissionRepository _permissions;
 
 
     public RefreshTokenCommandHandler(IAuthenticationService authenticationService, IUnitOfWork unitOfWork)
@@ -20,7 +20,6 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
         _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
-        _permissions = _unitOfWork.Permissions;
     }
 
 
@@ -56,9 +55,13 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Refresh token is invalid, try to login again"));
         }
         
-        var permissions = await _permissions.GetPermissionsAsync(user.Id, cancellationToken);
-        var token = _authenticationService.GenerateAccessToken(user, permissions);
-
+        var token = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
+        if (token is null)
+        {
+            return Result.Failure<RefreshTokenResult>(new Error(
+                ErrorCode.InvalidCredentials, 
+                "Failed to generate access token."));
+        }
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RefreshTokenResult

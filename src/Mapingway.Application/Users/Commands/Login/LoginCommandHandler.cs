@@ -10,8 +10,6 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
 {
     private readonly IHasher _hasher;
     private readonly IAuthenticationService _authenticationService;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IPermissionRepository _permissions;
     private readonly IUserRepository _users;
 
 
@@ -22,10 +20,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
     {
         _hasher = hasher;
         _authenticationService = authenticationService;
-
-        _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
-        _permissions = unitOfWork.Permissions;
     }
 
 
@@ -48,18 +43,23 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
         }
 
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(
-            user, newRefreshToken, null, cancellationToken);
+        var activeRefreshToken = await _authenticationService
+            .RefreshTokenAsync(user, newRefreshToken, null, cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
                 ErrorCode.RefreshTokenIsInvalid, 
-                "Refresh token is invalid, try to login again"));
+                "Refresh token is invalid, try to login again."));
         }
 
-        var permissions = await _permissions.GetPermissionsAsync(user.Id, cancellationToken);
-        var accessToken = _authenticationService.GenerateAccessToken(user, permissions);
-
+        var accessToken = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
+        if (accessToken is null)
+        {
+            return Result.Failure<AuthenticationResult>(new Error(
+                ErrorCode.InvalidCredentials, 
+                "Failed to generate access token."));
+        }
+        
         return new AuthenticationResult
         {
             Token = accessToken,

@@ -15,8 +15,8 @@ public class TokenGeneratorTests
         Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
 
     private static AccessTokenDetails InvalidAccessTokenData => new (
-        Issuer: "",
-        Audience: "",
+        Issuer: string.Empty,
+        Audience: string.Empty, 
         TokenLifeSpan: TimeSpan.FromHours(-1),
         SigningKeyBytes: ""u8.ToArray(),
         Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
@@ -66,7 +66,6 @@ public class TokenGeneratorTests
 
         var exception = Record.Exception(
             () => tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out _));
-
         Assert.Null(exception);
     }
 
