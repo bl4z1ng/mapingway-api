@@ -39,9 +39,6 @@ public class AuthenticationServiceTests
     [Fact]
     public async Task GenerateAccessToken_ValidUser_ValidToken()
     {
-        _unitOfWork.Permissions.GetPermissionsAsync(1, CancellationToken.None)
-            .Returns(new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" });
-        
         var user = new User
         {
             Id = 1,
@@ -51,6 +48,9 @@ public class AuthenticationServiceTests
             PasswordHash = "123",
             PasswordSalt = "123"
         };
+        _unitOfWork.Permissions.GetPermissionsAsync(1, CancellationToken.None)
+            .Returns(new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" });
+        
         _jwtOptions.Value
             .Returns(new JwtOptions
             {
@@ -64,6 +64,6 @@ public class AuthenticationServiceTests
 
         var token = await authenticationService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
         
-        Assert.
+        Assert.NotNull(token);
     }
 }
