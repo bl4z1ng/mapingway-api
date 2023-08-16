@@ -58,7 +58,7 @@ public class AuthenticationServiceTests
                 Audience = "Mapingway",
                 SigningKey = "Map",
                 AccessTokenLifetime = new TimeSpan(0, 5, 0),
-                RefreshTokenLifetime = new TimeSpan(360, 0, 0),
+                RefreshTokenLifetime = new TimeSpan(24, 0, 0),
             });
         var authenticationService = Subject();
 
