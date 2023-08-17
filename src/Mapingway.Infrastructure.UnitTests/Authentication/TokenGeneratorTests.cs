@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using FluentAssertions;
 using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.IdentityModel.Tokens;
 
@@ -61,12 +62,11 @@ public class TokenGeneratorTests
         var accessToken = generator.GenerateAccessToken(ValidAccessTokenData);
 
         // assert
-        Assert.NotNull(accessToken);
-        Assert.NotEmpty(accessToken);
+        accessToken.Should().NotBeNullOrEmpty();
 
         var exception = Record.Exception(
             () => tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out _));
-        Assert.Null(exception);
+        exception.Should().BeNull();
     }
 
     [Theory]
@@ -77,7 +77,7 @@ public class TokenGeneratorTests
 
         var accessToken = generator.GenerateAccessToken(details);
 
-        Assert.Equal(accessToken, expected);
+        accessToken.Should().BeEquivalentTo(expected);
     }
 
     [Fact]
@@ -87,7 +87,6 @@ public class TokenGeneratorTests
 
         var refreshToken = generator.GenerateRefreshToken();
 
-        Assert.NotNull(refreshToken);
-        Assert.NotEmpty(refreshToken);
+        refreshToken.Should().NotBeNullOrEmpty();
     }
 }

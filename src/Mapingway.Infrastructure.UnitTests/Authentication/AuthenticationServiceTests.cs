@@ -1,4 +1,6 @@
-﻿using Mapingway.Application.Abstractions;
+﻿using System.Text;
+using FluentAssertions;
+using Mapingway.Application.Abstractions;
 using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Token;
@@ -50,7 +52,6 @@ public class AuthenticationServiceTests
         };
         _unitOfWork.Permissions.GetPermissionsAsync(1, CancellationToken.None)
             .Returns(new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" });
-        
         _jwtOptions.Value
             .Returns(new JwtOptions
             {
@@ -60,10 +61,25 @@ public class AuthenticationServiceTests
                 AccessTokenLifetime = new TimeSpan(0, 5, 0),
                 RefreshTokenLifetime = new TimeSpan(24, 0, 0),
             });
+        _tokenValidationParameters.Value
+            .Returns(new TokenValidationParameters
+            {
+
+                ValidateLifetime = false,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                
+                ValidIssuer = "Mapingway",
+                ValidAudience = "Mapingway",
+                ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.SigningKey))
+            });
+
         var authenticationService = Subject();
 
         var token = await authenticationService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
-        
-        Assert.NotNull(token);
+
+        token.Should().NotBeNull();
     }
 }
