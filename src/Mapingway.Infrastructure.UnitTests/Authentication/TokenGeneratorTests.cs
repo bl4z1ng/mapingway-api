@@ -22,7 +22,6 @@ public class TokenGeneratorTests
         SigningKeyBytes: ""u8.ToArray(),
         Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
 
-
     private static TokenGenerator Subject()
     {
         return new TokenGenerator();
@@ -40,6 +39,7 @@ public class TokenGeneratorTests
                 { ValidAccessTokenData with { TokenLifeSpan = InvalidAccessTokenData.TokenLifeSpan }, null },
         };
     }
+
 
     [Fact]
     public void GenerateAccessToken_ValidDetails_AccessTokenIsValid()
@@ -69,6 +69,7 @@ public class TokenGeneratorTests
         exception.Should().BeNull();
     }
 
+    // TODO: Change to facts
     [Theory]
     [MemberData(nameof(GenerateInvalidAccessTokenData))]
     public void GenerateAccessToken_InvalidDetails_AccessTokenIsNull(AccessTokenDetails details, string? expected)
