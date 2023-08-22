@@ -18,8 +18,8 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
-    private readonly ITokenGenerator _tokenGenerator;
     private readonly TokenValidationParameters _expiredTokenValidationParameters;
+    private readonly ITokenGenerator _tokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenRepository _refreshTokens;
     private readonly IPermissionRepository _permissions;
@@ -33,24 +33,13 @@ public class AuthenticationService : IAuthenticationService
         IUnitOfWork unitOfWork)
     {
         _logger = loggerFactory.CreateLogger(typeof(AuthenticationService));
+
         _tokenGenerator = tokenGenerator;
         _jwtOptions = jwtOptions.Value;
-        
-        var tokenValidationParameters = tokenValidationOptions.Value;
-        _expiredTokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = tokenValidationParameters.ValidateIssuer,
-            ValidateAudience = tokenValidationParameters.ValidateAudience,
-            ValidateIssuerSigningKey = tokenValidationParameters.ValidateIssuerSigningKey,
-            ValidateLifetime = false,
 
-            ValidIssuer = tokenValidationParameters.ValidIssuer,
-            ValidAudience = tokenValidationParameters.ValidAudience,
-            ValidAlgorithms = tokenValidationParameters.ValidAlgorithms,
-            IssuerSigningKey = tokenValidationParameters.IssuerSigningKey,
-
-            ClockSkew = tokenValidationParameters.ClockSkew
-        };
+        var validationParameters = tokenValidationOptions.Value;
+        _expiredTokenValidationParameters = validationParameters.Clone();
+        _expiredTokenValidationParameters.ValidateLifetime = false;
 
         _unitOfWork = unitOfWork;
         _refreshTokens = unitOfWork.RefreshTokens;
@@ -67,7 +56,7 @@ public class AuthenticationService : IAuthenticationService
         };
 
         var permissions = await _permissions.GetPermissionsAsync(userId, ct ?? CancellationToken.None);
-        claims.AddRange(permissions.Select(p => new Claim(CustomClaimName.Permissions, p)));
+        claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
 
         var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
 

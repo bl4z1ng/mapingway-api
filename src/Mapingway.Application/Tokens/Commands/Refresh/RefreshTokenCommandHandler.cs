@@ -2,7 +2,6 @@
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.Token.Result;
-using Mapingway.Application.Contracts.User.Result;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Tokens.Commands.Refresh;
