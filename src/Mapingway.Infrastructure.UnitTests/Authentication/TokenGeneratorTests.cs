@@ -8,19 +8,25 @@ namespace Mapingway.Infrastructure.Tests.Authentication;
 
 public class TokenGeneratorTests
 {
-    private static AccessTokenDetails ValidAccessTokenData => new(
-        Issuer: "testIssuer",
-        Audience: "testAudience",
-        TokenLifeSpan: TimeSpan.FromHours(1),
-        SigningKeyBytes: "signingKeyS1gningk3y123!"u8.ToArray(),
-        Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
+    private static readonly AccessTokenDetails ValidAccessTokenData;
+    private static readonly AccessTokenDetails InvalidAccessTokenData;
 
-    private static AccessTokenDetails InvalidAccessTokenData => new (
-        Issuer: string.Empty,
-        Audience: string.Empty, 
-        TokenLifeSpan: TimeSpan.FromHours(-1),
-        SigningKeyBytes: ""u8.ToArray(),
-        Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
+    static TokenGeneratorTests()
+    {
+        ValidAccessTokenData = new AccessTokenDetails(
+            Issuer: "testIssuer",
+            Audience: "testAudience",
+            TokenLifeSpan: TimeSpan.FromHours(1),
+            SigningKeyBytes: "signingKeyS1gningk3y123!"u8.ToArray(),
+            Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
+        
+        InvalidAccessTokenData = new AccessTokenDetails(
+            Issuer: string.Empty,
+            Audience: string.Empty, 
+            TokenLifeSpan: TimeSpan.FromHours(-1),
+            SigningKeyBytes: ""u8.ToArray(),
+            Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
+    }
 
     private static TokenGenerator Subject()
     {
@@ -69,7 +75,6 @@ public class TokenGeneratorTests
         exception.Should().BeNull();
     }
 
-    // TODO: Change to facts
     [Theory]
     [MemberData(nameof(GenerateInvalidAccessTokenData))]
     public void GenerateAccessToken_InvalidDetails_AccessTokenIsNull(AccessTokenDetails details, string? expected)

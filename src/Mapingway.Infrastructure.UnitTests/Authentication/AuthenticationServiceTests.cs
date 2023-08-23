@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
+using NSubstitute.Equivalency;
 
 namespace Mapingway.Infrastructure.Tests.Authentication;
 
@@ -36,12 +37,10 @@ public class AuthenticationServiceTests
             RefreshTokenLifetime = new TimeSpan(24, 0, 0),
         };
         _jwtOptions = Substitute.For<IOptions<JwtOptions>>();
-        _jwtOptions.Value
-            .Returns(jwtOptions);
+        _jwtOptions.Value.Returns(jwtOptions);
         
         _tokenValidationParameters = Substitute.For<IOptions<TokenValidationParameters>>();
-        _tokenValidationParameters.Value
-            .Returns(new TokenValidationParameters
+        _tokenValidationParameters.Value.Returns(new TokenValidationParameters
             {
                 ValidateLifetime = false,
                 ValidateIssuer = true,
@@ -96,19 +95,12 @@ public class AuthenticationServiceTests
             Encoding.UTF8.GetBytes(_jwtOptions.Value.SigningKey),
             claims
         );
-        var accessTokenDetails2 = new AccessTokenDetails
-        (
-            _jwtOptions.Value.Issuer,
-            _jwtOptions.Value.Audience,
-            _jwtOptions.Value.AccessTokenLifetime,
-            Encoding.UTF8.GetBytes(_jwtOptions.Value.SigningKey),
-            claims
-        );
 
-        var q = accessTokenDetails.Equals(accessTokenDetails2);
-        _unitOfWork.Permissions.GetPermissionsAsync(1, CancellationToken.None).Returns(permissions);
+        _unitOfWork.Permissions
+            .GetPermissionsAsync(1, CancellationToken.None)
+            .Returns(permissions);
         _tokenGenerator
-            .GenerateAccessToken(Arg.Is<AccessTokenDetails>(a => a.Equals(accessTokenDetails)))
+            .GenerateAccessToken(ArgEx.IsEquivalentTo(accessTokenDetails))
             .Returns(validAccessToken);
         var authenticationService = Subject();
 
@@ -117,7 +109,7 @@ public class AuthenticationServiceTests
 
         // Assert
         token.Should().NotBeNullOrWhiteSpace();
-        _tokenGenerator.Received(1);
         token.Should().Be(validAccessToken);
+        _tokenGenerator.Received(1);
     }
 }
