@@ -34,7 +34,7 @@ public static class ValidationConfiguration
             .AddValidationRules<EmailValidationRules>()
             .AddScoped<IEmailValidationRulesProvider, EmailValidationRulesProvider>();
 
-        builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.AssemblyReference);
+        builder.Services.AddValidatorsFromAssembly(Application.Application.AssemblyReference);
 
         return builder;
     }
