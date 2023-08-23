@@ -40,7 +40,7 @@ builder.ConfigureLoggingBehavior();
 
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(ApplicationAssembly.AssemblyReference);
+    config.RegisterServicesFromAssembly(Application.AssemblyReference);
 });
 
 // Authentication and authorization configuration.
