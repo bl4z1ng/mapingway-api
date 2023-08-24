@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
