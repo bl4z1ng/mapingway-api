@@ -65,8 +65,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     
-    // if need dark theme
-    // app.UseSwaggerDarkTheme();
+    // if need dark theme (instead of UseSwaggerUI())
+    // app.UseSwaggerUIDark();
 }
 
 app.UseSerilogRequestLogging();

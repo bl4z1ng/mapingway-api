@@ -2,12 +2,12 @@
 
 public static class WebApplicationExtensions
 {
-    public static IApplicationBuilder UseSwaggerDarkTheme(this IApplicationBuilder app)
+    public static IApplicationBuilder UseSwaggerUIDark(this IApplicationBuilder app)
     {
         app.UseStaticFiles();
         app.UseSwaggerUI(options =>
         {
-            options.InjectStylesheet("/swagger-dark.css");
+            options.InjectStylesheet(@"/swagger-dark.css");
         });
 
         return app;
