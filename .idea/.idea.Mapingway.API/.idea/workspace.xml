@@ -10,24 +10,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/global.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Architecture.Tests/Architecture.Tests.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Architecture.Tests/ArchitectureTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Architecture.Tests/Usings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API.UnitTests/Controllers/AuthControllerTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API.UnitTests/Mapingway.API.UnitTests.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API.UnitTests/Usings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API.sln" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API.sln.DotSettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure.UnitTests/Authentication/AuthenticationServiceTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure.UnitTests/Authentication/TokenGeneratorTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure.UnitTests/Mapingway.Infrastructure.UnitTests.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure.UnitTests/Usings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global.json" beforeDir="false" />
+    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="refactor (project-structure): refactored projects structure">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +24,22 @@
         <option value="JSON File" />
       </list>
     </option>
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="3325f62b-f0e7-4abc-91ea-a1fa5e107005" />
+        <option name="url" value="https://github.com/bl4z1ng/mapingway-api.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectId" id="2PsgTL8Eqzpa6m5gAPb9upd5yGp" />
@@ -149,8 +149,17 @@
       <option name="presentableId" value="Default" />
       <updated>1682966548141</updated>
       <workItem from="1684251211163" duration="276000" />
-      <workItem from="1692885550195" duration="1083000" />
+      <workItem from="1692885550195" duration="1417000" />
     </task>
+    <task id="LOCAL-00001" summary="refactor (project-structure): refactored projects structure">
+      <option name="closed" value="true" />
+      <created>1692886795091</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1692886795092</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,5 +179,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="refactor (project-structure): refactored projects structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor (project-structure): refactored projects structure" />
   </component>
 </project>
