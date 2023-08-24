@@ -1,3 +1,3 @@
 # Mapingway API
 
-Backend application for travel routes managing
+Backend application for travel routes managing.

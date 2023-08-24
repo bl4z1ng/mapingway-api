@@ -1,6 +1,7 @@
 ﻿using System.Net;
-using Mapingway.Domain.Consts;
-using Mapingway.Domain.Response;
+using Mapingway.Common.Constants;
+using Mapingway.Common.Exceptions;
+using Mapingway.Common.Response;
 using Newtonsoft.Json;
 
 namespace Mapingway.API.Middleware;
@@ -30,9 +31,22 @@ public class ExceptionMiddleware
             _logger.LogError(reqEx, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), reqEx);
 
             await HandleException(
-                ExceptionMessage.HTTP_REQUEST_EXCEPTION,
+                ExceptionMessage.HttpRequestException,
                 reqEx.Message,
                 reqEx.StatusCode ?? HttpStatusCode.BadRequest,
+                context,
+                timeSpan
+            );
+        }
+        catch (RefreshTokenUsedException ex)
+        {
+            var timeSpan = DateTime.Now;
+            _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
+            
+            await HandleException(
+                ExceptionMessage.UsedRefreshTokenException,
+                ex.Message,
+                HttpStatusCode.Unauthorized,
                 context,
                 timeSpan
             );
@@ -40,10 +54,10 @@ public class ExceptionMiddleware
         catch (Exception ex)
         {
             var timeSpan = DateTime.Now;
-            _logger.LogError(ex, "In {Time} was caught {Exception}", timeSpan.ToLongTimeString(), ex);
+            _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
             
             await HandleException(
-                ExceptionMessage.SERVER_ERROR_EXCEPTION,
+                ExceptionMessage.ServerErrorException,
                 ex.Message,
                 HttpStatusCode.InternalServerError,
                 context,
@@ -52,7 +66,13 @@ public class ExceptionMiddleware
         }
     }
 
-    private async Task HandleException(string message, string exceptionMessage, HttpStatusCode httpStatusCode, HttpContext context, DateTime timeSpan)
+
+    private async Task HandleException(
+        string message, 
+        string exceptionMessage, 
+        HttpStatusCode httpStatusCode, 
+        HttpContext context, 
+        DateTime timeSpan)
     {
         var statusCode = (int)httpStatusCode;
         var response = new ExceptionResponse

@@ -1,3 +1,5 @@
+using Mapingway.Common.Enums;
+using Mapingway.Infrastructure.Authentication.Permission;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mapingway.API.Controllers;
@@ -19,6 +21,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
+    [HasPermission(Permissions.ReadUser)]
     public IEnumerable<WeatherForecast> Get()
     {
         _logger.LogInformation("Executing GetWeatherForecast request at {Time}", DateTime.Now.ToLongTimeString());

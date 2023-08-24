@@ -1,9 +1,25 @@
 {
-  "DatabaseConfiguration": {
-    "ConnectionString": "Host=db;Port=5432;Database=pg;Username=postgres;Password=postgres",
-    "DefaultScheme":  "public",
-    "EnableLogging": true,
-    "EnableSensitiveDataLogging": false,
-    "EnableDetailedErrors": true
+  "Jwt": {
+    "Issuer" : "Mapingway",
+    "Audience": "Mapingway",
+    "SigningKey": "M4p1ngW4yy_Rul3zz",
+    "AccessTokenLifetime" : "00:15:00",
+    "RefreshTokenLifetime" : "360:00:00"
+  },
+  "Hash": {
+    "Pepper" : "p3PpErr0rS4lt",
+    "Iterations" : "2"
+  },
+  "Validation" : {
+    "Name" : {
+      "MaxLength" : "256"
+    },
+    "Password" : {
+      "NumberOfLetters" : "3",
+      "NOrMoreLettersPattern" : "^(?:[^a-zA-Z]*[a-zA-Z]){3}.*$"
+    },
+    "Email" : {
+      "Pattern" : "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+    }
   }
 }
