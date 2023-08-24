@@ -1,24 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.API", "Mapingway.API\Mapingway.API.csproj", "{E8F17DD9-77ED-4437-B6F2-5B816E3E057B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.API", "src\Mapingway.API\Mapingway.API.csproj", "{E8F17DD9-77ED-4437-B6F2-5B816E3E057B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Domain", "Mapingway.Domain\Mapingway.Domain.csproj", "{E1546923-9813-44B9-849A-105FFC9F548F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Domain", "src\Mapingway.Domain\Mapingway.Domain.csproj", "{E1546923-9813-44B9-849A-105FFC9F548F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2CC709AC-0046-4C54-8492-4460155B158D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2F045628-E18A-423A-8483-D176D02E6DF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Infrastructure", "Mapingway.Infrastructure\Mapingway.Infrastructure.csproj", "{B63AEC16-74C0-4B6B-BFDA-1B398A5CF74A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Infrastructure", "src\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj", "{B63AEC16-74C0-4B6B-BFDA-1B398A5CF74A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Application", "Mapingway.Application\Mapingway.Application.csproj", "{5BC59E65-4010-4BA8-9DFB-DD09A2A04301}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Application", "src\Mapingway.Application\Mapingway.Application.csproj", "{5BC59E65-4010-4BA8-9DFB-DD09A2A04301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Common", "Mapingway.Common\Mapingway.Common.csproj", "{69550FA3-16A9-495D-9BCA-60E6FFDDBE97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Common", "src\Mapingway.Common\Mapingway.Common.csproj", "{69550FA3-16A9-495D-9BCA-60E6FFDDBE97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Infrastructure.UnitTests", "Mapingway.Infrastructure.UnitTests\Mapingway.Infrastructure.UnitTests.csproj", "{E577218A-1A3A-4B3E-ADD4-B7548A12D764}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Infrastructure.UnitTests", "tests\Mapingway.Infrastructure.UnitTests\Mapingway.Infrastructure.UnitTests.csproj", "{E577218A-1A3A-4B3E-ADD4-B7548A12D764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.API.UnitTests", "Mapingway.API.UnitTests\Mapingway.API.UnitTests.csproj", "{1EF57553-298E-4CC6-A29D-47E07F6F6BC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.API.UnitTests", "tests\Mapingway.API.UnitTests\Mapingway.API.UnitTests.csproj", "{1EF57553-298E-4CC6-A29D-47E07F6F6BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture.Tests", "Architecture.Tests\Architecture.Tests.csproj", "{8E6DE574-B33C-464E-937A-2F492FC02103}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture.Tests", "tests\Architecture.Tests\Architecture.Tests.csproj", "{8E6DE574-B33C-464E-937A-2F492FC02103}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
