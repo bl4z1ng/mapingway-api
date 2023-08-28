@@ -528,6 +528,5 @@ FodyWeavers.xsd
 /Mapingway.API/log.txt
 
 #Sqlite db
-*.db
 Mapingway.Development.db-shm
 Mapingway.Development.db-wal
