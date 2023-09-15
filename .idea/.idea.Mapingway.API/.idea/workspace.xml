@@ -10,17 +10,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docker/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/app/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/compose.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/localdb/Dockerfile" afterDir="false" />
+    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="feature(deployment): configured app docker-compose for local development">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker/compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/localdb/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/localdb/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Mapingway.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Mapingway.API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Mapingway.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Mapingway.Infrastructure.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +34,13 @@
     &quot;state&quot;: &quot;OPEN&quot;
   }
 }</component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="main" />
+      </list>
+    </option>
+  </component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -49,18 +51,22 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyRequestToCommandMapper.g.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/docker/compose.yaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Extensions/Configuration/HashingConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Extensions/WebApplicationExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyRequestToCommandMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Infrastructure/Validation/Name/NameValidationRules.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Architecture.Tests/bin/Debug/net7.0/Mapingway.API.deps.json" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 4
@@ -83,7 +89,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "RiderIisExpressOptionsPageId",
+    "settings.editor.selected.configurable": "RiderNuGetOptionsPageId",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -192,7 +198,7 @@
       <workItem from="1694692606379" duration="117000" />
       <workItem from="1694692799772" duration="91000" />
       <workItem from="1694692906508" duration="447000" />
-      <workItem from="1694693962612" duration="17643000" />
+      <workItem from="1694693962612" duration="25518000" />
     </task>
     <task id="LOCAL-00001" summary="refactor (project-structure): refactored projects structure">
       <option name="closed" value="true" />
@@ -242,7 +248,23 @@
       <option name="project" value="LOCAL" />
       <updated>1693293045716</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feature(deployment): configured app docker-compose for local development">
+      <option name="closed" value="true" />
+      <created>1694717345425</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1694717345425</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feature(deployment): configured app docker-compose for local development">
+      <option name="closed" value="true" />
+      <created>1694717701554</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1694717701554</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +289,8 @@
     <MESSAGE value="refactor(swagger) : fixed dark theme swagger" />
     <MESSAGE value="refactor(database): added test db" />
     <MESSAGE value="updated gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated gitignore" />
+    <MESSAGE value="feature(deployment): configured app docker-compose for local development" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature(deployment): configured app docker-compose for local development" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

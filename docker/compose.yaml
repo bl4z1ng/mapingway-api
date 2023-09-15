@@ -17,3 +17,8 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/Mapingway.API.pfx
     volumes:
       - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
+  db:
+    container_name: "database"
+    build:
+      context: ../
+      dockerfile: /docker/localdb/Dockerfile
