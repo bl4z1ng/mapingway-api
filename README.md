@@ -22,7 +22,7 @@ To enable HTTPS on local machine you need to:
    dotnet dev-certs https --trust -ep $env:USERPROFILE\.aspnet\https\Mapingway.API.pfx -p {your generated password}
    ```
 3. Update the **.env** file with newly generated password:
-![certificate_local_ssl_password.png](.github/readmecontent/certificate_local_ssl_password.png)
+![certificate-local-ssl-password.png](.github/readmecontent/certificate-local-ssl-password.png)
 
 **✔ DBMS (e.g. [DBeaver](https://dbeaver.io/download/)).**
 
