@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS migration
 WORKDIR /src
 
 COPY src/Mapingway.Common/*.csproj Mapingway.Common/
@@ -15,40 +15,26 @@ COPY src/Mapingway.API/ Mapingway.API/
 
 WORKDIR Mapingway.API/
 RUN dotnet build -c Release -o ../build
-
-RUN ls
-RUN echo $(pwd)
+WORKDIR ../
 
 ENV PATH $PATH:/root/.dotnet/tools
 RUN dotnet tool install --global dotnet-ef --version 7.*
 ENV PATH $PATH:/
 
-WORKDIR ..
-RUN ls
-RUN echo $(pwd)
-RUN dotnet ef migrations bundle  \
+WORKDIR migration/
+WORKDIR ../
+
+RUN dotnet ef migrations script  \
     --project Mapingway.Infrastructure/Mapingway.Infrastructure.csproj  \
     --startup-project Mapingway.API/Mapingway.API.csproj  \
     --context Mapingway.Infrastructure.Persistence.ApplicationDbContext  \
-    --self-contained  \
     --configuration Production  \
     --no-build  \
-    --force  \
-    --verbose  \
-    --runtime linux-x64  \
-    --output build/efbundle.dll 
+    --idempotent  \
+    --output migration/init.sql 
 
-RUN ls
-RUN echo $(pwd)
+FROM postgres AS final
 
-FROM postgres AS bundle
+COPY --from=migration src/migration/ docker-entrypoint-initdb.d/
 
-ENV POSTGRES_DB Mapingway
-ENV POSTGRES_USER postgres
-ENV POSTGRES_PASSWORD postgres
 EXPOSE 5432
-
-WORKDIR /src
-COPY --from=build src/build/ .
-
-RUN efbundle.dll --connection "User ID=postgres;Server=localhost;Host=localhost;Port=5432;Database=Mapingway;Username=postgres;Password=postgres;Integrated Security=true;Pooling=true;Encoding=UTF8",
