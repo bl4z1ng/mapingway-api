@@ -13,10 +13,6 @@ COPY src/Mapingway.Application/ Mapingway.Application/
 COPY src/Mapingway.Infrastructure/ Mapingway.Infrastructure/
 COPY src/Mapingway.API/ Mapingway.API/
 
-WORKDIR Mapingway.API/
-RUN dotnet build -c Release -o ../build
-WORKDIR ../
-
 ENV PATH $PATH:/root/.dotnet/tools
 RUN dotnet tool install --global dotnet-ef --version 7.*
 ENV PATH $PATH:/
@@ -29,7 +25,6 @@ RUN dotnet ef migrations script  \
     --startup-project Mapingway.API/Mapingway.API.csproj  \
     --context Mapingway.Infrastructure.Persistence.ApplicationDbContext  \
     --configuration Production  \
-    --no-build  \
     --idempotent  \
     --output migration/init.sql 
 
