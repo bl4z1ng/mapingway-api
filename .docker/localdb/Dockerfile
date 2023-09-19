@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS migration
 WORKDIR /src
 
 ENV PATH $PATH:/root/.dotnet/tools
-RUN dotnet tool install --global dotnet-ef --version 7.*
+RUN dotnet tool install --global dotnet-ef --version 7.0.11
 ENV PATH $PATH:/
 
 RUN mkdir migration/
@@ -21,7 +21,7 @@ RUN dotnet ef migrations script  \
     --idempotent  \
     --output migration/init.sql 
 
-FROM postgres AS final
+FROM postgres:16-alpine3.18 AS final
 
 COPY --from=migration src/migration/ docker-entrypoint-initdb.d/
 
