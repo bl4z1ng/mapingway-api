@@ -4,7 +4,7 @@ using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.Auth.Result;
 using Mapingway.Common.Result;
 
-namespace Mapingway.Application.Tokens.Commands.Refresh;
+namespace Mapingway.Application.Auth.Commands.Refresh;
 
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, RefreshTokenResult>
 {
@@ -65,7 +65,6 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
         return new RefreshTokenResult
         {
-            //TODO: remove userContext from response DTO
             Token = accessUnit.AccessToken!,
             RefreshToken = activeRefreshToken.Value,
             UserContextToken = accessUnit.UserContextToken

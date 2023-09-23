@@ -4,18 +4,38 @@
     <projectFile profileName="IIS Express">Mapingway.API/Mapingway.API.csproj</projectFile>
     <projectFile profileName="http">Mapingway.API/Mapingway.API.csproj</projectFile>
     <projectFile profileName="https">Mapingway.API/Mapingway.API.csproj</projectFile>
-    <projectFile>src/Mapingway.API/Mapingway.API.csproj</projectFile>
+    <projectFile profileName="IIS Express">src/Mapingway.API/Mapingway.API.csproj</projectFile>
+    <projectFile profileName="http">src/Mapingway.API/Mapingway.API.csproj</projectFile>
+    <projectFile profileName="https">src/Mapingway.API/Mapingway.API.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="feat(deployment): moved .dockerignore to work properly">
-      <change beforePath="$PROJECT_DIR$/.docker/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.docker/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.docker/app/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/.docker/app/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.docker/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/.docker/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.docker/localdb/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/.docker/localdb/Dockerfile" afterDir="false" />
+    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <change afterPath="$PROJECT_DIR$/src/Mapingway.API/Internal/Contracts/RefreshResponse.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/IRequestToCommandMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/IRequestToCommandMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/IResultToResponseMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/IResultToResponseMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyRequestToCommandMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyRequestToCommandMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyResultToResponseMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyResultToResponseMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Middleware/ExceptionMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Middleware/ExceptionMiddleware.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/Token/RefreshTokenResultExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/Auth/RefreshResponseExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/Token/TokenErrorResultExamples.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/Auth/AuthErrorResultExamples.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/User/LoginResponseExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/Auth/LoginResponseExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/User/UserErrorResultExamples.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.API/Swagger/Examples/Results/User/UserErrorResultExamples.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Tokens/Commands/Logout/LogoutTokenCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Logout/LogoutTokenCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Tokens/Commands/Logout/LogoutTokenCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Logout/LogoutTokenCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Tokens/Commands/Logout/LogoutTokenValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Logout/LogoutTokenValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Tokens/Commands/Refresh/RefreshTokenCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Refresh/RefreshTokenCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Tokens/Commands/Refresh/RefreshTokenCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Refresh/RefreshTokenCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Tokens/Commands/Refresh/RefreshTokenValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Refresh/RefreshTokenValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Users/Commands/Login/LoginCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Login/LoginCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Users/Commands/Login/LoginCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Login/LoginCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Application/Users/Commands/Login/LoginCommandValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Application/Auth/Commands/Login/LoginCommandValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Common/Constants/ExceptionMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Common/Constants/ExceptionMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/AuthenticationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/AuthenticationService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +47,13 @@
       <list>
         <option value="JSON File" />
       </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
     </option>
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -50,13 +77,26 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyRequestToCommandMapper.g.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Extensions/Configuration/DbContextConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyRequestToCommandMapper.g.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5140b1bea71e57ab28c490127ad1648dff11c67b1adc8698516d94d1582efe8/HttpRequest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5162dcef9ff38f5edc8c81f80f94afbc8848d6536cb6cd8a9f0db26b3a7b1/OptionsServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/81a3bcf4bb6aa5e62a9839f9cfeeba6126496f4fa07d1e57b27a5176e42525/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8aca45508683a6169bab9e8bd96b7cda607d638cacfaa31173c8c278c45/ISender.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Controllers/AuthController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Extensions/Configuration/HashingConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Extensions/WebApplicationExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Internal/Mapping/IRequestToCommandMapper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyRequestToCommandMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Swagger/Examples/Requests/Token/RefreshTokenRequestExample.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Swagger/Examples/Requests/User/LoginRequestExample.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Swagger/Examples/Results/Token/TokenErrorResultExamples.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/bin/Debug/net7.0/win10-x64/Mapingway.API.deps.json" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Application/Abstractions/Authentication/IAuthenticationService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Application/Tokens/Commands/Refresh/RefreshTokenCommandHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Application/Users/Commands/Login/LoginCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Application/Users/Commands/Login/LoginCommandHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Infrastructure/Validation/Name/NameValidationRules.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/tests/Architecture.Tests/bin/Debug/net7.0/Mapingway.API.deps.json" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -77,28 +117,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "XThreadsFramesViewSplitterKey": "0.42208776",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\maksi\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
+      "C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
+      "C:\\Users\\maksi\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Mapingway.API: https">
     <configuration name="Publish Mapingway.API to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/publish" target_framework="net7.0" uuid_high="-1661408414549588937" uuid_low="-5264044402984221317" />
@@ -208,6 +249,10 @@
       <workItem from="1695066465231" duration="7605000" />
       <workItem from="1695126058020" duration="6974000" />
       <workItem from="1695134569106" duration="9315000" />
+      <workItem from="1695459203400" duration="592000" />
+      <workItem from="1695469487952" duration="12872000" />
+      <workItem from="1695499172309" duration="3828000" />
+      <workItem from="1695503185689" duration="3241000" />
     </task>
     <task id="LOCAL-00001" summary="refactor (project-structure): refactored projects structure">
       <option name="closed" value="true" />
@@ -313,7 +358,47 @@
       <option name="project" value="LOCAL" />
       <updated>1695151599991</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="feat(jwt-security): added user context cookie, that binded with jwt and secure each other from unauthorized access by XSS and CSRF, added validation of cookie + bearer">
+      <option name="closed" value="true" />
+      <created>1695485442731</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1695485442731</updated>
+    </task>
+    <task id="LOCAL-00015" summary="feat(jwt-security): added user context cookie, that binded with jwt and secure each other from unauthorized access by XSS and CSRF, added validation of cookie + bearer">
+      <option name="closed" value="true" />
+      <created>1695499415108</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1695499415108</updated>
+    </task>
+    <task id="LOCAL-00016" summary="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <option name="closed" value="true" />
+      <created>1695504378871</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1695504378871</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <option name="closed" value="true" />
+      <created>1695504393212</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1695504393212</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <option name="closed" value="true" />
+      <created>1695504479610</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1695504479610</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,7 +428,28 @@
     <MESSAGE value="feat(development): configured docker compose environment for local deployment with db+app Docker network, added .env file for it, updated README for this deployment" />
     <MESSAGE value="feat(docker): added healthcheck for database setup when deploy local container app, updated README" />
     <MESSAGE value="feat(deployment): moved .dockerignore to work properly" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(deployment): moved .dockerignore to work properly" />
+    <MESSAGE value="feat(jwt-security): added user context cookie, that binded with jwt and secure each other from unauthorized access by XSS and CSRF, added validation of cookie + bearer" />
+    <MESSAGE value="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/AuthenticationService.cs</url>
+          <line>92</line>
+          <properties documentPath="C:\Users\maksi\RiderProjects\mapingway-api\src\Mapingway.Infrastructure\Authentication\AuthenticationService.cs" initialLine="92" containingFunctionPresentation="Method 'GetPrincipalFromExpiredToken'">
+            <startOffsets>
+              <option value="3326" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3385" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

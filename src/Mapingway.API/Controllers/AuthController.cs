@@ -8,10 +8,8 @@ using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Extensions;
 using Mapingway.API.Internal.Contracts;
 using Mapingway.API.Swagger.Documentation;
-using Mapingway.API.Swagger.Examples.Results.Token;
-using Mapingway.API.Swagger.Examples.Results.User;
+using Mapingway.API.Swagger.Examples.Results.Auth;
 using Mapingway.Application.Contracts.Auth.Request;
-using Mapingway.Application.Contracts.Auth.Result;
 using Mapingway.Common.Constants;
 using Mapingway.Common.Result;
 
@@ -82,7 +80,7 @@ public class AuthController : BaseApiController
     /// </returns>
     /// <response code="200">Returns the newly created access and refresh tokens.</response>
     /// <response code="400">If the refresh token is invalid or already used.</response>
-    [ProducesResponseType(typeof(RefreshTokenResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefreshResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResultExample))]
     [AllowAnonymous]
@@ -98,8 +96,9 @@ public class AuthController : BaseApiController
         }
 
         UpdateUserContextToken(result.Value!.UserContextToken);
+        var response = _resultToResponseMapper.Map(result.Value);
 
-        return Ok(result.Value);
+        return Ok(response);
     }
 
     /// <summary>

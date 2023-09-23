@@ -91,12 +91,22 @@ public class AuthenticationService : IAuthenticationService
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken)
     {
         var tokenValidationHandler = new JwtSecurityTokenHandler();
+        SecurityToken securityToken;
+        ClaimsPrincipal principal;
 
-        var principal = tokenValidationHandler.ValidateToken(
-            expiredToken, 
-            _expiredTokenValidationParameters, 
-            out var securityToken);
-
+        try
+        {
+            principal = tokenValidationHandler.ValidateToken(
+                expiredToken, 
+                _expiredTokenValidationParameters, 
+                out securityToken);
+        }
+        catch (ArgumentException e)
+        {
+            _logger.LogError("Recieved access token is invalid: {ExpiredToken}", expiredToken);
+            throw new SecurityTokenException(message: "Recieved token is not valid", innerException: e);
+        }
+        // TODO: two exceptions?
         if (securityToken is not JwtSecurityToken)
         {
             throw new SecurityTokenException("Invalid token");

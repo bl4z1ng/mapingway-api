@@ -3,7 +3,7 @@ using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
 using Mapingway.Common.Result;
 
-namespace Mapingway.Application.Tokens.Commands.Logout;
+namespace Mapingway.Application.Auth.Commands.Logout;
 
 public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
 {
@@ -32,6 +32,7 @@ public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
         }
         
         // TODO: add validation for token.isUsed + expired token
+        // do i need to return, that user had no token?
         var userHadActiveToken = _authenticationService.InvalidateRefreshToken(user);
         if (!userHadActiveToken)
         {

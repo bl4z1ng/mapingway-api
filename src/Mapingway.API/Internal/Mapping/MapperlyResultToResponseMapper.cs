@@ -8,4 +8,6 @@ namespace Mapingway.API.Internal.Mapping;
 public partial class MapperlyResultToResponseMapper : IResultToResponseMapper
 {
     public partial LoginResponse Map(AuthenticationResult result);
+    public partial RefreshResponse Map(RefreshTokenResult result);
+
 }

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Mapingway.Application.Abstractions.Validation;
 
-namespace Mapingway.Application.Users.Commands.Login;
+namespace Mapingway.Application.Auth.Commands.Login;
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {

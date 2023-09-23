@@ -1,5 +1,5 @@
 ﻿using Mapingway.Application.Abstractions.Messaging.Command;
 
-namespace Mapingway.Application.Tokens.Commands.Logout;
+namespace Mapingway.Application.Auth.Commands.Logout;
 
 public record LogoutTokenCommand(string Email) : ICommand;
