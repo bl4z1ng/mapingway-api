@@ -15,7 +15,7 @@ public static class HashingConfiguration
             .Bind(configuration.GetSection(HashOptions.ConfigurationSection))
             .ValidateOnStart();
 
-        services.AddScoped<IHasher, Hasher>();
+        services.AddTransient<IHasher, Hasher>();
 
         return builder;
     }

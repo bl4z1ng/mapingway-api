@@ -87,11 +87,11 @@ public class TokenGeneratorTests
     }
 
     [Fact]
-    public void GenerateRefreshToken_Valid_RefreshTokenIsValid()
+    public void GenerateRandomToken_Valid_RefreshTokenIsValid()
     {
         var generator = new TokenGenerator();
 
-        var refreshToken = generator.GenerateRefreshToken();
+        var refreshToken = generator.GenerateRandomToken();
 
         refreshToken.Should().NotBeNullOrEmpty();
     }

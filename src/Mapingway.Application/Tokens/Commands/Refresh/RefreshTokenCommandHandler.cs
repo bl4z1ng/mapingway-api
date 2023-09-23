@@ -54,8 +54,8 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Refresh token is invalid, try to login again"));
         }
         
-        var token = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
-        if (token is null)
+        var accessUnit = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
+        if (!accessUnit.IsSuccess)
         {
             return Result.Failure<RefreshTokenResult>(new Error(
                 ErrorCode.InvalidCredentials, 
@@ -65,8 +65,10 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
         return new RefreshTokenResult
         {
-            Token = token,
-            RefreshToken = activeRefreshToken.Value
+            //TODO: remove userContext from response DTO
+            Token = accessUnit.AccessToken!,
+            RefreshToken = activeRefreshToken.Value,
+            UserContextToken = accessUnit.UserContextToken
         };
     }
 }

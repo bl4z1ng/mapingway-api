@@ -5,6 +5,7 @@ using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Swagger.Examples.Results.Token;
 using Mapingway.Application.Contracts.Token.Request;
 using Mapingway.Application.Contracts.Token.Result;
+using Mapingway.Common.Constants;
 using Mapingway.Common.Result;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -46,7 +47,22 @@ public class TokenController: BaseApiController
 
         var result = await Mediator.Send(command, cancellationToken);
         
-        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result, BadRequest);
+        if (!result.IsSuccess)
+        {
+            return Failure(result, BadRequest);
+        }
+
+        Response.Cookies.Append(
+            CustomClaimNames.UserContext,
+            result.Value!.UserContextToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+
+        return Ok(result.Value);
     }
 
     /// <summary>
@@ -66,6 +82,6 @@ public class TokenController: BaseApiController
 
         var result = await Mediator.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok() : HandleFailure(result, BadRequest);
+        return result.IsSuccess ? Ok() : Failure(result, BadRequest);
     }
 }
