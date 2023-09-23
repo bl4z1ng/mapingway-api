@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts.Token.Result;
+﻿using Mapingway.Application.Contracts.Auth.Result;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.API.Swagger.Examples.Results.Token;

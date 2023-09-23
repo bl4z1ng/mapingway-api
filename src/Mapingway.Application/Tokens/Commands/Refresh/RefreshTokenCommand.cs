@@ -1,5 +1,5 @@
 ﻿using Mapingway.Application.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Token.Result;
+using Mapingway.Application.Contracts.Auth.Result;
 
 namespace Mapingway.Application.Tokens.Commands.Refresh;
 

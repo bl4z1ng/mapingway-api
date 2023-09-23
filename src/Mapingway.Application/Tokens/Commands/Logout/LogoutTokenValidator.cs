@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
-using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Validation;
 
-namespace Mapingway.Application.Tokens.Commands.Revoke;
+namespace Mapingway.Application.Tokens.Commands.Logout;
 
-public class RevokeTokenValidator : AbstractValidator<RevokeTokenCommand>
+public class LogoutTokenValidator : AbstractValidator<LogoutTokenCommand>
 {
-    public RevokeTokenValidator(IEmailValidationRulesProvider emailRules)
+    public LogoutTokenValidator(IEmailValidationRulesProvider emailRules)
     {
         RuleFor(c => c.Email)
             .NotEmpty()

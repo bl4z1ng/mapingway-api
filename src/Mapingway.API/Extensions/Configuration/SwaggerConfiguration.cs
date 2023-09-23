@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Mapingway.API.Swagger.Documentation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -11,8 +13,11 @@ public static class SwaggerConfiguration
     {
         services.AddEndpointsApiExplorer();
         
+        var swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
         services.AddSwaggerGen(options =>
         {
+            options.OrderActionsBy((apiDesc) 
+                => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Mapingway API",

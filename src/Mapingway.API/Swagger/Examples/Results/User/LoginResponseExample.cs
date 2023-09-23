@@ -1,13 +1,13 @@
-﻿using Mapingway.Application.Contracts.User.Result;
+﻿using Mapingway.API.Internal.Contracts;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.API.Swagger.Examples.Results.User;
 
-public class AuthenticationResultExample : IExamplesProvider<AuthenticationResult>
+public class LoginResponseExample : IExamplesProvider<LoginResponse>
 {
-    public AuthenticationResult GetExamples()
+    public LoginResponse GetExamples()
     {   
-        return new AuthenticationResult
+        return new LoginResponse
         {
             Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
                     "eyJzdWIiOiIyIiwiZW1haWwiOiJtYXgucHl0Z." +

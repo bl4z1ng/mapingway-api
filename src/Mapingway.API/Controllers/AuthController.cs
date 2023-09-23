@@ -1,64 +1,53 @@
-﻿using System.Net.Mime;
-using Mapingway.API.Internal;
-using Mapingway.API.Internal.Mapping;
-using Mapingway.API.Swagger.Examples.Results.User;
-using Mapingway.Application.Contracts.User.Request;
-using Mapingway.Application.Contracts.User.Result;
-using Mapingway.Common.Constants;
-using Mapingway.Common.Result;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using MediatR;
 using Swashbuckle.AspNetCore.Filters;
+using Mapingway.API.Internal;
+using Mapingway.API.Internal.Mapping;
+using Mapingway.API.Extensions;
+using Mapingway.API.Internal.Contracts;
+using Mapingway.API.Swagger.Documentation;
+using Mapingway.API.Swagger.Examples.Results.Token;
+using Mapingway.API.Swagger.Examples.Results.User;
+using Mapingway.Application.Contracts.Auth.Request;
+using Mapingway.Application.Contracts.Auth.Result;
+using Mapingway.Common.Constants;
+using Mapingway.Common.Result;
 
 namespace Mapingway.API.Controllers;
 
 [ApiRoute("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
+[SwaggerControllerOrder(1)]
 public class AuthController : BaseApiController
 {
     private readonly IRequestToCommandMapper _requestToCommandMapper;
+    private readonly IResultToResponseMapper _resultToResponseMapper;
 
 
-    public AuthController(ILoggerFactory loggerFactory, IMediator mediator, IRequestToCommandMapper requestToCommandMapper) : 
+    public AuthController(
+        ILoggerFactory loggerFactory, 
+        IMediator mediator, 
+        IRequestToCommandMapper requestToCommandMapper,
+        IResultToResponseMapper resultToResponseMapper) : 
         base(loggerFactory, mediator, typeof(AuthController).ToString())
     {
         _requestToCommandMapper = requestToCommandMapper;
+        _resultToResponseMapper = resultToResponseMapper;
     }
 
 
     /// <summary>
-    /// Registers new user.
-    /// </summary>
-    /// <returns>
-    /// JSON with data about user registration and user data for caching.
-    /// </returns>
-    /// <response code="200">User is successfully registered</response>
-    /// <response code="400">If user data is invalid</response>
-    [ProducesResponseType(typeof(RegisterResult), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(Register400ErrorResultExample))]
-    [AllowAnonymous]
-    [HttpPost("[action]")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
-    {
-        var command = _requestToCommandMapper.Map(request);
-
-        var result = await Mediator.Send(command, cancellationToken);
-
-        return result.IsSuccess ? Ok(result.Value) : Failure(result, BadRequest);
-    }
-
-    /// <summary>
-    /// Authenticates registered user.
+    /// Authenticates the user.
     /// </summary>
     /// <returns>
     /// A newly generated Bearer token.
     /// </returns>
-    /// <response code="200">User is successfully logged in</response>
-    /// <response code="401">If user credentials are not valid</response>
-    /// <response code="409">If the user is already authenticated</response>
-    [ProducesResponseType(typeof(AuthenticationResult), StatusCodes.Status200OK)]
+    /// <response code="200">User is successfully logged in.</response>
+    /// <response code="401">If user credentials are not valid.</response>
+    /// <response code="409">If the user is already authenticated.</response>
+    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(Authentication401ErrorResultExample))]
     [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
@@ -72,7 +61,6 @@ public class AuthController : BaseApiController
         }
 
         var command = _requestToCommandMapper.Map(request);
-
         var result = await Mediator.Send(command, cancellationToken);
 
         if (!result.IsSuccess)
@@ -80,16 +68,87 @@ public class AuthController : BaseApiController
             return Failure(result, Unauthorized);
         }
 
-        Response.Cookies.Append(
-            CustomClaimNames.UserContext,
-            result.Value!.UserContextToken,
+        UpdateUserContextToken(result.Value!.UserContextToken);
+        var response = _resultToResponseMapper.Map(result.Value);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Refreshes access and refresh tokens and invalidates passed refresh token.
+    /// </summary>
+    /// <returns>
+    /// A newly generated Bearer access and refresh tokens.
+    /// </returns>
+    /// <response code="200">Returns the newly created access and refresh tokens.</response>
+    /// <response code="400">If the refresh token is invalid or already used.</response>
+    [ProducesResponseType(typeof(RefreshTokenResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResultExample))]
+    [AllowAnonymous]
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
+    {
+        var command = _requestToCommandMapper.Map(request);
+        var result = await Mediator.Send(command, cancellationToken);
+        
+        if (result.IsFailure)
+        {
+            return Failure(result, BadRequest);
+        }
+
+        UpdateUserContextToken(result.Value!.UserContextToken);
+
+        return Ok(result.Value);
+    }
+
+    /// <summary>
+    /// Invalidates refresh token and user context for current user.
+    /// </summary>
+    /// <response code="200">Token is successfully invalidated.</response>
+    /// <response code="400">If the user's access token is invalid.</response>
+    /// <response code="401">If user context is missing.</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResultExample))]
+    [Authorize]
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    {
+        var email = User.GetEmailClaim();
+        var command = _requestToCommandMapper.Map(email);
+
+        var result = await Mediator.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return Failure(result, BadRequest);
+        }
+        
+        RemoveUserContextToken();
+
+        return Ok();
+    }
+
+    #region ContextTokenManagement
+
+    [NonAction]
+    private void UpdateUserContextToken(string token)
+    {
+        Response.Cookies.Append(CustomClaimNames.UserContext, token,
             new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict
             });
-
-        return Ok(result.Value);
     }
+
+    [NonAction]
+    private void RemoveUserContextToken()
+    {
+        Response.Cookies.Delete(CustomClaimNames.UserContext);
+    }
+
+    #endregion 
 }

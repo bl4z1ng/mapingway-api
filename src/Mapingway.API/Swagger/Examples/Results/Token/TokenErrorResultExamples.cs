@@ -13,7 +13,7 @@ public class RefreshToken400ErrorResultExample : IExamplesProvider<Error>
     }
 }
 
-public class RevokeToken400ErrorResultExample : IExamplesProvider<Error>
+public class LogoutToken400ErrorResultExample : IExamplesProvider<Error>
 {
     public Error GetExamples()
     {

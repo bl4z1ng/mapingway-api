@@ -1,6 +1,6 @@
-﻿namespace Mapingway.Application.Contracts.User.Result;
+﻿namespace Mapingway.Application.Contracts.Auth.Result;
 
-public class AuthenticationResult
+public class RefreshTokenResult
 {
     public string Token { get; init; } = null!;
     public string RefreshToken { get; init; } = null!;
