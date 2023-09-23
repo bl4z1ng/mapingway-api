@@ -8,7 +8,13 @@ public static class ClaimPrincipalExtensions
 {
     public static string? GetEmailClaim(this ClaimsPrincipal user)
     {
-        return user.Claims.FirstOrDefault(
-            claim => claim.Type == WsDecodedClaimTypes.Keys[JwtRegisteredClaimNames.Email])?.Value;
+        return user.Claims
+            .FirstOrDefault(claim => claim.Type == WsDecodedClaimTypes.Keys[JwtRegisteredClaimNames.Email])?.Value;
+    }
+    
+    public static string? GetUserContextTokenClaim(this ClaimsPrincipal user)
+    {
+        return user.Claims.
+            FirstOrDefault(claim => claim.Type == CustomClaimNames.UserContext)?.Value;
     }
 }

@@ -1,11 +1,12 @@
-﻿using Mapingway.Domain;
+﻿using Mapingway.Application.Contracts;
+using Mapingway.Domain;
 using Mapingway.Domain.Auth;
 
 namespace Mapingway.Application.Abstractions.Authentication;
 
 public interface IAuthenticationService : IAccessTokenParser
 {
-    Task<string?> GenerateAccessToken(long userId, string email, CancellationToken? cancellationToken = null);
+    Task<AccessUnit> GenerateAccessToken(long userId, string email, CancellationToken? cancellationToken = null);
     string GenerateRefreshToken();
     Task<RefreshToken?> RefreshTokenAsync(
         User user, 

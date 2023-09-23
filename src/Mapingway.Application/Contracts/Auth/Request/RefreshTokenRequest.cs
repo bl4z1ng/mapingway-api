@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mapingway.Application.Contracts.Token.Request;
+namespace Mapingway.Application.Contracts.Auth.Request;
 
 public class RefreshTokenRequest
 {

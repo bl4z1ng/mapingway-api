@@ -3,6 +3,7 @@
     "Issuer" : "Mapingway",
     "Audience": "Mapingway",
     "SigningKey": "M4p1ngW4yy_Rul3zz",
+    "UserContextSigningKey": "m4pIn9W@@y_rUl3z$",
     "AccessTokenLifetime" : "00:15:00",
     "RefreshTokenLifetime" : "360:00:00"
   },

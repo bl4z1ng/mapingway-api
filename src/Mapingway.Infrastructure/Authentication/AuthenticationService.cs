@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
+using Mapingway.Application.Contracts;
 using Mapingway.Common.Constants;
 using Mapingway.Common.Exceptions;
 using Mapingway.Domain;
@@ -20,6 +21,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _expiredTokenValidationParameters;
     private readonly ITokenGenerator _tokenGenerator;
+    private readonly IHasher _hasher;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenRepository _refreshTokens;
     private readonly IPermissionRepository _permissions;
@@ -30,12 +32,14 @@ public class AuthenticationService : IAuthenticationService
         IOptions<JwtOptions> jwtOptions, 
         IOptions<TokenValidationParameters> tokenValidationOptions, 
         ITokenGenerator tokenGenerator,
+        IHasher hasher,
         IUnitOfWork unitOfWork)
     {
         _logger = loggerFactory.CreateLogger(typeof(AuthenticationService));
-
-        _tokenGenerator = tokenGenerator;
+        
         _jwtOptions = jwtOptions.Value;
+        _tokenGenerator = tokenGenerator;
+        _hasher = hasher;
 
         var validationParameters = tokenValidationOptions.Value;
         _expiredTokenValidationParameters = validationParameters.Clone();
@@ -47,7 +51,7 @@ public class AuthenticationService : IAuthenticationService
     }
 
 
-    public async Task<string?> GenerateAccessToken(long userId, string email, CancellationToken? ct = null)
+    public async Task<AccessUnit> GenerateAccessToken(long userId, string email, CancellationToken? ct = null)
     {
         var claims = new List<Claim>
         {
@@ -58,8 +62,12 @@ public class AuthenticationService : IAuthenticationService
         var permissions = await _permissions.GetPermissionsAsync(userId, ct ?? CancellationToken.None);
         claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
 
-        var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
+        // TODO: refactor;
+        var userContextToken = _tokenGenerator.GenerateRandomToken();
+        var userContextHash = _hasher.GenerateHash(userContextToken, _jwtOptions.UserContextSalt);
+        claims.Add(new Claim(CustomClaimNames.UserContext, userContextHash));
 
+        var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
         var details = new AccessTokenDetails(
             _jwtOptions.Issuer,
             _jwtOptions.Audience,
@@ -68,23 +76,37 @@ public class AuthenticationService : IAuthenticationService
             claims);
         var token = _tokenGenerator.GenerateAccessToken(details);
 
-        return token;
+        return new AccessUnit
+        {
+            AccessToken = token,
+            UserContextToken = userContextToken
+        };
     }
 
     public string GenerateRefreshToken()
     {
-        return _tokenGenerator.GenerateRefreshToken();
+        return _tokenGenerator.GenerateRandomToken();
     }
 
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken)
     {
         var tokenValidationHandler = new JwtSecurityTokenHandler();
+        SecurityToken securityToken;
+        ClaimsPrincipal principal;
 
-        var principal = tokenValidationHandler.ValidateToken(
-            expiredToken, 
-            _expiredTokenValidationParameters, 
-            out var securityToken);
-
+        try
+        {
+            principal = tokenValidationHandler.ValidateToken(
+                expiredToken, 
+                _expiredTokenValidationParameters, 
+                out securityToken);
+        }
+        catch (ArgumentException e)
+        {
+            _logger.LogError("Recieved access token is invalid: {ExpiredToken}", expiredToken);
+            throw new SecurityTokenException(message: "Recieved token is not valid", innerException: e);
+        }
+        // TODO: two exceptions?
         if (securityToken is not JwtSecurityToken)
         {
             throw new SecurityTokenException("Invalid token");

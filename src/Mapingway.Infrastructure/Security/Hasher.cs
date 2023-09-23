@@ -16,7 +16,7 @@ public class Hasher : IHasher
     }
 
 
-    public string GenerateHash(string rawValue, string? salt)
+    public string GenerateHash(string rawValue, string? salt = null)
     {
         var iterations = _hashOptions.Iterations;
         

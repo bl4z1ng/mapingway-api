@@ -63,14 +63,14 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    
-    // if need dark theme (instead of UseSwaggerUI())
-    // app.UseSwaggerUIDark();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//    
+//    // if need dark theme (instead of UseSwaggerUI())
+//    // app.UseSwaggerUIDark();
+//}
 
 app.UseSerilogRequestLogging();
 

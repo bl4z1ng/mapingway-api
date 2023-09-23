@@ -22,12 +22,14 @@ public class AuthenticationServiceTests
     private readonly IOptions<TokenValidationParameters> _tokenValidationParameters;
     private readonly IOptions<JwtOptions> _jwtOptions;
     private readonly ITokenGenerator _tokenGenerator;
+    private readonly IHasher _hasher;
 
     public AuthenticationServiceTests()
     {
         _loggerFactory = Substitute.For<ILoggerFactory>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
-
+        _hasher = Substitute.For<IHasher>();
+        
         var jwtOptions = new JwtOptions
         {
             Issuer = "Mapingway",
@@ -63,6 +65,7 @@ public class AuthenticationServiceTests
             _jwtOptions,
             _tokenValidationParameters,
             _tokenGenerator,
+            _hasher,
             _unitOfWork);
     }
     
@@ -71,6 +74,8 @@ public class AuthenticationServiceTests
     {
         // Arrange
         const string validAccessToken = "validAccessToken";
+        const string userContextToken = "123123123";
+        const string userContextTokenHash = "ha$H";
         var user = new User
         {
             Id = 1,
@@ -87,6 +92,7 @@ public class AuthenticationServiceTests
         };
         var permissions = new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" };
         claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
+        claims.Add(new Claim(CustomClaimNames.UserContext, userContextTokenHash));
         var accessTokenDetails = new AccessTokenDetails
         (
             _jwtOptions.Value.Issuer,
@@ -102,14 +108,20 @@ public class AuthenticationServiceTests
         _tokenGenerator
             .GenerateAccessToken(ArgEx.IsEquivalentTo(accessTokenDetails))
             .Returns(validAccessToken);
+        _tokenGenerator
+            .GenerateRandomToken()
+            .Returns(userContextToken);
+        _hasher
+            .GenerateHash(userContextToken)
+            .Returns(userContextTokenHash);
         var authenticationService = Subject();
 
         // Act
         var token = await authenticationService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
 
         // Assert
-        token.Should().NotBeNullOrWhiteSpace();
-        token.Should().Be(validAccessToken);
+        token.AccessToken.Should().NotBeNullOrWhiteSpace();
+        token.AccessToken.Should().Be(validAccessToken);
         _tokenGenerator.Received(1);
     }
 }

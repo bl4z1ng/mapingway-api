@@ -2,6 +2,7 @@
 using Mapingway.Common.Constants;
 using Mapingway.Common.Exceptions;
 using Mapingway.Common.Response;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace Mapingway.API.Middleware;
@@ -45,6 +46,19 @@ public class ExceptionMiddleware
             
             await HandleException(
                 ExceptionMessage.UsedRefreshTokenException,
+                ex.Message,
+                HttpStatusCode.Unauthorized,
+                context,
+                timeSpan
+            );
+        }
+        catch (SecurityTokenException ex)
+        {
+            var timeSpan = DateTime.Now;
+            _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
+            
+            await HandleException(
+                ExceptionMessage.InvalidAccessToken,
                 ex.Message,
                 HttpStatusCode.Unauthorized,
                 context,

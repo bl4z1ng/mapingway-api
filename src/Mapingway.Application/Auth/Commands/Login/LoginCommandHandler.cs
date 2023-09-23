@@ -1,10 +1,10 @@
 ﻿using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.User.Result;
+using Mapingway.Application.Contracts.Auth.Result;
 using Mapingway.Common.Result;
 
-namespace Mapingway.Application.Users.Commands.Login;
+namespace Mapingway.Application.Auth.Commands.Login;
 
 public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
 {
@@ -51,9 +51,9 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 ErrorCode.RefreshTokenIsInvalid, 
                 "Refresh token is invalid, try to login again."));
         }
-
-        var accessToken = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
-        if (accessToken is null)
+        
+        var accessUnit = await _authenticationService.GenerateAccessToken(user.Id, user.Email, cancellationToken);
+        if (!accessUnit.IsSuccess)
         {
             return Result.Failure<AuthenticationResult>(new Error(
                 ErrorCode.InvalidCredentials, 
@@ -62,7 +62,8 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
         
         return new AuthenticationResult
         {
-            Token = accessToken,
+            Token = accessUnit.AccessToken!,
+            UserContextToken = accessUnit.UserContextToken,
             RefreshToken = activeRefreshToken.Value
         };
     }

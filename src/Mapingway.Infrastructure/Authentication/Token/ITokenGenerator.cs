@@ -4,5 +4,5 @@ public interface ITokenGenerator
 {
     string? GenerateAccessToken(AccessTokenDetails details);
 
-    string GenerateRefreshToken();
+    string GenerateRandomToken(int numberOfBytes = 16);
 }
