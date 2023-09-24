@@ -5,13 +5,13 @@ using MediatR;
 using Swashbuckle.AspNetCore.Filters;
 using Mapingway.API.Internal;
 using Mapingway.API.Internal.Mapping;
-using Mapingway.API.Internal.Contracts;
+using Mapingway.API.Internal.Response;
 using Mapingway.API.Swagger.Documentation;
 using Mapingway.API.Swagger.Examples.Results.Auth;
 using Mapingway.Application.Contracts.Auth.Request;
-using Mapingway.Common.Constants;
 using Mapingway.Common.Result;
 using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Authentication.Claims;
 
 namespace Mapingway.API.Controllers;
 

@@ -1,5 +1,4 @@
-﻿using Mapingway.Infrastructure.Persistence.Options;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Persistence;

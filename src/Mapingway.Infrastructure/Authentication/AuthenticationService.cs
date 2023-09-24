@@ -4,10 +4,10 @@ using System.Text;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Contracts;
-using Mapingway.Common.Constants;
-using Mapingway.Common.Exceptions;
 using Mapingway.Domain;
 using Mapingway.Domain.Auth;
+using Mapingway.Infrastructure.Authentication.Claims;
+using Mapingway.Infrastructure.Authentication.Exceptions;
 using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -54,8 +54,7 @@ public class AuthenticationService : IAuthenticationService
 
         var permissions = await _permissions.GetPermissionsAsync(userId, ct ?? CancellationToken.None);
         claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
-
-        // TODO: refactor;
+        
         var userContextToken = _tokenGenerator.GenerateRandomToken();
         var userContextHash = _hasher.GenerateHash(userContextToken, _jwtOptions.UserContextSalt);
         claims.Add(new Claim(CustomClaimNames.UserContext, userContextHash));
@@ -67,6 +66,7 @@ public class AuthenticationService : IAuthenticationService
             _jwtOptions.AccessTokenLifetime,
             signingKey,
             claims);
+
         var token = _tokenGenerator.GenerateAccessToken(details);
 
         return new AccessUnit

@@ -1,17 +1,14 @@
-using Mapingway.API.Extensions.Configuration;
-using Mapingway.API.Extensions.Installers;
+using Mapingway.API.Configurations;
+using Mapingway.API.Installers;
 using Mapingway.Application;
-using Mapingway.Infrastructure.Authentication.Permission;
+using Mapingway.Infrastructure.Authentication.Permissions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile(
-    Path.Combine("Configuration", "Configuration.json"), 
-    optional: false, 
-    reloadOnChange: true);
+builder.Configuration.AddJsonFile("Configuration.json", optional: false, reloadOnChange: true);
 
 builder.Host.UseSerilog((context, configuration) =>
 {
@@ -23,7 +20,7 @@ builder.ConfigureDbContext();
 
 builder.Services.AddControllers();
 
-builder.Services.AddRequestToCommandMapper();
+builder.Services.AddMappers();
 
 builder.Services.ConfigureSwagger();
 

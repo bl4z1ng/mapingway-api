@@ -1,4 +1,4 @@
-using Mapingway.Infrastructure.Persistence.Options;
+using Mapingway.Infrastructure.Persistence;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.API.OptionsSetup;
