@@ -1,7 +1,7 @@
-﻿using Mapingway.API.Extensions;
+﻿using Mapingway.API.Internal.Extensions;
 using Mapingway.Application.Abstractions;
-using Mapingway.Common.Constants;
 using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Authentication.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +31,8 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     // Instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions
     public void Configure(string? name, JwtBearerOptions options)
     {
+        // to not use Microsoft claims naming 
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = _tokenValidationParameters;
         options.Events = new JwtBearerEvents
         {

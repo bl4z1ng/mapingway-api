@@ -1,4 +1,4 @@
-﻿using Mapingway.API.Internal.Contracts;
+﻿using Mapingway.API.Internal.Response;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.API.Swagger.Examples.Results.Auth;

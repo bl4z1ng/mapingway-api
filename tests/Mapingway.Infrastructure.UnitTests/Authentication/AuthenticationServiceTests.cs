@@ -3,13 +3,12 @@ using System.Security.Claims;
 using System.Text;
 using FluentAssertions;
 using Mapingway.Application.Abstractions;
-using Mapingway.Common.Constants;
 using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using NSubstitute.Equivalency;
 
@@ -19,7 +18,6 @@ public class AuthenticationServiceTests
 {
     private readonly ILoggerFactory _loggerFactory;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IOptions<TokenValidationParameters> _tokenValidationParameters;
     private readonly IOptions<JwtOptions> _jwtOptions;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IHasher _hasher;
@@ -40,20 +38,6 @@ public class AuthenticationServiceTests
         };
         _jwtOptions = Substitute.For<IOptions<JwtOptions>>();
         _jwtOptions.Value.Returns(jwtOptions);
-        
-        _tokenValidationParameters = Substitute.For<IOptions<TokenValidationParameters>>();
-        _tokenValidationParameters.Value.Returns(new TokenValidationParameters
-            {
-                ValidateLifetime = false,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateIssuerSigningKey = true,
-                
-                ValidIssuer = jwtOptions.Issuer,
-                ValidAudience = jwtOptions.Audience,
-                ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
-            });
 
         _tokenGenerator = Substitute.For<ITokenGenerator>();
     }
@@ -63,7 +47,6 @@ public class AuthenticationServiceTests
         return new AuthenticationService(
             _loggerFactory,
             _jwtOptions,
-            _tokenValidationParameters,
             _tokenGenerator,
             _hasher,
             _unitOfWork);

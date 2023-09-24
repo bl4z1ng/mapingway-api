@@ -1,7 +1,7 @@
-﻿using Mapingway.Common.Enums;
-using Mapingway.Domain.Auth;
+﻿using Mapingway.Domain.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Permission = Mapingway.Infrastructure.Authentication.Permissions.Permission;
 
 namespace Mapingway.Infrastructure.Persistence.Configuration;
 
@@ -12,22 +12,22 @@ public class RolePermissionEntityConfiguration: IEntityTypeConfiguration<RolePer
         builder.HasKey(x => new { x.RoleId, x.PermissionId });
 
         var rolePermissions = new List<RolePermission>();
-        rolePermissions.AddRange(Create(Role.User, new List<Permissions>
+        rolePermissions.AddRange(Create(Role.User, new List<Permission>
         {
-            Permissions.ReadUser
+            Permission.ReadUser
         }));
-        rolePermissions.AddRange(Create(Role.Admin, new List<Permissions>
+        rolePermissions.AddRange(Create(Role.Admin, new List<Permission>
         {
-            Permissions.ReadUser,
-            Permissions.UpdateUser,
-            Permissions.DeleteUser
+            Permission.ReadUser,
+            Permission.UpdateUser,
+            Permission.DeleteUser
         }));
         
         builder.HasData(rolePermissions);
     }
 
 
-    private static IEnumerable<RolePermission> Create(Role role, IEnumerable<Permissions> permissions)
+    private static IEnumerable<RolePermission> Create(Role role, IEnumerable<Permission> permissions)
     {
         return permissions.Select(permission => 
             new RolePermission

@@ -1,13 +1,13 @@
-﻿using Mapingway.Common.Enums;
-using Mapingway.Domain.Auth;
+﻿using Mapingway.Domain.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Permission = Mapingway.Infrastructure.Authentication.Permissions.Permission;
 
 namespace Mapingway.Infrastructure.Persistence.Configuration;
 
-public class PermissionEntityConfiguration : IEntityTypeConfiguration<Permission>
+public class PermissionEntityConfiguration : IEntityTypeConfiguration<Domain.Auth.Permission>
 {
-    public void Configure(EntityTypeBuilder<Permission> builder)
+    public void Configure(EntityTypeBuilder<Domain.Auth.Permission> builder)
     {
         builder.ToTable("Permissions");
         
@@ -15,8 +15,8 @@ public class PermissionEntityConfiguration : IEntityTypeConfiguration<Permission
 
         builder.Property(permission => permission.Name).IsRequired();
 
-        var permissions = Enum.GetValues<Permissions>()
-            .Select(permission => new Permission
+        var permissions = Enum.GetValues<Permission>()
+            .Select(permission => new Domain.Auth.Permission
             {
                 Id = (int)permission,
                 Name = permission.ToString()

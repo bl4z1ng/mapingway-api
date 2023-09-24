@@ -1,6 +1,5 @@
 ﻿using Mapingway.Domain;
 using Mapingway.Domain.Auth;
-using Mapingway.Infrastructure.Persistence.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

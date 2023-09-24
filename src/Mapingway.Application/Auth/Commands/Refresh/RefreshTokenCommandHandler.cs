@@ -11,11 +11,16 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
     private readonly IAuthenticationService _authenticationService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
+    private readonly IAccessTokenService _accessTokenService;
 
 
-    public RefreshTokenCommandHandler(IAuthenticationService authenticationService, IUnitOfWork unitOfWork)
+    public RefreshTokenCommandHandler(
+        IAuthenticationService authenticationService, 
+        IAccessTokenService accessTokenService, 
+        IUnitOfWork unitOfWork)
     {
         _authenticationService = authenticationService;
+        _accessTokenService = accessTokenService;
 
         _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
@@ -24,7 +29,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
     public async Task<Result<RefreshTokenResult>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
-        var userEmail = _authenticationService.GetEmailFromExpiredToken(command.ExpiredToken);
+        var userEmail = _accessTokenService.GetEmailFromExpiredToken(command.ExpiredToken);
         if (string.IsNullOrEmpty(userEmail))
         {
             return Result.Failure<RefreshTokenResult>(new Error(
