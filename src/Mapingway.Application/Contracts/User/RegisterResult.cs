@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Application.Contracts.User.Result;
+﻿namespace Mapingway.Application.Contracts.User;
 
 public class RegisterResult
 {

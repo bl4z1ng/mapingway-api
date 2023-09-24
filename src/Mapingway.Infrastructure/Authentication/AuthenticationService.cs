@@ -4,7 +4,6 @@ using System.Text;
 using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Contracts;
-using Mapingway.Domain;
 using Mapingway.Domain.Auth;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Exceptions;
@@ -23,6 +22,8 @@ public class AuthenticationService : IAuthenticationService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenRepository _refreshTokens;
     private readonly IPermissionRepository _permissions;
+    private readonly IUserRepository _users;
+    private readonly IUsedRefreshTokenFamilyRepository _refreshTokenFamilies;
 
 
     public AuthenticationService(
@@ -39,10 +40,11 @@ public class AuthenticationService : IAuthenticationService
         _hasher = hasher;
 
         _unitOfWork = unitOfWork;
+        _users = unitOfWork.Users;
         _refreshTokens = unitOfWork.RefreshTokens;
+        _refreshTokenFamilies = unitOfWork.RefreshTokenFamilies;
         _permissions = unitOfWork.Permissions;
     }
-
 
     public async Task<AccessUnit> GenerateAccessToken(long userId, string email, CancellationToken? ct = null)
     {
@@ -81,82 +83,97 @@ public class AuthenticationService : IAuthenticationService
         return _tokenGenerator.GenerateRandomToken();
     }
 
-    public async Task<RefreshToken?> RefreshTokenAsync(
-        User user, 
-        string newToken, 
-        string? oldToken = null, 
+    public async Task<RefreshToken?> UpdateRefreshTokenAsync(
+        string email, 
+        string newTokenValue, 
+        string? oldTokenValue = null, 
         CancellationToken? cancellationToken = null)
     {
-        var tokenAlreadyUsed = user.UsedRefreshTokensFamily.Tokens
-            .Any(token => token.Value == oldToken && token.IsUsed);
-        if (tokenAlreadyUsed)
-        {
-            InvalidateRefreshToken(user);
-            await _unitOfWork.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
+        RefreshToken? newRefreshToken;
 
-            _logger.LogWarning(
-                "An attempt to use token {OldToken} " +
-                "(for user: id {UserId}, email {UserEmail}), " +
-                "that is already used", 
-                oldToken, user.Id, user.Email);
-            
-            throw new RefreshTokenUsedException($"{oldToken}");
-        }
-        
-        // TODO: re-do validation.
-        if (
-            oldToken is null || 
-            user.RefreshToken is null || 
-            user.RefreshToken.Value == oldToken || 
-            user.RefreshToken.ExpiresAt < DateTime.UtcNow)
+        var user = await _users.GetByEmailWithRefreshTokensAsync(email, cancellationToken);
+        if (user is null) return null;
+
+        // if login
+        if (oldTokenValue is null)
         {
-            var newRefreshToken = await UpdateRefreshTokenAsync(
-                user, 
-                newToken, 
-                cancellationToken ?? CancellationToken.None);
+            newRefreshToken = await UpdateRefreshTokenInternalAsync(
+                user.RefreshTokensFamily, 
+                newTokenValue, 
+                cancellationToken: cancellationToken ?? CancellationToken.None);
 
             return newRefreshToken;
         }
-
-        return null;
-    }
-
-    public bool InvalidateRefreshToken(User user)
-    {
-        var refreshToken = user.RefreshToken;
-        if (refreshToken is null)
+        
+        // if no such token or it has been expired
+        var refreshTokenByKey = user.RefreshTokensFamily.Tokens.FirstOrDefault(token => token.Value == oldTokenValue);
+        if (refreshTokenByKey is null || refreshTokenByKey.ExpiresAt < DateTime.UtcNow)
         {
-            return false;
+            return null;
+        }
+        
+        // if token was used
+        if (refreshTokenByKey.IsUsed)
+        {
+            user.RefreshTokensFamily.InvalidateAllActiveUserTokens();
+            await _unitOfWork.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
+
+            _logger.LogWarning(
+                "An attempt to use token {OldToken} (for user: id {UserId}, email {UserEmail}), " +
+                "that is already used", oldTokenValue, user.Id, user.Email);
+            
+            throw new RefreshTokenUsedException($"{oldTokenValue}");
         }
 
-        refreshToken.IsUsed = true;
-        user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
-        user.RefreshToken = null;
-        refreshToken.User = null;
+        newRefreshToken = await UpdateRefreshTokenInternalAsync(
+            user.RefreshTokensFamily,
+            newTokenValue,
+            oldRefreshTokenKey: refreshTokenByKey.Value,
+            cancellationToken: cancellationToken ?? CancellationToken.None);
 
-        _unitOfWork.Users.Update(user);
-        _refreshTokens.Update(refreshToken);
+        return newRefreshToken;
+    }
+
+    public async Task<bool> InvalidateRefreshToken(
+        string userEmail, 
+        string refreshTokenKey, 
+        CancellationToken? ct = null)
+    {
+        var user = await _users.GetByEmailWithRefreshTokensAsync(userEmail, ct ?? CancellationToken.None);
+        if (user is null) return false;
+
+        var token = user.RefreshTokensFamily.Tokens.FirstOrDefault(token => token.Value == refreshTokenKey);
+        if (token is null) return false;
+
+        user.RefreshTokensFamily.InvalidateRefreshToken(token.Value);
+
+        _refreshTokenFamilies.Update(user.RefreshTokensFamily);
+        _refreshTokens.Update(token);
 
         return true;
     }
 
 
-    private async Task<RefreshToken?> UpdateRefreshTokenAsync(User user, string newToken, CancellationToken cancellationToken)
+    private async Task<RefreshToken?> UpdateRefreshTokenInternalAsync(
+        RefreshTokenFamily tokenFamily, 
+        string newRefreshTokenKey, 
+        string? oldRefreshTokenKey = null, 
+        CancellationToken? cancellationToken = null)
     {
-        InvalidateRefreshToken(user);
+        if (oldRefreshTokenKey is not null)
+        {
+            tokenFamily.InvalidateRefreshToken(oldRefreshTokenKey);
+        }
 
-        var refreshToken = RefreshTokenExtensions.CreateNotUsed(
-            newToken,
+        var newRefreshToken = RefreshTokenExtensions.CreateNotUsed(
+            newRefreshTokenKey,
             _jwtOptions.RefreshTokenLifetime);
 
-        user.RefreshToken = refreshToken;
-        user.UsedRefreshTokensFamily.Tokens.Add(refreshToken);
+        tokenFamily.Tokens.Add(newRefreshToken);
 
-        _unitOfWork.Users.Update(user);
-        await _refreshTokens.CreateAsync(refreshToken, cancellationToken);
+        await _refreshTokens.CreateAsync(newRefreshToken, cancellationToken);
+        _refreshTokenFamilies.Update(tokenFamily);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        return refreshToken;
+        return newRefreshToken;
     }
 }

@@ -1,8 +1,8 @@
-﻿using Mapingway.Application.Auth.Commands.Login;
+﻿using Mapingway.API.Controllers.Requests.Auth;
+using Mapingway.API.Controllers.Requests.User;
+using Mapingway.Application.Auth.Commands.Login;
 using Mapingway.Application.Auth.Commands.Logout;
 using Mapingway.Application.Auth.Commands.Refresh;
-using Mapingway.Application.Contracts.Auth.Request;
-using Mapingway.Application.Contracts.User.Request;
 using Mapingway.Application.Users.Commands.Register;
 using Riok.Mapperly.Abstractions;
 
@@ -14,5 +14,9 @@ public partial class MapperlyRequestToCommandMapper : IRequestToCommandMapper
     public partial LoginCommand Map(LoginRequest request);
     public partial CreateUserCommand Map(RegisterRequest request);
     public partial RefreshTokenCommand Map(RefreshTokenRequest request);
-    public partial LogoutTokenCommand Map(string? email);
+
+    public LogoutTokenCommand Map(string email, string refreshToken)
+    {
+        return new LogoutTokenCommand(email, refreshToken);
+    }
 }

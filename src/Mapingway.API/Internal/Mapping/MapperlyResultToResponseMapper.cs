@@ -1,5 +1,5 @@
 using Mapingway.API.Internal.Response;
-using Mapingway.Application.Contracts.Auth.Result;
+using Mapingway.Application.Contracts.Auth;
 using Riok.Mapperly.Abstractions;
 
 namespace Mapingway.API.Internal.Mapping;

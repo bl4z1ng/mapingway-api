@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Auth.Result;
+using Mapingway.Application.Contracts.Auth;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Auth.Commands.Login;
@@ -11,6 +11,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
     private readonly IHasher _hasher;
     private readonly IAuthenticationService _authenticationService;
     private readonly IUserRepository _users;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public LoginCommandHandler(
@@ -20,13 +21,15 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
     {
         _hasher = hasher;
         _authenticationService = authenticationService;
+
+        _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
     }
 
 
     public async Task<Result<AuthenticationResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _users.GetByEmailWithRefreshTokensAsync(request.Email, cancellationToken);
+        var user = await _users.GetByEmailAsync(request.Email, cancellationToken);
         if (user is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
@@ -44,7 +47,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
 
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
         var activeRefreshToken = await _authenticationService
-            .RefreshTokenAsync(user, newRefreshToken, null, cancellationToken);
+            .UpdateRefreshTokenAsync(user.Email, newRefreshToken, null, cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
@@ -59,7 +62,8 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 ErrorCode.InvalidCredentials, 
                 "Failed to generate access token."));
         }
-        
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return new AuthenticationResult
         {
             Token = accessUnit.AccessToken!,

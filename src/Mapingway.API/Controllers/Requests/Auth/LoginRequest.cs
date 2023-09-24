@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mapingway.Application.Contracts.Auth.Request;
+namespace Mapingway.API.Controllers.Requests.Auth;
 
 public sealed class LoginRequest
 {

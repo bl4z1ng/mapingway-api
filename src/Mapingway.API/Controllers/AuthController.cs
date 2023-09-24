@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
+using Mapingway.API.Controllers.Requests.Auth;
 using MediatR;
 using Swashbuckle.AspNetCore.Filters;
 using Mapingway.API.Internal;
@@ -8,9 +9,7 @@ using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Internal.Response;
 using Mapingway.API.Swagger.Documentation;
 using Mapingway.API.Swagger.Examples.Results.Auth;
-using Mapingway.Application.Contracts.Auth.Request;
 using Mapingway.Common.Result;
-using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 
 namespace Mapingway.API.Controllers;
@@ -112,11 +111,15 @@ public class AuthController : BaseApiController
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResultExample))]
     [Authorize]
     [HttpPost("[action]")]
-    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    public async Task<IActionResult> Logout(LogoutRequest request, CancellationToken cancellationToken)
     {
         var email = User.GetEmailClaim();
-        var command = _requestToCommandMapper.Map(email);
+        if (email is null)
+        {
+            return BadRequest("Authorization data is invalid.");
+        }
 
+        var command = _requestToCommandMapper.Map(email, request.RefreshToken);
         var result = await Mediator.Send(command, cancellationToken);
 
         if (result.IsFailure)

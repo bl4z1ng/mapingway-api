@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Abstractions;
 using Mapingway.Application.Abstractions.Authentication;
 using Mapingway.Application.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Auth.Result;
+using Mapingway.Application.Contracts.Auth;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Auth.Commands.Refresh;
@@ -37,7 +37,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Email is not valid"));
         }
 
-        var user = await _users.GetByEmailWithRefreshTokensAsync(userEmail, cancellationToken);
+        var user = await _users.GetByEmailAsync(userEmail, cancellationToken);
         if (user is null)
         {
             return Result.Failure<RefreshTokenResult>(new Error(
@@ -46,8 +46,8 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
         }
 
         var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(
-            user, 
+        var activeRefreshToken = await _authenticationService.UpdateRefreshTokenAsync(
+            user.Email, 
             newRefreshToken, 
             command.RefreshToken, 
             cancellationToken);
@@ -66,6 +66,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 ErrorCode.InvalidCredentials, 
                 "Failed to generate access token."));
         }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RefreshTokenResult

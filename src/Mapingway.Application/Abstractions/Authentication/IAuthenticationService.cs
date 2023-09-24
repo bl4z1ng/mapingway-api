@@ -1,5 +1,4 @@
 ﻿using Mapingway.Application.Contracts;
-using Mapingway.Domain;
 using Mapingway.Domain.Auth;
 
 namespace Mapingway.Application.Abstractions.Authentication;
@@ -8,10 +7,10 @@ public interface IAuthenticationService
 {
     Task<AccessUnit> GenerateAccessToken(long userId, string email, CancellationToken? cancellationToken = null);
     string GenerateRefreshToken();
-    Task<RefreshToken?> RefreshTokenAsync(
-        User user, 
-        string newRefreshToken, 
-        string? oldRefreshToken = null, 
+    Task<RefreshToken?> UpdateRefreshTokenAsync(
+        string email, 
+        string newTokenValue, 
+        string? oldTokenValue = null, 
         CancellationToken? cancellationToken = null);
-    public bool InvalidateRefreshToken(User user);
+    Task<bool> InvalidateRefreshToken(string email, string refreshToken, CancellationToken? ct = null);
 }

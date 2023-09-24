@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository Users { get; }
     public IPermissionRepository Permissions { get; }
     public IRefreshTokenRepository RefreshTokens { get; }
-    public IUsedRefreshTokenFamilyRepository UsedRefreshTokenFamilies { get; }
+    public IUsedRefreshTokenFamilyRepository RefreshTokenFamilies { get; }
 
 
     public UnitOfWork(
@@ -25,7 +25,7 @@ public class UnitOfWork : IUnitOfWork
         Users = users;
         Permissions = permissions;
         RefreshTokens = refreshTokens;
-        UsedRefreshTokenFamilies = usedRefreshTokenFamilies;
+        RefreshTokenFamilies = usedRefreshTokenFamilies;
     }
 
 
