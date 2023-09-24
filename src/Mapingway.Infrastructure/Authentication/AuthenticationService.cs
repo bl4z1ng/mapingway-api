@@ -11,7 +11,6 @@ using Mapingway.Domain.Auth;
 using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Mapingway.Infrastructure.Authentication;
 
@@ -19,7 +18,6 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
-    private readonly TokenValidationParameters _expiredTokenValidationParameters;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IHasher _hasher;
     private readonly IUnitOfWork _unitOfWork;
@@ -30,20 +28,15 @@ public class AuthenticationService : IAuthenticationService
     public AuthenticationService(
         ILoggerFactory loggerFactory,
         IOptions<JwtOptions> jwtOptions, 
-        IOptions<TokenValidationParameters> tokenValidationOptions, 
         ITokenGenerator tokenGenerator,
         IHasher hasher,
         IUnitOfWork unitOfWork)
     {
-        _logger = loggerFactory.CreateLogger(typeof(AuthenticationService));
+        _logger = loggerFactory.CreateLogger<AuthenticationService>();
         
         _jwtOptions = jwtOptions.Value;
         _tokenGenerator = tokenGenerator;
         _hasher = hasher;
-
-        var validationParameters = tokenValidationOptions.Value;
-        _expiredTokenValidationParameters = validationParameters.Clone();
-        _expiredTokenValidationParameters.ValidateLifetime = false;
 
         _unitOfWork = unitOfWork;
         _refreshTokens = unitOfWork.RefreshTokens;
@@ -86,43 +79,6 @@ public class AuthenticationService : IAuthenticationService
     public string GenerateRefreshToken()
     {
         return _tokenGenerator.GenerateRandomToken();
-    }
-
-    public ClaimsPrincipal GetPrincipalFromExpiredToken(string expiredToken)
-    {
-        var tokenValidationHandler = new JwtSecurityTokenHandler();
-        SecurityToken securityToken;
-        ClaimsPrincipal principal;
-
-        try
-        {
-            principal = tokenValidationHandler.ValidateToken(
-                expiredToken, 
-                _expiredTokenValidationParameters, 
-                out securityToken);
-        }
-        catch (ArgumentException e)
-        {
-            _logger.LogError("Recieved access token is invalid: {ExpiredToken}", expiredToken);
-            throw new SecurityTokenException(message: "Recieved token is not valid", innerException: e);
-        }
-        // TODO: two exceptions?
-        if (securityToken is not JwtSecurityToken)
-        {
-            throw new SecurityTokenException("Invalid token");
-        }
-
-        return principal;
-    }
-
-    public string? GetEmailFromExpiredToken(string expiredToken)
-    {
-        var principal = GetPrincipalFromExpiredToken(expiredToken);
-
-        var email = principal.Claims.FirstOrDefault(
-            claim => claim.Type == WsDecodedClaimTypes.Keys[JwtRegisteredClaimNames.Email])?.Value;
-        
-        return email;
     }
 
     public async Task<RefreshToken?> RefreshTokenAsync(

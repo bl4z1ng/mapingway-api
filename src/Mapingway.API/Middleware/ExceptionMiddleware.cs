@@ -44,6 +44,7 @@ public class ExceptionMiddleware
             var timeSpan = DateTime.Now;
             _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
             
+            // TODO: remove ex.Message, make specific message without token expose
             await HandleException(
                 ExceptionMessage.UsedRefreshTokenException,
                 ex.Message,

@@ -30,7 +30,7 @@ builder.Services.ConfigureSwagger();
 // Infrastructure.
 builder.Services.AddRepositoriesAndUnitOfWork();
 
-builder.Services.AddAuthenticationService();
+builder.Services.AddAuthenticationServices();
 
 builder.ConfigureHashing();
 

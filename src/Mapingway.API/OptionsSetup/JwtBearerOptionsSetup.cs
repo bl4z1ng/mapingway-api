@@ -31,6 +31,8 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     // Instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions
     public void Configure(string? name, JwtBearerOptions options)
     {
+        // to not use Microsoft claims naming 
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = _tokenValidationParameters;
         options.Events = new JwtBearerEvents
         {

@@ -6,9 +6,10 @@ namespace Mapingway.API.Extensions.Installers;
 
 public static class AuthenticationServiceInstaller
 {
-    public static IServiceCollection AddAuthenticationService(this IServiceCollection services)
+    public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddScoped<ITokenGenerator, TokenGenerator>();
+        services.AddScoped<IAccessTokenService, AccessTokenService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
 
         return services;
