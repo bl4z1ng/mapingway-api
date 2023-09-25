@@ -6,7 +6,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
+var  myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: myAllowSpecificOrigins, policyBuilder =>
+    {
+        policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Configuration.AddJsonFile("Configuration.json", optional: false, reloadOnChange: true);
 
@@ -68,7 +81,7 @@ app.UseSwaggerUI();
 //    // if need dark theme (instead of UseSwaggerUI())
 //    // app.UseSwaggerUIDark();
 //}
-
+app.UseCors(myAllowSpecificOrigins);
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
