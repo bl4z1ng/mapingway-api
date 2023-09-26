@@ -1,4 +1,4 @@
-using Mapingway.Application.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token;
 

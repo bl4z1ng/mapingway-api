@@ -1,5 +1,6 @@
 ﻿using Mapingway.API.Internal.Extensions;
 using Mapingway.Application.Abstractions;
+using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Contracts;
+using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Auth;
 using Mapingway.Domain.Auth;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Exceptions;

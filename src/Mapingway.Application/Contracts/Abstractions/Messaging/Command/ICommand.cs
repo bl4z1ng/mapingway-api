@@ -1,7 +1,7 @@
 ﻿using Mapingway.Common.Result;
 using MediatR;
 
-namespace Mapingway.Application.Abstractions.Messaging.Command;
+namespace Mapingway.Application.Contracts.Abstractions.Messaging.Command;
 
 public interface ICommand : IRequest<Result>
 {

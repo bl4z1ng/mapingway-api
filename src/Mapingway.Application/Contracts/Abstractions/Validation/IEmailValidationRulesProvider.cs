@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Application.Abstractions.Validation;
+﻿namespace Mapingway.Application.Contracts.Abstractions.Validation;
 
 public interface IEmailValidationRulesProvider
 {

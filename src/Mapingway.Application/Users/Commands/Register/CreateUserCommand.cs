@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Abstractions.Messaging.Command;
+﻿using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.User;
 
 namespace Mapingway.Application.Users.Commands.Register;

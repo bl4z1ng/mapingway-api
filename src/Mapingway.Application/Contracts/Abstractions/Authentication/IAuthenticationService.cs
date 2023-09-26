@@ -1,7 +1,7 @@
-﻿using Mapingway.Application.Contracts;
+﻿using Mapingway.Application.Contracts.Auth;
 using Mapingway.Domain.Auth;
 
-namespace Mapingway.Application.Abstractions.Authentication;
+namespace Mapingway.Application.Contracts.Abstractions.Authentication;
 
 public interface IAuthenticationService
 {

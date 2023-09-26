@@ -1,4 +1,4 @@
-namespace Mapingway.Application.Contracts;
+namespace Mapingway.Application.Contracts.Auth;
 
 public class AccessUnit
 {

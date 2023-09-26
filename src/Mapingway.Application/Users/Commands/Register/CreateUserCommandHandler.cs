@@ -1,6 +1,6 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Abstractions.Messaging.Command;
+﻿using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.User;
 using Mapingway.Common.Result;
 using Mapingway.Domain;

@@ -1,6 +1,6 @@
-﻿using Mapingway.Application.Abstractions.Authentication;
+﻿using Mapingway.Application.Contracts.Abstractions.Authentication;
 
-namespace Mapingway.Application.Abstractions;
+namespace Mapingway.Application.Contracts.Abstractions;
 
 public interface IUnitOfWork
 {

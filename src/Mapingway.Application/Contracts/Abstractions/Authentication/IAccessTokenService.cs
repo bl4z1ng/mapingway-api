@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Application.Abstractions.Authentication;
+﻿namespace Mapingway.Application.Contracts.Abstractions.Authentication;
 
 public interface IAccessTokenService
 {
