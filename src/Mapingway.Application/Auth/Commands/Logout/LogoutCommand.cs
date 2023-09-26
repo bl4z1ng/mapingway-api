@@ -2,4 +2,4 @@
 
 namespace Mapingway.Application.Auth.Commands.Logout;
 
-public record LogoutTokenCommand(string Email, string RefreshToken) : ICommand;
+public record LogoutCommand(string Email, string RefreshToken) : ICommand;

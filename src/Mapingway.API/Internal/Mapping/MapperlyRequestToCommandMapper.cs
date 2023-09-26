@@ -15,8 +15,8 @@ public partial class MapperlyRequestToCommandMapper : IRequestToCommandMapper
     public partial CreateUserCommand Map(RegisterRequest request);
     public partial RefreshTokenCommand Map(RefreshTokenRequest request);
 
-    public LogoutTokenCommand Map(string email, string refreshToken)
+    public LogoutCommand Map(string email, string refreshToken)
     {
-        return new LogoutTokenCommand(email, refreshToken);
+        return new LogoutCommand(email, refreshToken);
     }
 }

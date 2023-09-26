@@ -12,5 +12,5 @@ public interface IRequestToCommandMapper
     LoginCommand Map(LoginRequest request);
     CreateUserCommand Map(RegisterRequest request);
     RefreshTokenCommand Map(RefreshTokenRequest request);
-    LogoutTokenCommand Map(string email, string refreshToken);
+    LogoutCommand Map(string email, string refreshToken);
 }

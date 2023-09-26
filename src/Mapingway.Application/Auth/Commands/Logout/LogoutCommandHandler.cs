@@ -5,14 +5,14 @@ using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Auth.Commands.Logout;
 
-public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
+public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenService _refreshTokenService;
 
 
-    public LogoutTokenCommandHandler(IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)
+    public LogoutCommandHandler(IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
@@ -21,7 +21,7 @@ public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
     }
 
 
-    public async Task<Result> Handle(LogoutTokenCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
         var userExists = await _userRepository.DoesUserExistsByEmailAsync(request.Email, cancellationToken);
         if (!userExists)
