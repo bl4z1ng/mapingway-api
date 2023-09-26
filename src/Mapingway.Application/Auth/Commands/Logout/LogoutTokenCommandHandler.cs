@@ -9,15 +9,15 @@ public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRefreshTokenService _refreshTokenService;
 
 
-    public LogoutTokenCommandHandler(IUnitOfWork unitOfWork, IAuthenticationService authenticationService)
+    public LogoutTokenCommandHandler(IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
 
-        _authenticationService = authenticationService;
+        _refreshTokenService = refreshTokenService;
     }
 
 
@@ -32,7 +32,7 @@ public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
         }
 
         var userHadActiveToken = 
-            await _authenticationService.InvalidateRefreshToken(request.Email, request.RefreshToken);
+            await _refreshTokenService.InvalidateRefreshToken(request.Email, request.RefreshToken);
         if (!userHadActiveToken)
         {
             return Result.Failure(new Error(

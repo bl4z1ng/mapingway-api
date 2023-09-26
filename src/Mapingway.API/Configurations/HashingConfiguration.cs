@@ -1,5 +1,4 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Contracts.Abstractions;
+﻿using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Infrastructure.Security;
 
 namespace Mapingway.API.Configurations;

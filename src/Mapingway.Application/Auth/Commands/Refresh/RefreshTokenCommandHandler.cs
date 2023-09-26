@@ -8,18 +8,18 @@ namespace Mapingway.Application.Auth.Commands.Refresh;
 
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, RefreshTokenResult>
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRefreshTokenService _refreshTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
     private readonly IAccessTokenService _accessTokenService;
 
 
     public RefreshTokenCommandHandler(
-        IAuthenticationService authenticationService, 
+        IRefreshTokenService refreshTokenService, 
         IAccessTokenService accessTokenService, 
         IUnitOfWork unitOfWork)
     {
-        _authenticationService = authenticationService;
+        _refreshTokenService = refreshTokenService;
         _accessTokenService = accessTokenService;
 
         _unitOfWork = unitOfWork;
@@ -45,8 +45,8 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "User not found"));
         }
 
-        var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService.UpdateRefreshTokenAsync(
+        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
+        var activeRefreshToken = await _refreshTokenService.UpdateRefreshTokenAsync(
             user.Email, 
             newRefreshToken, 
             command.RefreshToken, 
@@ -59,7 +59,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Refresh token is invalid, try to login again"));
         }
         
-        var accessUnit = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
+        var accessUnit = await _accessTokenService.GenerateAccessToken(user.Id, user.Email);
         if (!accessUnit.IsSuccess)
         {
             return Result.Failure<RefreshTokenResult>(new Error(

@@ -10,7 +10,7 @@ public static class AuthenticationServiceInstaller
     {
         services.AddScoped<ITokenGenerator, TokenGenerator>();
         services.AddScoped<IAccessTokenService, AccessTokenService>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
         return services;
     }

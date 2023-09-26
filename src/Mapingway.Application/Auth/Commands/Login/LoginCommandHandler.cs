@@ -9,18 +9,21 @@ namespace Mapingway.Application.Auth.Commands.Login;
 public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
 {
     private readonly IHasher _hasher;
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRefreshTokenService _refreshTokenService;
+    private readonly IAccessTokenService _accessTokenService;
     private readonly IUserRepository _users;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public LoginCommandHandler(
+        IAccessTokenService accessTokenService,
+        IRefreshTokenService refreshTokenService,
         IHasher hasher,
-        IAuthenticationService authenticationService,
         IUnitOfWork unitOfWork)
     {
+        _accessTokenService = accessTokenService;
+        _refreshTokenService = refreshTokenService;
         _hasher = hasher;
-        _authenticationService = authenticationService;
 
         _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
@@ -45,8 +48,8 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Email or password is incorrect."));
         }
 
-        var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService
+        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
+        var activeRefreshToken = await _refreshTokenService
             .UpdateRefreshTokenAsync(user.Email, newRefreshToken, null, cancellationToken);
         if (activeRefreshToken is null)
         {
@@ -55,7 +58,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Refresh token is invalid, try to login again."));
         }
         
-        var accessUnit = await _authenticationService.GenerateAccessToken(user.Id, user.Email, cancellationToken);
+        var accessUnit = await _accessTokenService.GenerateAccessToken(user.Id, user.Email, cancellationToken);
         if (!accessUnit.IsSuccess)
         {
             return Result.Failure<AuthenticationResult>(new Error(

@@ -1,81 +1,39 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Mapingway.Domain.Auth;
 using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Application.Contracts.Abstractions.Authentication;
-using Mapingway.Application.Contracts.Auth;
-using Mapingway.Domain.Auth;
-using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Exceptions;
 using Mapingway.Infrastructure.Authentication.Token;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Authentication;
 
-public class AuthenticationService : IAuthenticationService
+public class RefreshTokenService : IRefreshTokenService
 {
     private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
     private readonly ITokenGenerator _tokenGenerator;
-    private readonly IHasher _hasher;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRefreshTokenRepository _refreshTokens;
-    private readonly IPermissionRepository _permissions;
     private readonly IUserRepository _users;
     private readonly IUsedRefreshTokenFamilyRepository _refreshTokenFamilies;
 
 
-    public AuthenticationService(
+    public RefreshTokenService(
         ILoggerFactory loggerFactory,
         IOptions<JwtOptions> jwtOptions, 
         ITokenGenerator tokenGenerator,
-        IHasher hasher,
         IUnitOfWork unitOfWork)
     {
-        _logger = loggerFactory.CreateLogger<AuthenticationService>();
+        _logger = loggerFactory.CreateLogger<RefreshTokenService>();
         
         _jwtOptions = jwtOptions.Value;
         _tokenGenerator = tokenGenerator;
-        _hasher = hasher;
 
         _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
         _refreshTokens = unitOfWork.RefreshTokens;
         _refreshTokenFamilies = unitOfWork.RefreshTokenFamilies;
-        _permissions = unitOfWork.Permissions;
-    }
-
-    public async Task<AccessUnit> GenerateAccessToken(long userId, string email, CancellationToken? ct = null)
-    {
-        var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new(JwtRegisteredClaimNames.Email, email)
-        };
-
-        var permissions = await _permissions.GetPermissionsAsync(userId, ct ?? CancellationToken.None);
-        claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
-        
-        var userContextToken = _tokenGenerator.GenerateRandomToken();
-        var userContextHash = _hasher.GenerateHash(userContextToken, _jwtOptions.UserContextSalt);
-        claims.Add(new Claim(CustomClaimNames.UserContext, userContextHash));
-
-        var signingKey = Encoding.UTF8.GetBytes(_jwtOptions.SigningKey);
-        var details = new AccessTokenDetails(
-            _jwtOptions.Issuer,
-            _jwtOptions.Audience,
-            _jwtOptions.AccessTokenLifetime,
-            signingKey,
-            claims);
-
-        var token = _tokenGenerator.GenerateAccessToken(details);
-
-        return new AccessUnit
-        {
-            AccessToken = token,
-            UserContextToken = userContextToken
-        };
     }
 
     public string GenerateRefreshToken()
