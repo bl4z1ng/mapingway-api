@@ -18,11 +18,5 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
 
         builder
             .HasAlternateKey(token => token.Value);
-
-        builder
-            .HasOne(token => token.User)
-            .WithOne(user => user.RefreshToken)
-            .HasForeignKey<RefreshToken>(token => token.UserId)
-            .IsRequired(false);
     }
 }

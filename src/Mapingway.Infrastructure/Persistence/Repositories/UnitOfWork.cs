@@ -1,5 +1,5 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
+﻿using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;
@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository Users { get; }
     public IPermissionRepository Permissions { get; }
     public IRefreshTokenRepository RefreshTokens { get; }
-    public IUsedRefreshTokenFamilyRepository UsedRefreshTokenFamilies { get; }
+    public IUsedRefreshTokenFamilyRepository RefreshTokenFamilies { get; }
 
 
     public UnitOfWork(
@@ -25,7 +25,7 @@ public class UnitOfWork : IUnitOfWork
         Users = users;
         Permissions = permissions;
         RefreshTokens = refreshTokens;
-        UsedRefreshTokenFamilies = usedRefreshTokenFamilies;
+        RefreshTokenFamilies = usedRefreshTokenFamilies;
     }
 
 

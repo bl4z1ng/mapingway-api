@@ -1,5 +1,5 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
+﻿using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Infrastructure.Persistence.Repositories;
 
 namespace Mapingway.API.Installers;

@@ -1,25 +1,25 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Auth.Result;
+﻿using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+using Mapingway.Application.Contracts.Auth;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Auth.Commands.Refresh;
 
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, RefreshTokenResult>
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRefreshTokenService _refreshTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
     private readonly IAccessTokenService _accessTokenService;
 
 
     public RefreshTokenCommandHandler(
-        IAuthenticationService authenticationService, 
+        IRefreshTokenService refreshTokenService, 
         IAccessTokenService accessTokenService, 
         IUnitOfWork unitOfWork)
     {
-        _authenticationService = authenticationService;
+        _refreshTokenService = refreshTokenService;
         _accessTokenService = accessTokenService;
 
         _unitOfWork = unitOfWork;
@@ -37,7 +37,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Email is not valid"));
         }
 
-        var user = await _users.GetByEmailWithRefreshTokensAsync(userEmail, cancellationToken);
+        var user = await _users.GetByEmailAsync(userEmail, cancellationToken);
         if (user is null)
         {
             return Result.Failure<RefreshTokenResult>(new Error(
@@ -45,9 +45,9 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "User not found"));
         }
 
-        var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService.RefreshTokenAsync(
-            user, 
+        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
+        var activeRefreshToken = await _refreshTokenService.UpdateRefreshTokenAsync(
+            user.Email, 
             newRefreshToken, 
             command.RefreshToken, 
             cancellationToken);
@@ -59,13 +59,14 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "Refresh token is invalid, try to login again"));
         }
         
-        var accessUnit = await _authenticationService.GenerateAccessToken(user.Id, user.Email);
+        var accessUnit = await _accessTokenService.GenerateAccessToken(user.Id, user.Email);
         if (!accessUnit.IsSuccess)
         {
             return Result.Failure<RefreshTokenResult>(new Error(
                 ErrorCode.InvalidCredentials, 
                 "Failed to generate access token."));
         }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RefreshTokenResult

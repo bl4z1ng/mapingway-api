@@ -1,7 +1,7 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Auth.Result;
+﻿using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+using Mapingway.Application.Contracts.Auth;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Auth.Commands.Login;
@@ -9,24 +9,30 @@ namespace Mapingway.Application.Auth.Commands.Login;
 public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
 {
     private readonly IHasher _hasher;
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRefreshTokenService _refreshTokenService;
+    private readonly IAccessTokenService _accessTokenService;
     private readonly IUserRepository _users;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public LoginCommandHandler(
+        IAccessTokenService accessTokenService,
+        IRefreshTokenService refreshTokenService,
         IHasher hasher,
-        IAuthenticationService authenticationService,
         IUnitOfWork unitOfWork)
     {
+        _accessTokenService = accessTokenService;
+        _refreshTokenService = refreshTokenService;
         _hasher = hasher;
-        _authenticationService = authenticationService;
+
+        _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
     }
 
 
     public async Task<Result<AuthenticationResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _users.GetByEmailWithRefreshTokensAsync(request.Email, cancellationToken);
+        var user = await _users.GetByEmailAsync(request.Email, cancellationToken);
         if (user is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
@@ -42,9 +48,9 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Email or password is incorrect."));
         }
 
-        var newRefreshToken = _authenticationService.GenerateRefreshToken();
-        var activeRefreshToken = await _authenticationService
-            .RefreshTokenAsync(user, newRefreshToken, null, cancellationToken);
+        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
+        var activeRefreshToken = await _refreshTokenService
+            .UpdateRefreshTokenAsync(user.Email, newRefreshToken, null, cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
@@ -52,14 +58,15 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Refresh token is invalid, try to login again."));
         }
         
-        var accessUnit = await _authenticationService.GenerateAccessToken(user.Id, user.Email, cancellationToken);
+        var accessUnit = await _accessTokenService.GenerateAccessToken(user.Id, user.Email, cancellationToken);
         if (!accessUnit.IsSuccess)
         {
             return Result.Failure<AuthenticationResult>(new Error(
                 ErrorCode.InvalidCredentials, 
                 "Failed to generate access token."));
         }
-        
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return new AuthenticationResult
         {
             Token = accessUnit.AccessToken!,

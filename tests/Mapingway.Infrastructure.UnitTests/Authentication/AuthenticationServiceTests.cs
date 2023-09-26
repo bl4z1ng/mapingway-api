@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using FluentAssertions;
-using Mapingway.Application.Abstractions;
+using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
@@ -21,12 +21,14 @@ public class AuthenticationServiceTests
     private readonly IOptions<JwtOptions> _jwtOptions;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IHasher _hasher;
+    private readonly IJwtTokenParser _jwtTokenParser;
 
     public AuthenticationServiceTests()
     {
         _loggerFactory = Substitute.For<ILoggerFactory>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _hasher = Substitute.For<IHasher>();
+        _jwtTokenParser = Substitute.For<IJwtTokenParser>();
         
         var jwtOptions = new JwtOptions
         {
@@ -42,14 +44,15 @@ public class AuthenticationServiceTests
         _tokenGenerator = Substitute.For<ITokenGenerator>();
     }
 
-    private AuthenticationService Subject()
+    private AccessTokenService Subject()
     {
-        return new AuthenticationService(
+        return new AccessTokenService(
             _loggerFactory,
             _jwtOptions,
             _tokenGenerator,
             _hasher,
-            _unitOfWork);
+            _unitOfWork,
+            _jwtTokenParser);
     }
     
     [Fact]
@@ -97,10 +100,10 @@ public class AuthenticationServiceTests
         _hasher
             .GenerateHash(userContextToken)
             .Returns(userContextTokenHash);
-        var authenticationService = Subject();
+        var accessTokenService = Subject();
 
         // Act
-        var token = await authenticationService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
+        var token = await accessTokenService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
 
         // Assert
         token.AccessToken.Should().NotBeNullOrWhiteSpace();

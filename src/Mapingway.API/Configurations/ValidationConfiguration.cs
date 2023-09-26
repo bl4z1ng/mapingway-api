@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using Mapingway.API.OptionsSetup;
-using Mapingway.Application.Abstractions.Validation;
 using Mapingway.Application.Behaviors;
+using Mapingway.Application.Contracts.Abstractions.Validation;
 using Mapingway.Infrastructure.Validation;
 using Mapingway.Infrastructure.Validation.Email;
 using Mapingway.Infrastructure.Validation.Name;

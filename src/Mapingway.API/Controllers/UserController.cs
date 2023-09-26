@@ -1,10 +1,10 @@
 using System.Net.Mime;
+using Mapingway.API.Controllers.Requests.User;
 using Mapingway.API.Internal;
 using Mapingway.API.Internal.Mapping;
 using Mapingway.API.Swagger.Documentation;
 using Mapingway.API.Swagger.Examples.Results.User;
-using Mapingway.Application.Contracts.User.Request;
-using Mapingway.Application.Contracts.User.Result;
+using Mapingway.Application.Contracts.User;
 using Mapingway.Common.Result;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Abstractions.Authentication;
+﻿using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Token;
 
@@ -10,7 +10,7 @@ public static class AuthenticationServiceInstaller
     {
         services.AddScoped<ITokenGenerator, TokenGenerator>();
         services.AddScoped<IAccessTokenService, AccessTokenService>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
         return services;
     }

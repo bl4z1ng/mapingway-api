@@ -17,7 +17,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -73,9 +73,6 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                     b.Property<long?>("TokenFamilyId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("text");
@@ -85,9 +82,6 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                     b.HasAlternateKey("Value");
 
                     b.HasIndex("TokenFamilyId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("RefreshTokens", (string)null);
                 });
@@ -113,8 +107,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                     b.HasData(
                         new
                         {
-                            Id = -1L,
-                            UserId = -1L
+                            Id = 1L,
+                            UserId = 1L
                         });
                 });
 
@@ -203,7 +197,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                     b.HasData(
                         new
                         {
-                            UserId = -1L,
+                            UserId = 1L,
                             RoleId = 2
                         });
                 });
@@ -224,6 +218,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
@@ -245,7 +240,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                     b.HasData(
                         new
                         {
-                            Id = -1L,
+                            Id = 1L,
                             Email = "admin.map@rambler.ru",
                             FirstName = "Admin",
                             LastName = "Super",
@@ -261,19 +256,13 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
                         .HasForeignKey("TokenFamilyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mapingway.Domain.User", "User")
-                        .WithOne("RefreshToken")
-                        .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId");
-
                     b.Navigation("TokenFamily");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshTokenFamily", b =>
                 {
                     b.HasOne("Mapingway.Domain.User", "User")
-                        .WithOne("UsedRefreshTokensFamily")
+                        .WithOne("RefreshTokensFamily")
                         .HasForeignKey("Mapingway.Domain.Auth.RefreshTokenFamily", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -327,9 +316,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             modelBuilder.Entity("Mapingway.Domain.User", b =>
                 {
-                    b.Navigation("RefreshToken");
-
-                    b.Navigation("UsedRefreshTokensFamily")
+                    b.Navigation("RefreshTokensFamily")
                         .IsRequired();
 
                     b.Navigation("UserRoles");

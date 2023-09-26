@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Abstractions.Validation;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Abstractions.Validation;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Validation.Email;

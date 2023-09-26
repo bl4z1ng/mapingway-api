@@ -19,7 +19,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .UsingEntity<UserRole>();
         
         builder
-            .HasOne(user => user.UsedRefreshTokensFamily)
+            .HasOne(user => user.RefreshTokensFamily)
             .WithOne(user => user.User)
             .HasForeignKey<RefreshTokenFamily>(family => family.UserId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -27,7 +27,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         // P4$$w0rd
         builder.HasData(new User
         {
-            Id = -1,
+            Id = 1,
             Email = "admin.map@rambler.ru",
             FirstName = "Admin",
             LastName = "Super",

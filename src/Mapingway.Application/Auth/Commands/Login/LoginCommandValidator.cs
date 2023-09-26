@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Mapingway.Application.Abstractions.Validation;
+using Mapingway.Application.Contracts.Abstractions.Validation;
 
 namespace Mapingway.Application.Auth.Commands.Login;
 

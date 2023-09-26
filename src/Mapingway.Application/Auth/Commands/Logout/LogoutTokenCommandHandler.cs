@@ -1,6 +1,6 @@
-﻿using Mapingway.Application.Abstractions;
-using Mapingway.Application.Abstractions.Authentication;
-using Mapingway.Application.Abstractions.Messaging.Command;
+﻿using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
 using Mapingway.Common.Result;
 
 namespace Mapingway.Application.Auth.Commands.Logout;
@@ -9,36 +9,35 @@ public class LogoutTokenCommandHandler : ICommandHandler<LogoutTokenCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRefreshTokenService _refreshTokenService;
 
 
-    public LogoutTokenCommandHandler(IUnitOfWork unitOfWork, IAuthenticationService authenticationService)
+    public LogoutTokenCommandHandler(IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
 
-        _authenticationService = authenticationService;
+        _refreshTokenService = refreshTokenService;
     }
 
 
     public async Task<Result> Handle(LogoutTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailWithRefreshTokensAsync(request.Email, cancellationToken);
-        if (user is null)
+        var userExists = await _userRepository.DoesUserExistsByEmailAsync(request.Email, cancellationToken);
+        if (!userExists)
         {
             return Result.Failure(new Error(
                 ErrorCode.InvalidCredentials, 
                 "Access token is invalid"));
         }
-        
-        // TODO: add validation for token.isUsed + expired token
-        // do i need to return, that user had no token?
-        var userHadActiveToken = _authenticationService.InvalidateRefreshToken(user);
+
+        var userHadActiveToken = 
+            await _refreshTokenService.InvalidateRefreshToken(request.Email, request.RefreshToken);
         if (!userHadActiveToken)
         {
             return Result.Failure(new Error(
                 ErrorCode.NotFound, 
-                "User has no active refresh token, try to log-in again"));
+                "User is not found or has no active refresh token, try to log-in again."));
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
