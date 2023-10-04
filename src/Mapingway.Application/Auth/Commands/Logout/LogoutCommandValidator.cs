@@ -3,9 +3,9 @@ using Mapingway.Application.Contracts.Abstractions.Validation;
 
 namespace Mapingway.Application.Auth.Commands.Logout;
 
-public class LogoutTokenValidator : AbstractValidator<LogoutTokenCommand>
+public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
 {
-    public LogoutTokenValidator(IEmailValidationRulesProvider emailRules)
+    public LogoutCommandValidator(IEmailValidationRulesProvider emailRules)
     {
         RuleFor(c => c.Email)
             .NotEmpty()

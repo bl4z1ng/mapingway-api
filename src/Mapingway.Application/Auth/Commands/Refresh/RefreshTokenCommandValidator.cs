@@ -2,9 +2,9 @@
 
 namespace Mapingway.Application.Auth.Commands.Refresh;
 
-public class RefreshTokenValidator : AbstractValidator<RefreshTokenCommand>
+public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
 {
-    public RefreshTokenValidator()
+    public RefreshTokenCommandValidator()
     {
         RuleFor(c => c.ExpiredToken)
             .NotEmpty();

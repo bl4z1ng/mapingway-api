@@ -48,9 +48,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
                 "Email or password is incorrect."));
         }
 
-        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
-        var activeRefreshToken = await _refreshTokenService
-            .UpdateRefreshTokenAsync(user.Email, newRefreshToken, null, cancellationToken);
+        var activeRefreshToken = await _refreshTokenService.CreateTokenAsync(user.Email, cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<AuthenticationResult>(new Error(
