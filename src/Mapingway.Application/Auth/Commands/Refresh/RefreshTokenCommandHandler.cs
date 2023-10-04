@@ -45,13 +45,8 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
                 "User not found"));
         }
 
-        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
-        var activeRefreshToken = await _refreshTokenService.UpdateRefreshTokenAsync(
-            user.Email, 
-            newRefreshToken, 
-            command.RefreshToken, 
-            cancellationToken);
-
+        var activeRefreshToken = await _refreshTokenService.RefreshTokenAsync(
+            user.Email, command.RefreshToken, cancellationToken);
         if (activeRefreshToken is null)
         {
             return Result.Failure<RefreshTokenResult>(new Error(

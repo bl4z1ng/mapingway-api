@@ -32,7 +32,7 @@ public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
         }
 
         var userHadActiveToken = 
-            await _refreshTokenService.InvalidateRefreshToken(request.Email, request.RefreshToken);
+            await _refreshTokenService.InvalidateTokenAsync(request.Email, request.RefreshToken);
         if (!userHadActiveToken)
         {
             return Result.Failure(new Error(

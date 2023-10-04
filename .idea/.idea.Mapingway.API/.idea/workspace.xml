@@ -12,7 +12,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="refactor(structure): moved some project-specific classes to according projects" />
+    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Domain/Auth/RefreshTokenFamily.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Domain/Auth/RefreshTokenFamily.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,23 +59,33 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyRequestToCommandMapper.g.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyResultToResponseMapper.g.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/349e8b63c56af6f2e1dca857ef9de8d486c6b88afceb8717373ad33115a37fb/TokenValidationParameters.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5140b1bea71e57ab28c490127ad1648dff11c67b1adc8698516d94d1582efe8/HttpRequest.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5162dcef9ff38f5edc8c81f80f94afbc8848d6536cb6cd8a9f0db26b3a7b1/OptionsServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/81a3bcf4bb6aa5e62a9839f9cfeeba6126496f4fa07d1e57b27a5176e42525/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8aca45508683a6169bab9e8bd96b7cda607d638cacfaa31173c8c278c45/ISender.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Configuration/HashingConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Controllers/WeatherForecastController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Configurations/HashingConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Configurations/HashingConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Controllers/AuthController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Installers/MappersInstaller.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Extensions/WebApplicationExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Internal/Mapping/IRequestToCommandMapper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyRequestToCommandMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyResultToResponseMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Response/LoginResponse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Response/RefreshResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.API/bin/Debug/net7.0/win10-x64/Mapingway.API.deps.json" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Mapingway.Application/Abstractions/Authentication/IAuthenticationService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Application/Auth/Commands/Login/LoginCommandHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Application/Contracts/Abstractions/Authentication/IRefreshTokenService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/IValidationResult.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/ResultExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/ValidationResult.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/ValidationResultT.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Infrastructure/Authentication/AccessTokenService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Domain/Auth/RefreshTokenFamily.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Mapingway.Infrastructure/Validation/Name/NameValidationRules.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -79,7 +93,7 @@
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="Toolset" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -91,30 +105,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.42208776",
-    "git-widget-placeholder": "feature/14-jwt-security",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Console Colors",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.42208776&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/14-jwt-security&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Console Colors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
-      "C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
-      "C:\\Users\\maksi\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\maksi\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Mapingway.API: https">
     <configuration name="Publish Mapingway.API to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/publish" target_framework="net7.0" uuid_high="-1661408414549588937" uuid_low="-5264044402984221317" />
@@ -230,6 +244,14 @@
       <workItem from="1695503185689" duration="3588000" />
       <workItem from="1695548713856" duration="6431000" />
       <workItem from="1695555260361" duration="3154000" />
+      <workItem from="1695577015965" duration="602000" />
+      <workItem from="1695577973646" duration="3072000" />
+      <workItem from="1695677547751" duration="1004000" />
+      <workItem from="1695712373930" duration="5390000" />
+      <workItem from="1695927847531" duration="602000" />
+      <workItem from="1696004107702" duration="15000" />
+      <workItem from="1696004151334" duration="292000" />
+      <workItem from="1696406136469" duration="680000" />
     </task>
     <task id="LOCAL-00001" summary="refactor (project-structure): refactored projects structure">
       <option name="closed" value="true" />
@@ -415,7 +437,55 @@
       <option name="project" value="LOCAL" />
       <updated>1695558918251</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="feat(jwt-multiple-refresh-tokens): implemented multiple refresh tokens support (for multiple clients), refactored and moved to projects existing data contracts, added migration for db update">
+      <option name="closed" value="true" />
+      <created>1695577567250</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1695577567250</updated>
+    </task>
+    <task id="LOCAL-00025" summary="feat(db): added actual PostgreSQL migration (multiple refresh tokens)">
+      <option name="closed" value="true" />
+      <created>1695578188868</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1695578188868</updated>
+    </task>
+    <task id="LOCAL-00026" summary="fix(cors): temporary enabled cross-server requests from any origin">
+      <option name="closed" value="true" />
+      <created>1695678553101</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1695678553101</updated>
+    </task>
+    <task id="LOCAL-00027" summary="refactor(structure): moved some files for better project structure">
+      <option name="closed" value="true" />
+      <created>1695713151997</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1695713151997</updated>
+    </task>
+    <task id="LOCAL-00028" summary="refactor(auth): segregated auth service to access and refresh token services">
+      <option name="closed" value="true" />
+      <created>1695714911207</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1695714911207</updated>
+    </task>
+    <task id="LOCAL-00029" summary="refactor(namings): changed command namings">
+      <option name="closed" value="true" />
+      <created>1695715467011</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1695715467011</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -463,7 +533,14 @@
     <MESSAGE value="feat(auth): segregated auth service to token and auth itself, removed usage of ws coded claim namse for jwt, added SecurityTokenException to middleware" />
     <MESSAGE value="refactor(auth): removed TokenValidationParameters from AuthService tests (add to AccessTokenService)" />
     <MESSAGE value="refactor(structure): moved some project-specific classes to according projects" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(structure): moved some project-specific classes to according projects" />
+    <MESSAGE value="Merge pull request #75 from bl4z1ng/feature/14-jwt-security&#10;&#10;Feature/14 jwt security" />
+    <MESSAGE value="feat(jwt-multiple-refresh-tokens): implemented multiple refresh tokens support (for multiple clients), refactored and moved to projects existing data contracts, added migration for db update" />
+    <MESSAGE value="feat(db): added actual PostgreSQL migration (multiple refresh tokens)" />
+    <MESSAGE value="fix(cors): temporary enabled cross-server requests from any origin" />
+    <MESSAGE value="refactor(structure): moved some files for better project structure" />
+    <MESSAGE value="refactor(auth): segregated auth service to access and refresh token services" />
+    <MESSAGE value="refactor(namings): changed command namings" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
