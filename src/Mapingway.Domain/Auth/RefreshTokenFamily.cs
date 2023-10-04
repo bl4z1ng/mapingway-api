@@ -18,7 +18,7 @@ public class RefreshTokenFamily
         return true;
     }
 
-    public bool InvalidateAllActiveUserTokens()
+    public bool InvalidateAllActiveTokens()
     {
         var notUsedTokens = Tokens.Where(token => !token.IsUsed).ToList();
 

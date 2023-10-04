@@ -527,6 +527,8 @@ FodyWeavers.xsd
 # custom
 /Mapingway.API/log.txt
 
+workspace.xml
+
 #Sqlite db
 *.db
 Mapingway.Development.db-shm

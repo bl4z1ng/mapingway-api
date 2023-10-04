@@ -4,14 +4,15 @@ namespace Mapingway.Application.Contracts.Abstractions.Authentication;
 
 public interface IRefreshTokenService
 {
-    string GenerateRefreshToken();
-    Task<RefreshToken?> UpdateRefreshTokenAsync(
+    Task<RefreshToken?> CreateTokenAsync(
         string email, 
-        string newTokenValue, 
-        string? oldTokenValue = null, 
         CancellationToken? cancellationToken = null);
-    Task<bool> InvalidateRefreshToken(
+    Task<RefreshToken?> RefreshTokenAsync(
         string email, 
-        string refreshToken, 
+        string oldTokenKey, 
+        CancellationToken? cancellationToken = null);
+    Task<bool> InvalidateTokenAsync(
+        string email, 
+        string oldTokenKey, 
         CancellationToken? ct = null);
 }
