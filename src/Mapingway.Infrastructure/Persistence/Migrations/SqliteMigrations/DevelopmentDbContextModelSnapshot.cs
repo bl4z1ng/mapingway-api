@@ -16,7 +16,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0-preview.4.23259.3");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
 
             modelBuilder.Entity("Mapingway.Domain.Auth.Permission", b =>
                 {
@@ -66,9 +66,6 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.Property<long?>("TokenFamilyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -78,9 +75,6 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasAlternateKey("Value");
 
                     b.HasIndex("TokenFamilyId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("RefreshTokens", (string)null);
                 });
@@ -104,8 +98,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasData(
                         new
                         {
-                            Id = -1L,
-                            UserId = -1L
+                            Id = 1L,
+                            UserId = 1L
                         });
                 });
 
@@ -192,7 +186,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasData(
                         new
                         {
-                            UserId = -1L,
+                            UserId = 1L,
                             RoleId = 2
                         });
                 });
@@ -211,6 +205,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
@@ -232,7 +227,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                     b.HasData(
                         new
                         {
-                            Id = -1L,
+                            Id = 1L,
                             Email = "admin.map@rambler.ru",
                             FirstName = "Admin",
                             LastName = "Super",
@@ -248,19 +243,13 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
                         .HasForeignKey("TokenFamilyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mapingway.Domain.User", "User")
-                        .WithOne("RefreshToken")
-                        .HasForeignKey("Mapingway.Domain.Auth.RefreshToken", "UserId");
-
                     b.Navigation("TokenFamily");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mapingway.Domain.Auth.RefreshTokenFamily", b =>
                 {
                     b.HasOne("Mapingway.Domain.User", "User")
-                        .WithOne("UsedRefreshTokensFamily")
+                        .WithOne("RefreshTokensFamily")
                         .HasForeignKey("Mapingway.Domain.Auth.RefreshTokenFamily", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -314,9 +303,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.SqliteMigrations
 
             modelBuilder.Entity("Mapingway.Domain.User", b =>
                 {
-                    b.Navigation("RefreshToken");
-
-                    b.Navigation("UsedRefreshTokensFamily")
+                    b.Navigation("RefreshTokensFamily")
                         .IsRequired();
 
                     b.Navigation("UserRoles");

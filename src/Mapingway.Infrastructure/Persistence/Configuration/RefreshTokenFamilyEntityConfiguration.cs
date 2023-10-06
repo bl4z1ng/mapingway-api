@@ -15,7 +15,7 @@ public class RefreshTokenFamilyEntityConfiguration : IEntityTypeConfiguration<Re
 
         builder
             .HasOne(family => family.User)
-            .WithOne(user => user.UsedRefreshTokensFamily);
+            .WithOne(user => user.RefreshTokensFamily);
 
         builder
             .HasMany(family => family.Tokens)
@@ -26,8 +26,8 @@ public class RefreshTokenFamilyEntityConfiguration : IEntityTypeConfiguration<Re
         {
             new()
             {
-                Id = -1,
-                UserId = -1
+                Id = 1,
+                UserId = 1
             }
         });
     }

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Mapingway.Common.Result;
-using Mapingway.Common.Result.Validation;
+using Mapingway.Common.ValidationResult;
 using MediatR;
 
 namespace Mapingway.Application.Behaviors;

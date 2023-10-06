@@ -28,10 +28,10 @@ public class UserRoleEntityConfiguration : IEntityTypeConfiguration<UserRole>
             .Property(p => p.UserId)
             .IsRequired();
 
-        builder.HasData(Create(-1, new List<Role> { Role.Admin }));
+        builder.HasData(Create(1, new List<Role> { Role.Admin }));
     }
     
-    private static IEnumerable<UserRole> Create(int userId, IEnumerable<Role> roles)
+    private static IEnumerable<UserRole> Create(long userId, IEnumerable<Role> roles)
     {
         return roles.Select(role => 
                 new UserRole

@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Abstractions.Authentication;
+﻿using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Domain;
 using Mapingway.Domain.Auth;
 using Microsoft.EntityFrameworkCore;
@@ -12,30 +12,37 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     }
 
 
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
+    public async Task<User?> GetByIdWithRefreshTokensAsync(long id, CancellationToken? ct = null)
     {
-        return await DbSet.FirstOrDefaultAsync(user => user.Email == email, ct);
+        return await DbSet
+            .Include(user => user.RefreshTokensFamily)
+            .ThenInclude(family => family.Tokens)
+            .FirstOrDefaultAsync(user => user.Id == id, ct ?? CancellationToken.None);
     }
 
-    public async Task<User?> GetByEmailWithPermissionsAsync(string email, CancellationToken ct)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken? ct = null)
+    {
+        return await DbSet.FirstOrDefaultAsync(user => user.Email == email, ct ?? CancellationToken.None);
+    }
+
+    public async Task<User?> GetByEmailWithPermissionsAsync(string email, CancellationToken? ct = null)
     {
         return await DbSet
             .Include(user => user.Roles)
-            .FirstOrDefaultAsync(user => user.Email == email, ct);
+            .FirstOrDefaultAsync(user => user.Email == email, ct ?? CancellationToken.None);
     }
     
-    public async Task<User?> GetByEmailWithRefreshTokensAsync(string email, CancellationToken ct)
+    public async Task<User?> GetByEmailWithRefreshTokensAsync(string email, CancellationToken? ct = null)
     {
         return await DbSet
-            .Include(user => user.RefreshToken)
-            .Include(user => user.UsedRefreshTokensFamily)
+            .Include(user => user.RefreshTokensFamily)
             .ThenInclude(family => family.Tokens)
-            .FirstOrDefaultAsync(user => user.Email == email, ct);
+            .FirstOrDefaultAsync(user => user.Email == email, ct ?? CancellationToken.None);
     }
 
     public override async Task CreateAsync(User user, CancellationToken? ct = null)
     {
-        user.UsedRefreshTokensFamily = new RefreshTokenFamily();
+        user.RefreshTokensFamily = new RefreshTokenFamily();
 
         await DbSet.AddAsync(user, ct ?? CancellationToken.None);
 
@@ -43,5 +50,10 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         {
             Context.Entry(role).State = EntityState.Unchanged;
         }
+    }
+
+    public Task<bool> DoesUserExistsByEmailAsync(string email, CancellationToken? ct = null)
+    {
+        return DbSet.AnyAsync(user => user.Email == email);
     }
 }

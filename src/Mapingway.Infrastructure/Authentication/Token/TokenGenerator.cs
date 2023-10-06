@@ -33,10 +33,10 @@ public class TokenGenerator : ITokenGenerator
         return result;
     }
 
-    public string GenerateRefreshToken()
+    public string GenerateRandomToken(int numberOfBytes = 16)
     {
         var rng = RandomNumberGenerator.Create();
-        var bytes = new byte[16];
+        var bytes = new byte[numberOfBytes];
         rng.GetBytes(bytes);
 
         var value = Convert.ToBase64String(bytes);

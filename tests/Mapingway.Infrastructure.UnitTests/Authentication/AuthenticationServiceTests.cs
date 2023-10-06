@@ -2,14 +2,13 @@
 using System.Security.Claims;
 using System.Text;
 using FluentAssertions;
-using Mapingway.Application.Abstractions;
-using Mapingway.Common.Constants;
+using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using NSubstitute.Equivalency;
 
@@ -19,15 +18,18 @@ public class AuthenticationServiceTests
 {
     private readonly ILoggerFactory _loggerFactory;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IOptions<TokenValidationParameters> _tokenValidationParameters;
     private readonly IOptions<JwtOptions> _jwtOptions;
     private readonly ITokenGenerator _tokenGenerator;
+    private readonly IHasher _hasher;
+    private readonly IJwtTokenParser _jwtTokenParser;
 
     public AuthenticationServiceTests()
     {
         _loggerFactory = Substitute.For<ILoggerFactory>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
-
+        _hasher = Substitute.For<IHasher>();
+        _jwtTokenParser = Substitute.For<IJwtTokenParser>();
+        
         var jwtOptions = new JwtOptions
         {
             Issuer = "Mapingway",
@@ -38,32 +40,19 @@ public class AuthenticationServiceTests
         };
         _jwtOptions = Substitute.For<IOptions<JwtOptions>>();
         _jwtOptions.Value.Returns(jwtOptions);
-        
-        _tokenValidationParameters = Substitute.For<IOptions<TokenValidationParameters>>();
-        _tokenValidationParameters.Value.Returns(new TokenValidationParameters
-            {
-                ValidateLifetime = false,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateIssuerSigningKey = true,
-                
-                ValidIssuer = jwtOptions.Issuer,
-                ValidAudience = jwtOptions.Audience,
-                ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
-            });
 
         _tokenGenerator = Substitute.For<ITokenGenerator>();
     }
 
-    private AuthenticationService Subject()
+    private AccessTokenService Subject()
     {
-        return new AuthenticationService(
+        return new AccessTokenService(
             _loggerFactory,
             _jwtOptions,
-            _tokenValidationParameters,
             _tokenGenerator,
-            _unitOfWork);
+            _hasher,
+            _unitOfWork,
+            _jwtTokenParser);
     }
     
     [Fact]
@@ -71,6 +60,8 @@ public class AuthenticationServiceTests
     {
         // Arrange
         const string validAccessToken = "validAccessToken";
+        const string userContextToken = "123123123";
+        const string userContextTokenHash = "ha$H";
         var user = new User
         {
             Id = 1,
@@ -87,6 +78,7 @@ public class AuthenticationServiceTests
         };
         var permissions = new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" };
         claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
+        claims.Add(new Claim(CustomClaimNames.UserContext, userContextTokenHash));
         var accessTokenDetails = new AccessTokenDetails
         (
             _jwtOptions.Value.Issuer,
@@ -102,14 +94,20 @@ public class AuthenticationServiceTests
         _tokenGenerator
             .GenerateAccessToken(ArgEx.IsEquivalentTo(accessTokenDetails))
             .Returns(validAccessToken);
-        var authenticationService = Subject();
+        _tokenGenerator
+            .GenerateRandomToken()
+            .Returns(userContextToken);
+        _hasher
+            .GenerateHash(userContextToken)
+            .Returns(userContextTokenHash);
+        var accessTokenService = Subject();
 
         // Act
-        var token = await authenticationService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
+        var token = await accessTokenService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
 
         // Assert
-        token.Should().NotBeNullOrWhiteSpace();
-        token.Should().Be(validAccessToken);
+        token.AccessToken.Should().NotBeNullOrWhiteSpace();
+        token.AccessToken.Should().Be(validAccessToken);
         _tokenGenerator.Received(1);
     }
 }

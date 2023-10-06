@@ -1,5 +1,6 @@
-﻿using Mapingway.Common.Result;
-using Mapingway.Common.Result.Validation;
+﻿using Mapingway.Application.Behaviors;
+using Mapingway.Common.Result;
+using Mapingway.Common.ValidationResult;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ public class BaseApiController : ControllerBase
 
 
     [NonAction]
-    protected IActionResult HandleFailure(Result result, FailureResultDelegate generateFailureResult)
+    protected IActionResult Failure(Result result, FailureResultDelegate generateFailureResult)
     {
         if (result.IsSuccess)
         {
@@ -36,8 +37,6 @@ public class BaseApiController : ControllerBase
                 (result as IValidationResult)!.Errors))
             : generateFailureResult(result.Error);
     }
-
-
 
 
     private static ProblemDetails CreateProblemDetails(

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Mapingway.Application.Abstractions;
+using Mapingway.Application.Contracts.Abstractions;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Security;
@@ -16,7 +16,7 @@ public class Hasher : IHasher
     }
 
 
-    public string GenerateHash(string rawValue, string? salt)
+    public string GenerateHash(string rawValue, string? salt = null)
     {
         var iterations = _hashOptions.Iterations;
         

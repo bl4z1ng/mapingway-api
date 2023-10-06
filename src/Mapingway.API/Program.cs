@@ -1,17 +1,27 @@
-using Mapingway.API.Extensions.Configuration;
-using Mapingway.API.Extensions.Installers;
+using Mapingway.API.Configurations;
+using Mapingway.API.Installers;
 using Mapingway.Application;
-using Mapingway.Infrastructure.Authentication.Permission;
+using Mapingway.Infrastructure.Authentication.Permissions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
+var  myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile(
-    Path.Combine("Configuration", "Configuration.json"), 
-    optional: false, 
-    reloadOnChange: true);
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: myAllowSpecificOrigins, policyBuilder =>
+    {
+        policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+builder.Configuration.AddJsonFile("Configuration.json", optional: false, reloadOnChange: true);
 
 builder.Host.UseSerilog((context, configuration) =>
 {
@@ -23,14 +33,14 @@ builder.ConfigureDbContext();
 
 builder.Services.AddControllers();
 
-builder.Services.AddRequestToCommandMapper();
+builder.Services.AddMappers();
 
 builder.Services.ConfigureSwagger();
 
 // Infrastructure.
 builder.Services.AddRepositoriesAndUnitOfWork();
 
-builder.Services.AddAuthenticationService();
+builder.Services.AddAuthenticationServices();
 
 builder.ConfigureHashing();
 
@@ -59,16 +69,19 @@ builder.Services
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    
-    // if need dark theme
-    // app.UseSwaggerDarkTheme();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
+// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//    
+//    // if need dark theme (instead of UseSwaggerUI())
+//    // app.UseSwaggerUIDark();
+//}
+app.UseCors(myAllowSpecificOrigins);
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();

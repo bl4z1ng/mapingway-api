@@ -4,14 +4,18 @@
     <projectFile profileName="IIS Express">Mapingway.API/Mapingway.API.csproj</projectFile>
     <projectFile profileName="http">Mapingway.API/Mapingway.API.csproj</projectFile>
     <projectFile profileName="https">Mapingway.API/Mapingway.API.csproj</projectFile>
-    <projectFile>src/Mapingway.API/Mapingway.API.csproj</projectFile>
+    <projectFile profileName="IIS Express">src/Mapingway.API/Mapingway.API.csproj</projectFile>
+    <projectFile profileName="http">src/Mapingway.API/Mapingway.API.csproj</projectFile>
+    <projectFile profileName="https">src/Mapingway.API/Mapingway.API.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="refactor (project-structure): refactored projects structure">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="6c68bee7-5bf5-42b0-b50a-488e1d58f6ba" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mapingway.API/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Domain/Auth/RefreshTokenFamily.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Domain/Auth/RefreshTokenFamily.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,11 +29,26 @@
       </list>
     </option>
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN"
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
   }
-}]]></component>
+}</component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="main" />
+      </list>
+    </option>
+  </component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -38,10 +57,47 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyRequestToCommandMapper.g.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/C10CC037FCA8811B2C92BF5F/Riok.Mapperly/Riok.Mapperly.MapperGenerator/MapperlyResultToResponseMapper.g.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/349e8b63c56af6f2e1dca857ef9de8d486c6b88afceb8717373ad33115a37fb/TokenValidationParameters.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5140b1bea71e57ab28c490127ad1648dff11c67b1adc8698516d94d1582efe8/HttpRequest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5162dcef9ff38f5edc8c81f80f94afbc8848d6536cb6cd8a9f0db26b3a7b1/OptionsServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/81a3bcf4bb6aa5e62a9839f9cfeeba6126496f4fa07d1e57b27a5176e42525/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8aca45508683a6169bab9e8bd96b7cda607d638cacfaa31173c8c278c45/ISender.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Configurations/HashingConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Configurations/HashingConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Controllers/AuthController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Installers/MappersInstaller.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Extensions/WebApplicationExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.API/Internal/Mapping/IRequestToCommandMapper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyRequestToCommandMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Mapping/MapperlyResultToResponseMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Response/LoginResponse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Internal/Response/RefreshResponse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.API/bin/Debug/net7.0/win10-x64/Mapingway.API.deps.json" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Application/Auth/Commands/Login/LoginCommandHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Application/Contracts/Abstractions/Authentication/IRefreshTokenService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/IValidationResult.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/ResultExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/ValidationResult.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Common/ValidationResult/ValidationResultT.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Domain/Auth/RefreshTokenFamily.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/maksi/RiderProjects/mapingway-api/src/Mapingway.Infrastructure/Authentication/RefreshTokenService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Mapingway.Infrastructure/Validation/Name/NameValidationRules.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Toolset" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2PsgTL8Eqzpa6m5gAPb9upd5yGp" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -49,27 +105,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.42208776&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/14-jwt-security&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Console Colors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\maksi\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\maksi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\maksi\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.Mapingway.API: http">
+}</component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.Mapingway.API: https">
+    <configuration name="Publish Mapingway.API to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/publish" target_framework="net7.0" uuid_high="-1661408414549588937" uuid_low="-5264044402984221317" />
+      <method v="2" />
+    </configuration>
     <configuration name="Mapingway.API" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -106,7 +170,7 @@
     <configuration name="Mapingway.API: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/src/Mapingway.API/Mapingway.API.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="LAUNCH_PROFILE_NAME" value="http" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -121,7 +185,7 @@
     <configuration name="Mapingway.API: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/src/Mapingway.API/Mapingway.API.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="LAUNCH_PROFILE_NAME" value="https" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -138,6 +202,7 @@
       <item itemvalue=".NET Launch Settings Profile.Mapingway.API: https" />
       <item itemvalue=".NET Launch Settings Profile.Mapingway.API: IIS Express" />
       <item itemvalue=".NET Project.Mapingway.API" />
+      <item itemvalue="Publish to folder.Publish Mapingway.API to folder" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -149,7 +214,44 @@
       <option name="presentableId" value="Default" />
       <updated>1682966548141</updated>
       <workItem from="1684251211163" duration="276000" />
-      <workItem from="1692885550195" duration="1417000" />
+      <workItem from="1692885550195" duration="2148000" />
+      <workItem from="1692892404618" duration="2585000" />
+      <workItem from="1693236543419" duration="4977000" />
+      <workItem from="1693743418353" duration="379000" />
+      <workItem from="1693743815809" duration="2165000" />
+      <workItem from="1693749553252" duration="35000" />
+      <workItem from="1693749602385" duration="606000" />
+      <workItem from="1693829950812" duration="595000" />
+      <workItem from="1694079001149" duration="1202000" />
+      <workItem from="1694251656308" duration="763000" />
+      <workItem from="1694692606379" duration="117000" />
+      <workItem from="1694692799772" duration="91000" />
+      <workItem from="1694692906508" duration="447000" />
+      <workItem from="1694693962612" duration="25518000" />
+      <workItem from="1694772227677" duration="19708000" />
+      <workItem from="1694862306990" duration="4452000" />
+      <workItem from="1694879594585" duration="2507000" />
+      <workItem from="1694884486244" duration="306000" />
+      <workItem from="1694953783281" duration="367000" />
+      <workItem from="1695026069562" duration="29000" />
+      <workItem from="1695032959886" duration="1557000" />
+      <workItem from="1695066465231" duration="7605000" />
+      <workItem from="1695126058020" duration="6974000" />
+      <workItem from="1695134569106" duration="9315000" />
+      <workItem from="1695459203400" duration="592000" />
+      <workItem from="1695469487952" duration="12872000" />
+      <workItem from="1695499172309" duration="3828000" />
+      <workItem from="1695503185689" duration="3588000" />
+      <workItem from="1695548713856" duration="6431000" />
+      <workItem from="1695555260361" duration="3154000" />
+      <workItem from="1695577015965" duration="602000" />
+      <workItem from="1695577973646" duration="3072000" />
+      <workItem from="1695677547751" duration="1004000" />
+      <workItem from="1695712373930" duration="5390000" />
+      <workItem from="1695927847531" duration="602000" />
+      <workItem from="1696004107702" duration="15000" />
+      <workItem from="1696004151334" duration="292000" />
+      <workItem from="1696406136469" duration="680000" />
     </task>
     <task id="LOCAL-00001" summary="refactor (project-structure): refactored projects structure">
       <option name="closed" value="true" />
@@ -159,7 +261,231 @@
       <option name="project" value="LOCAL" />
       <updated>1692886795092</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="refactor (config): added readme file">
+      <option name="closed" value="true" />
+      <created>1692887016429</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1692887016429</updated>
+    </task>
+    <task id="LOCAL-00003" summary="refactor(swagger) : fixed dark theme swagger">
+      <option name="closed" value="true" />
+      <created>1692895013334</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1692895013334</updated>
+    </task>
+    <task id="LOCAL-00004" summary="refactor(database): added test db">
+      <option name="closed" value="true" />
+      <created>1693236671033</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1693236671033</updated>
+    </task>
+    <task id="LOCAL-00005" summary="updated gitignore">
+      <option name="closed" value="true" />
+      <created>1693237036492</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1693237036492</updated>
+    </task>
+    <task id="LOCAL-00006" summary="updated gitignore">
+      <option name="closed" value="true" />
+      <created>1693293045716</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1693293045716</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feature(deployment): configured app docker-compose for local development">
+      <option name="closed" value="true" />
+      <created>1694717345425</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1694717345425</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feature(deployment): configured app docker-compose for local development">
+      <option name="closed" value="true" />
+      <created>1694717701554</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1694717701554</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added database deployment into docker container for local dev">
+      <option name="closed" value="true" />
+      <created>1694781833749</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1694781833749</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat(development): configured docker compose environment for local deployment with db+app Docker network, added .env file for it, updated README for this deployment">
+      <option name="closed" value="true" />
+      <created>1695138309919</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1695138309919</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat(development): configured docker compose environment for local deployment with db+app Docker network, added .env file for it, updated README for this deployment">
+      <option name="closed" value="true" />
+      <created>1695138879473</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1695138879473</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat(docker): added healthcheck for database setup when deploy local container app, updated README">
+      <option name="closed" value="true" />
+      <created>1695146328373</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1695146328373</updated>
+    </task>
+    <task id="LOCAL-00013" summary="feat(deployment): moved .dockerignore to work properly">
+      <option name="closed" value="true" />
+      <created>1695151599991</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1695151599991</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat(jwt-security): added user context cookie, that binded with jwt and secure each other from unauthorized access by XSS and CSRF, added validation of cookie + bearer">
+      <option name="closed" value="true" />
+      <created>1695485442731</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1695485442731</updated>
+    </task>
+    <task id="LOCAL-00015" summary="feat(jwt-security): added user context cookie, that binded with jwt and secure each other from unauthorized access by XSS and CSRF, added validation of cookie + bearer">
+      <option name="closed" value="true" />
+      <created>1695499415108</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1695499415108</updated>
+    </task>
+    <task id="LOCAL-00016" summary="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <option name="closed" value="true" />
+      <created>1695504378871</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1695504378871</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <option name="closed" value="true" />
+      <created>1695504393212</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1695504393212</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper">
+      <option name="closed" value="true" />
+      <created>1695504479610</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1695504479610</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fix(token-validation): fixed unhandled exceptions when access token is invalid">
+      <option name="closed" value="true" />
+      <created>1695506637933</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1695506637933</updated>
+    </task>
+    <task id="LOCAL-00020" summary="feat(auth): segregated auth service to token and auth itself, removed usage of ws coded claim namse for jwt, added SecurityTokenException to middleware">
+      <option name="closed" value="true" />
+      <created>1695553415571</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1695553415571</updated>
+    </task>
+    <task id="LOCAL-00021" summary="refactor(auth): removed TokenValidationParameters from AuthService tests (add to AccessTokenService)">
+      <option name="closed" value="true" />
+      <created>1695553568644</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1695553568644</updated>
+    </task>
+    <task id="LOCAL-00022" summary="refactor(structure): moved some project-specific classes to according projects">
+      <option name="closed" value="true" />
+      <created>1695558791534</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1695558791534</updated>
+    </task>
+    <task id="LOCAL-00023" summary="refactor(structure): moved some project-specific classes to according projects">
+      <option name="closed" value="true" />
+      <created>1695558918251</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1695558918251</updated>
+    </task>
+    <task id="LOCAL-00024" summary="feat(jwt-multiple-refresh-tokens): implemented multiple refresh tokens support (for multiple clients), refactored and moved to projects existing data contracts, added migration for db update">
+      <option name="closed" value="true" />
+      <created>1695577567250</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1695577567250</updated>
+    </task>
+    <task id="LOCAL-00025" summary="feat(db): added actual PostgreSQL migration (multiple refresh tokens)">
+      <option name="closed" value="true" />
+      <created>1695578188868</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1695578188868</updated>
+    </task>
+    <task id="LOCAL-00026" summary="fix(cors): temporary enabled cross-server requests from any origin">
+      <option name="closed" value="true" />
+      <created>1695678553101</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1695678553101</updated>
+    </task>
+    <task id="LOCAL-00027" summary="refactor(structure): moved some files for better project structure">
+      <option name="closed" value="true" />
+      <created>1695713151997</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1695713151997</updated>
+    </task>
+    <task id="LOCAL-00028" summary="refactor(auth): segregated auth service to access and refresh token services">
+      <option name="closed" value="true" />
+      <created>1695714911207</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1695714911207</updated>
+    </task>
+    <task id="LOCAL-00029" summary="refactor(namings): changed command namings">
+      <option name="closed" value="true" />
+      <created>1695715467011</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1695715467011</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -171,7 +497,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="feature/14-jwt-security" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -180,6 +518,32 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="refactor (project-structure): refactored projects structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor (project-structure): refactored projects structure" />
+    <MESSAGE value="refactor (config): added readme file" />
+    <MESSAGE value="refactor(swagger) : fixed dark theme swagger" />
+    <MESSAGE value="refactor(database): added test db" />
+    <MESSAGE value="updated gitignore" />
+    <MESSAGE value="feature(deployment): configured app docker-compose for local development" />
+    <MESSAGE value="Added database deployment into docker container for local dev" />
+    <MESSAGE value="feat(development): configured docker compose environment for local deployment with db+app Docker network, added .env file for it, updated README for this deployment" />
+    <MESSAGE value="feat(docker): added healthcheck for database setup when deploy local container app, updated README" />
+    <MESSAGE value="feat(deployment): moved .dockerignore to work properly" />
+    <MESSAGE value="feat(jwt-security): added user context cookie, that binded with jwt and secure each other from unauthorized access by XSS and CSRF, added validation of cookie + bearer" />
+    <MESSAGE value="feat(jwt-security): added removal of user context when Logout action is called, refactored controllers actions segregation, added result-response mapper" />
+    <MESSAGE value="fix(token-validation): fixed unhandled exceptions when access token is invalid" />
+    <MESSAGE value="feat(auth): segregated auth service to token and auth itself, removed usage of ws coded claim namse for jwt, added SecurityTokenException to middleware" />
+    <MESSAGE value="refactor(auth): removed TokenValidationParameters from AuthService tests (add to AccessTokenService)" />
+    <MESSAGE value="refactor(structure): moved some project-specific classes to according projects" />
+    <MESSAGE value="Merge pull request #75 from bl4z1ng/feature/14-jwt-security&#10;&#10;Feature/14 jwt security" />
+    <MESSAGE value="feat(jwt-multiple-refresh-tokens): implemented multiple refresh tokens support (for multiple clients), refactored and moved to projects existing data contracts, added migration for db update" />
+    <MESSAGE value="feat(db): added actual PostgreSQL migration (multiple refresh tokens)" />
+    <MESSAGE value="fix(cors): temporary enabled cross-server requests from any origin" />
+    <MESSAGE value="refactor(structure): moved some files for better project structure" />
+    <MESSAGE value="refactor(auth): segregated auth service to access and refresh token services" />
+    <MESSAGE value="refactor(namings): changed command namings" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
