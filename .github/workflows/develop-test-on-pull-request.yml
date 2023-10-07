@@ -21,7 +21,7 @@ jobs:
       run: dotnet restore ./Mapingway.API.sln
 
     - name: Build
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build --no-restore
       
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
