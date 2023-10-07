@@ -3,10 +3,7 @@ name: "mapingway"
 services:
   app:
     container_name: "api"
-    image: "mapingway-api-from-compose:${API_VERSION}"
-    build:
-      context: ../
-      dockerfile: /.docker/app/Dockerfile
+    image: "burn1n9/mapingway"
     ports:
       - ${APPLICATION_EXPOSED_PORT_HTTP}:80
       - ${APPLICATION_EXPOSED_PORT_HTTPS}:443
