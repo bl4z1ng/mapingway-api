@@ -506,7 +506,7 @@ FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
 .vscode/*
-!.vscode/settings.json
+.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -527,7 +527,7 @@ FodyWeavers.xsd
 # custom
 /Mapingway.API/log.txt
 
-workspace.xml
+.idea/.idea.Mapingway.API/.idea/workspace.xml
 
 #Sqlite db
 *.db
