@@ -2,10 +2,14 @@ name: "Develop: Test on Pull Request"
 
 on:
   pull_request:
-    branches: [ "develop" ]
+    types:
+      - opened
+      - reopened
+    branches:
+      - develop
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
 

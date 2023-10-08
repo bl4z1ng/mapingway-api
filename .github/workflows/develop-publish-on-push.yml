@@ -4,6 +4,11 @@ on:
   push:
     branches: [ "develop" ]
 
+env:
+  DOCKER_APP_IMAGE_TAG: burn1n9/mapingway
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
 jobs:
   build:
 
@@ -26,17 +31,38 @@ jobs:
 
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
     
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
 
+    - name: Calculate Image Version
+      uses: paulhatch/semantic-version@v5.2.3
+      id: meta
+      with:
+        tag_prefix: "v"
+        major_pattern: "(MAJOR)"
+        minor_pattern: "(MINOR)"
+        patch_pattern: "(PATCH)"
+        version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+        change_path: "src/"
+        namespace: $DOCKER_APP_IMAGE_TAG
+        search_commit_body: true
+        debug: true
+    
     - name: Build and push Docker image
-      uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      uses: docker/build-push-action@v3
       with:
         context: .
         file: .docker/app/Dockerfile
         push: true
-        tags: burn1n9/mapingway
+        tags: ${{ meta.version }} ${{ meta.version_type }}
+        # use layer caching. Don't forget mode=max to also cache the build image
+        # (vs only the final image - mode: min)
+        ##cache-from: type=gha
+        ##cache-to: type=gha,mode=max
