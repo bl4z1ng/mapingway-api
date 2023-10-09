@@ -40,11 +40,9 @@ jobs:
         tag_prefix: "v"
         major_pattern: "(MAJOR)"
         minor_pattern: "(MINOR)"
-        bump_each_commit: false
-        #bump_each_commit_patch_pattern: "(PATCH)"
         version_format: "${major}.${minor}.${patch}-prerelease${increment}"
         change_path: "src/"
-        namespace: $DOCKER_APP_IMAGE_TAG
+        namespace: burn1n9/mapingway
         search_commit_body: true
         debug: true
 
@@ -54,8 +52,7 @@ jobs:
         context: .
         file: .docker/app/Dockerfile
         push: true
-        tags: |
-          burn1n9/mapingway:${{ steps.meta.outputs.version }}
+        tags: burn1n9/mapingway:${{ steps.meta.outputs.version }}
         # use layer caching. Don't forget mode=max to also cache the build image
         # (vs only the final image - mode: min)
         ##cache-from: type=gha
