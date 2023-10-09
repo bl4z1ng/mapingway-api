@@ -525,9 +525,11 @@ FodyWeavers.xsd
 # JetBrains Rider
 
 # custom
-/Mapingway.API/log.txt
+.vscode
 
+/Mapingway.API/log.txt
 .idea/.idea.Mapingway.API/.idea/workspace.xml
+secrets.env
 
 #Sqlite db
 *.db
