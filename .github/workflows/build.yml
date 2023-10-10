@@ -1,0 +1,86 @@
+name: "Build"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - main
+      - develop
+    paths-ignore:
+      - '.scripts/**'
+      - .gitignore
+      - README.md
+
+  workflow_call:
+    inputs:
+      build-artifacts:
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Restore solution dependencies
+        run: dotnet restore ./Mapingway.API.sln
+
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test solution
+        run: dotnet test --no-build --configuration Release
+        
+      - name: Publish app
+        if: ${{ inputs.build-artifacts == true }}
+        run: |
+          dotnet publish --configuration Release -o ./publish
+          cd publish
+          zip -r ./publish.zip .
+        working-directory: ./src/Mapingway.API/
+        
+      - name: Upload app artifact
+        if: ${{ inputs.build-artifacts == true }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: app
+          path: ./src/Mapingway.API/publish/publish.zip
+          if-no-files-found: error
+      
+      - name: Create EF Core migrations bundle
+        if: ${{ inputs.build-artifacts == true }}
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install dotnet-ef --version 7.0.11
+          dotnet ef migrations bundle --project Mapingway.Infrastructure/Mapingway.Infrastructure.csproj --startup-project Mapingway.API/Mapingway.API.csproj --context Mapingway.Infrastructure.Persistence.ApplicationDbContext --configuration Production --runtime linux-x64 --output efbundle.dll --self-contained --force --verbose
+          zip -r ./efbundle.zip efbundle.dll
+        working-directory: ./src/
+        env:
+          SkipNSwag: True
+          
+      - name: Upload EF Core migrations bundle artifact (efbundle)
+        if: ${{ inputs.build-artifacts == true }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: efbundle
+          path: ./src/efbundle.zip
+          if-no-files-found: error
