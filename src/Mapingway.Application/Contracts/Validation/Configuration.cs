@@ -7,7 +7,7 @@ namespace Mapingway.Application.Contracts.Validation;
 
 public static class Configuration
 {
-    internal static IServiceCollection ConfigureValidationBehavior(this IServiceCollection services)
+    internal static IServiceCollection AddValidationBehavior(this IServiceCollection services)
     {
         ValidatorOptions.Global.LanguageManager.Enabled = false;
 

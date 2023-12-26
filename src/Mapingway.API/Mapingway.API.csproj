@@ -23,9 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="wwwroot\swagger-dark.css">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <Content Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

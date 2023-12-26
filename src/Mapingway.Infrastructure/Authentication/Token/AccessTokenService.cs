@@ -1,15 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Application.Contracts.Authentication;
-using Mapingway.Application.Contracts.Authentication.Results;
 using Mapingway.Infrastructure.Authentication.Claims;
-using Mapingway.Infrastructure.Authentication.Token;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class AccessTokenService : IAccessTokenService
 {

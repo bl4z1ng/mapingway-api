@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts.User;
+﻿using Mapingway.Application.Contracts;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.Presentation.Swagger.Examples.Results.User;

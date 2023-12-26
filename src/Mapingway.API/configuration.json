@@ -15,10 +15,6 @@
     "Name" : {
       "MaxLength" : "256"
     },
-    "Password" : {
-      "NumberOfLetters" : "3",
-      "NOrMoreLettersPattern" : "^(?:[^a-zA-Z]*[a-zA-Z]){3}.*$"
-    },
     "Email" : {
       "Pattern" : "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     }

@@ -1,4 +1,4 @@
-﻿using Mapingway.Common;
+﻿using Mapingway.SharedKernel;
 
 namespace Mapingway.Application.Contracts.Authentication;
 

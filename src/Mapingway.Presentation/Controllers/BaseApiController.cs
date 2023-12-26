@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
-using Mapingway.Common.Result;
-using Mapingway.Common.ValidationResult;
+using Mapingway.SharedKernel.Result;
+using Mapingway.SharedKernel.ValidationResult;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
