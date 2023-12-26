@@ -1,10 +1,10 @@
 ﻿using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Auth;
+using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Application.Contracts.Authentication.Results;
 using Mapingway.Common.Result;
 
-namespace Mapingway.Application.Auth.Commands.Login;
+namespace Mapingway.Application.Features.Auth.Commands.Login;
 
 public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
 {

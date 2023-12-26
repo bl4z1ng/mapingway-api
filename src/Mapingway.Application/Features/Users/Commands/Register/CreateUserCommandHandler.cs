@@ -1,12 +1,12 @@
 ﻿using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Application.Contracts.User;
 using Mapingway.Common.Result;
 using Mapingway.Domain;
 using Mapingway.Domain.Auth;
 
-namespace Mapingway.Application.Users.Commands.Register;
+namespace Mapingway.Application.Features.Users.Commands.Register;
 
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, RegisterResult>
 {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Mapingway.Application.Contracts.Abstractions.Validation;
+using Mapingway.Application.Contracts.Validation;
 
-namespace Mapingway.Application.Auth.Commands.Logout;
+namespace Mapingway.Application.Features.Auth.Commands.Logout;
 
 public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
 {

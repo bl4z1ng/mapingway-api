@@ -1,4 +1,6 @@
-﻿namespace Mapingway.Infrastructure.Validation.Name;
+﻿using Mapingway.Application.Contracts.Validation;
+
+namespace Mapingway.Infrastructure.Validation.Name;
 
 public class NameValidationRules : IValidationRules
 {

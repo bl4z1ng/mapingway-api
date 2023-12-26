@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Mapingway.Application.Auth.Commands.Refresh;
+namespace Mapingway.Application.Features.Auth.Commands.Refresh;
 
 public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
 {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Mapingway.Application.Contracts.Abstractions.Validation;
+using Mapingway.Application.Contracts.Validation;
 
-namespace Mapingway.Application.Auth.Commands.Login;
+namespace Mapingway.Application.Features.Auth.Commands.Login;
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
@@ -9,6 +9,7 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
         IEmailValidationRulesProvider emailRules,
         IPasswordValidationRulesProvider passwordRules)
     {
+        //TODO: move regex to compile generation, add custom rules for validation, get rid of validation providers, where possible
         RuleFor(c => c.Email)
             .NotEmpty()
             .Must((c, _) => emailRules.IsEmailValid(c.Email))

@@ -1,4 +1,6 @@
-﻿namespace Mapingway.Infrastructure.Validation.Email;
+﻿using Mapingway.Application.Contracts.Validation;
+
+namespace Mapingway.Infrastructure.Validation.Email;
 
 public class EmailValidationRules : IValidationRules
 {

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using FluentAssertions;
-using Mapingway.API;
 using Mapingway.Application;
 using Mapingway.Domain;
 using Mapingway.Infrastructure;
+using Mapingway.Presentation;
 using NetArchTest.Rules;
 
 namespace Architecture.Tests;

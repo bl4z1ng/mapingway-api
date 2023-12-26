@@ -1,5 +1,5 @@
 ﻿using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Authentication;
+using Mapingway.Application.Contracts.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Mapingway.Application.Contracts.Abstractions.Validation;
+using Mapingway.Application.Contracts.Validation;
 
-namespace Mapingway.Application.Users.Commands.Register;
+namespace Mapingway.Application.Features.Users.Commands.Register;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {

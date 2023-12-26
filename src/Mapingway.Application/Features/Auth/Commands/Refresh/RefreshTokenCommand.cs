@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
-using Mapingway.Application.Contracts.Auth;
+using Mapingway.Application.Contracts.Authentication.Results;
 
-namespace Mapingway.Application.Auth.Commands.Refresh;
+namespace Mapingway.Application.Features.Auth.Commands.Refresh;
 
 public record RefreshTokenCommand(
     string ExpiredToken, 

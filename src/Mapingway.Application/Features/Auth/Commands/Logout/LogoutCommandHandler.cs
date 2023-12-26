@@ -1,9 +1,9 @@
 ﻿using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Authentication;
 using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Common.Result;
 
-namespace Mapingway.Application.Auth.Commands.Logout;
+namespace Mapingway.Application.Features.Auth.Commands.Logout;
 
 public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
 {

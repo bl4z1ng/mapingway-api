@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts.Abstractions.Validation;
+﻿using Mapingway.Application.Contracts.Validation;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Validation.Name;
