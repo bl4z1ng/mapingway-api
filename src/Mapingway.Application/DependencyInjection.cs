@@ -2,21 +2,20 @@
 using Mapingway.Application.Behaviors;
 using Mapingway.Application.Contracts.Validation;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mapingway.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this WebApplicationBuilder builder)
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        builder.Services.AddMediatR(config =>
+        services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(Application.AssemblyReference);
         });
 
-        return builder.Services
+        return services
             .ConfigureLoggingBehavior()
             .ConfigureValidationBehavior();
     }

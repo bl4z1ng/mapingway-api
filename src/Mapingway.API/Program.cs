@@ -15,7 +15,7 @@ builder.Services.ConfigureCors(myAllowSpecificOrigins);
 
 builder.ConfigureLogging();
 
-builder
+builder.Services
     .AddApplication()
     .AddPresentation()
     .AddInfrastructure(builder.Configuration);
