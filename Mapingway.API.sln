@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.API.UnitTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture.Tests", "tests\Architecture.Tests\Architecture.Tests.csproj", "{8E6DE574-B33C-464E-937A-2F492FC02103}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Presentation", "Mapingway.Presentation\Mapingway.Presentation.csproj", "{7B4D0583-394D-4F85-90F2-25AA09214985}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapingway.Presentation", "src\Mapingway.Presentation\Mapingway.Presentation.csproj", "{7B4D0583-394D-4F85-90F2-25AA09214985}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

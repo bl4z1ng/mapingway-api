@@ -22,10 +22,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseSwagger().UseSwaggerUI(options =>
-{
-    options.InjectStylesheet(@"/swagger-dark.css");
-});
+app.UseSwagger().UseSwaggerUI();
 
 app.UseCors(myAllowSpecificOrigins);
 app.UseSerilogRequestLogging();

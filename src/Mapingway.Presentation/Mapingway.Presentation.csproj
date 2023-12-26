@@ -30,9 +30,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Mapingway.Application\Mapingway.Application.csproj" />
-      <ProjectReference Include="..\src\Mapingway.Common\Mapingway.Common.csproj" />
-      <ProjectReference Include="..\src\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
+      <ProjectReference Include="..\Mapingway.Application\Mapingway.Application.csproj" />
+      <ProjectReference Include="..\Mapingway.Common\Mapingway.Common.csproj" />
+      <ProjectReference Include="..\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
