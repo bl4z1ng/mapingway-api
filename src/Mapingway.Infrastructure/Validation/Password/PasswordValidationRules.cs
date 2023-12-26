@@ -1,4 +1,6 @@
-﻿namespace Mapingway.Infrastructure.Validation.Password;
+﻿using Mapingway.Application.Contracts.Validation;
+
+namespace Mapingway.Infrastructure.Validation.Password;
 
 public class PasswordValidationRules : IValidationRules
 {

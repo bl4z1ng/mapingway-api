@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using FluentAssertions;
 using Mapingway.Infrastructure.Authentication.Token;
@@ -17,7 +19,7 @@ public class TokenGeneratorTests
             Issuer: "testIssuer",
             Audience: "testAudience",
             TokenLifeSpan: TimeSpan.FromHours(1),
-            SigningKeyBytes: "signingKeyS1gningk3y123!"u8.ToArray(),
+            SigningKeyBytes: "signingKeyS1gningk3y123qweqweqweqweqwe!"u8.ToArray(),
             Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
         
         InvalidAccessTokenData = new AccessTokenDetails(

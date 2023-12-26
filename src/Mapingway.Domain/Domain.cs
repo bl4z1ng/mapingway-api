@@ -2,7 +2,7 @@
 
 namespace Mapingway.Domain;
 
-public static class Domain
+public class Domain
 {
     public static readonly Assembly AssemblyReference = typeof(Domain).Assembly;
 }

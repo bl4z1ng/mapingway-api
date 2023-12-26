@@ -1,6 +1,11 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Domain;
@@ -77,8 +82,8 @@ public class AuthenticationServiceTests
             new(JwtRegisteredClaimNames.Email, user.Email)
         };
         var permissions = new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" };
-        claims.AddRange(permissions.Select(p => new Claim(CustomClaimNames.Permissions, p)));
-        claims.Add(new Claim(CustomClaimNames.UserContext, userContextTokenHash));
+        claims.AddRange(permissions.Select(p => new Claim(CustomClaims.Permissions, p)));
+        claims.Add(new Claim(CustomClaims.UserContext, userContextTokenHash));
         var accessTokenDetails = new AccessTokenDetails
         (
             _jwtOptions.Value.Issuer,
