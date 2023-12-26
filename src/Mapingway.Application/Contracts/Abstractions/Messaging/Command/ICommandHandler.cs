@@ -1,4 +1,4 @@
-﻿using Mapingway.Common.Result;
+﻿using Mapingway.SharedKernel.Result;
 using MediatR;
 
 namespace Mapingway.Application.Contracts.Abstractions.Messaging.Command;

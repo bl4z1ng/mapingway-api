@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
-using Mapingway.Application.Behaviors;
 using Mapingway.Application.Contracts.Validation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mapingway.Application;
@@ -15,20 +13,7 @@ public static class DependencyInjection
             config.RegisterServicesFromAssembly(Application.AssemblyReference);
         });
 
-        return services
-            .ConfigureLoggingBehavior()
-            .ConfigureValidationBehavior();
-    }
-
-
-    //TODO: remove
-    internal static IServiceCollection ConfigureLoggingBehavior(this IServiceCollection services)
-    {
-        services.AddScoped(
-            typeof(IPipelineBehavior<,>),
-            typeof(LoggingPipelineBehavior<,>));
-
-        return services;
+        return services.AddValidationBehavior();
     }
 }
 

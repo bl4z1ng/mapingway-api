@@ -1,6 +1,4 @@
-﻿using Mapingway.Application.Contracts.Authentication.Results;
-
-namespace Mapingway.Application.Contracts.Authentication;
+﻿namespace Mapingway.Application.Contracts.Authentication;
 
 public interface IAccessTokenService
 {

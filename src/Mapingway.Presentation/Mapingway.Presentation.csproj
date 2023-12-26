@@ -31,7 +31,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Mapingway.Application\Mapingway.Application.csproj" />
-      <ProjectReference Include="..\Mapingway.Common\Mapingway.Common.csproj" />
+      <ProjectReference Include="..\Mapingway.SharedKernel\Mapingway.SharedKernel.csproj" />
       <ProjectReference Include="..\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
     </ItemGroup>
 

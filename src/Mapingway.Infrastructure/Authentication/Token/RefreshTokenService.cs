@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Mapingway.Domain.Auth;
-using Mapingway.Application.Contracts.Abstractions;
+﻿using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Domain.Auth;
 using Mapingway.Infrastructure.Authentication.Exceptions;
-using Mapingway.Infrastructure.Authentication.Token;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace Mapingway.Infrastructure.Authentication;
+namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class RefreshTokenService : IRefreshTokenService
 {

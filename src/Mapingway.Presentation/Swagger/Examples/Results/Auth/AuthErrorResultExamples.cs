@@ -1,4 +1,4 @@
-﻿using Mapingway.Common.Result;
+﻿using Mapingway.SharedKernel.Result;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.Presentation.Swagger.Examples.Results.Auth;

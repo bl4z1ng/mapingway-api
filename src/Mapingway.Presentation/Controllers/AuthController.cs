@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using Mapingway.Common.Result;
+﻿using Mapingway.SharedKernel.Result;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Presentation.Controllers.Requests.Auth;
 using Mapingway.Presentation.Controllers.Response;

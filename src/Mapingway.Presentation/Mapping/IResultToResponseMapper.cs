@@ -1,4 +1,5 @@
-using Mapingway.Application.Contracts.Authentication.Results;
+using Mapingway.Application.Contracts;
+using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Presentation.Controllers.Response;
 
 namespace Mapingway.Presentation.Mapping;

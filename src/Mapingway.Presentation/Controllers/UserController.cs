@@ -1,5 +1,5 @@
-using Mapingway.Application.Contracts.User;
-using Mapingway.Common.Result;
+using Mapingway.Application.Contracts;
+using Mapingway.SharedKernel.Result;
 using Mapingway.Presentation.Controllers.Requests.User;
 using Mapingway.Presentation.Mapping;
 using Mapingway.Presentation.Swagger.Documentation;

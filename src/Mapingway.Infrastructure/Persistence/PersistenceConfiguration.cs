@@ -1,5 +1,6 @@
 ﻿using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Infrastructure.Persistence.Context;
 using Mapingway.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
