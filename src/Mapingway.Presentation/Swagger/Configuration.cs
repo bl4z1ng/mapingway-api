@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Mapingway.Presentation.Swagger.Filters.Document;
+using Mapingway.Presentation.Swagger.Filters.Operation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -24,6 +26,7 @@ public static class Configuration
                     Url = new Uri("https://www.linkedin.com/in/max-pyte/")
                 }
             });
+            options.OperationFilter<SwaggerLocalizationFilter>();
 
             var xmlFilename = $"{Presentation.AssemblyReference.GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -42,24 +45,12 @@ public static class Configuration
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
             });
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header,
-                    },
-                    new List<string>()
-                }
-            });
 
+            options.EnableAnnotations();
             options.ExampleFilters();
+            options.AddCommonStatusCodesResponses();
+
+            options.ConvertRoutesToCamelCase();
         });
 
         services.AddSwaggerExamplesFromAssemblyOf<Presentation>();

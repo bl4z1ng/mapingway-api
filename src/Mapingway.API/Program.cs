@@ -1,4 +1,5 @@
 using Mapingway.API.Cors;
+using Mapingway.API.Localization;
 using Mapingway.API.Logging;
 using Mapingway.API.Middleware.Exception;
 using Mapingway.Application;
@@ -16,6 +17,8 @@ const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.ConfigureCors(myAllowSpecificOrigins);
 
 builder.ConfigureLogging();
+
+builder.Services.AddLocalizationRules();
 
 builder.Services
     .AddApplication()

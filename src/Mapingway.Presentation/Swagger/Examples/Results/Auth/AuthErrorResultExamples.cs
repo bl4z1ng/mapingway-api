@@ -10,13 +10,13 @@ public class Authentication401ErrorResultExample : IMultipleExamplesProvider<Err
         yield return SwaggerExample.Create(
             "Invalid Credentials",
             new Error(
-                ErrorCode.InvalidCredentials, 
+                ErrorCode.InvalidCredentials,
                 "Email or password are incorrect."));
 
         yield return SwaggerExample.Create(
             "No Active Refresh Token",
             new Error(
-                ErrorCode.RefreshTokenIsInvalid, 
+                ErrorCode.RefreshTokenIsInvalid,
                 "Refresh token is invalid, try to login again"));
     }
 }
@@ -41,6 +41,7 @@ public class LogoutToken400ErrorResultExample : IExamplesProvider<Error>
     }
 }
 
+//TODO: use or remove
 public class RevokeToken404ErrorResultExample : IExamplesProvider<Error>
 {
     public Error GetExamples()
