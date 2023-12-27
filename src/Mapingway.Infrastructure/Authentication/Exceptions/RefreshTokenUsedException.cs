@@ -3,7 +3,7 @@
 public class RefreshTokenUsedException : Exception
 {
     public RefreshTokenUsedException(string usedToken) : 
-        base(message: $"Refresh token {usedToken} was already used, try to log-in again")
+        base(message: $"Refresh token {usedToken} was already used, try to log-in again.")
     {
     }
 }

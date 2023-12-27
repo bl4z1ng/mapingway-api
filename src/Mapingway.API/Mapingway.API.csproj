@@ -10,7 +10,6 @@
     <ItemGroup>
         <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
@@ -18,7 +17,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Mapingway.Presentation\Mapingway.Presentation.csproj" />
       <ProjectReference Include="..\Mapingway.Application\Mapingway.Application.csproj" />
-      <ProjectReference Include="..\Mapingway.Domain\Mapingway.Domain.csproj" />
       <ProjectReference Include="..\Mapingway.Infrastructure\Mapingway.Infrastructure.csproj" />
     </ItemGroup>
 
