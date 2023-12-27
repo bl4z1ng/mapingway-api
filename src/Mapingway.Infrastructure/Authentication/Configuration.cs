@@ -14,12 +14,11 @@ public static class Configuration
     //TODO: cleanup
     internal static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureJwt(configuration);
         services
+            .ConfigureJwt(configuration)
+            .AddAuthenticationServices()
             .AddAuthentication()
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
-
-        services.AddAuthenticationServices();
 
         services
             .AddAuthorization()
@@ -29,16 +28,14 @@ public static class Configuration
         return services;
     }
 
-
     private static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
         // to not use Microsoft claims naming
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
-            .AddOptions<JwtOptions>()
-            .Bind(configuration.GetSection(JwtOptions.ConfigurationSection))
-            .ValidateOnStart();
+            .AddOptionsWithValidateOnStart<JwtOptions>()
+            .BindConfiguration(JwtOptions.ConfigurationSection);
 
         services.ConfigureOptions<TokenValidationParametersSetup>();
         services.ConfigureOptions<JwtBearerOptionsSetup>();
