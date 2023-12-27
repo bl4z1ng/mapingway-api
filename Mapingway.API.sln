@@ -23,7 +23,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF34F2C6-4DD5-4D37-86A5-03FAEABF391E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		src\Mapingway.API\Mapingway.Development.db = src\Mapingway.API\Mapingway.Development.db
 	EndProjectSection
 EndProject
 Global
