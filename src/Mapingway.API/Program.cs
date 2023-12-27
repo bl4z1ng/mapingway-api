@@ -20,18 +20,18 @@ builder.ConfigureLogging();
 builder.Services
     .AddApplication()
     .AddPresentation()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
+
+app.UseGlobalExceptionHandling();
 
 app.UseSwagger().UseSwaggerUI();
 
 app.UseCors(myAllowSpecificOrigins);
-app.UseSerilogRequestLogging();
-
 app.UseHttpsRedirection();
-
-app.UseGlobalExceptionHandling();
 
 app
     .UseAuthentication()

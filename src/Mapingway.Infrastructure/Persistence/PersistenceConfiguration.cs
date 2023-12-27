@@ -4,22 +4,26 @@ using Mapingway.Infrastructure.Persistence.Context;
 using Mapingway.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Mapingway.Infrastructure.Persistence;
 
 public static class PersistenceConfiguration
 {
-    public static IServiceCollection AddPersistance(this IServiceCollection services)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IHostEnvironment environment)
     {
         services
             .ConfigureOptions<DbOptionsSetup>()
             .AddRepositoriesAndUnitOfWork();
 
-#if DEBUG
-        services.AddDbContext<DbContext, DevelopmentDbContext>();
-#else 
+        if (environment.IsDevelopment())
+        {
+            services.AddDbContext<DbContext, DevelopmentDbContext>();
+        }
+        else
+        {
             services.AddDbContext<DbContext, ApplicationDbContext>();
-#endif
+        }
 
         return services;
     }

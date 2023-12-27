@@ -35,11 +35,20 @@
       <Content Update="configuration.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Remove="Logs\**" />
 
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Mapingway.Development.db" />
+      <Compile Remove="Logs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Logs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Logs\**" />
     </ItemGroup>
 
 </Project>

@@ -10,13 +10,5 @@
   "Hash": {
     "Pepper" : "p3PpErr0rS4lt",
     "Iterations" : "2"
-  },
-  "Validation" : {
-    "Name" : {
-      "MaxLength" : "256"
-    },
-    "Email" : {
-      "Pattern" : "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
-    }
   }
 }

@@ -25,8 +25,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.DeleteData(
                 table: "UserRole",
-                keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { 2, -1L });
+                keyColumns: ["RoleId", "UserId"],
+                keyValues: [2, -1L]);
 
             migrationBuilder.DeleteData(
                 table: "Users",
@@ -49,18 +49,19 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated" },
-                values: new object[] { 1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null });
+                columns: ["Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated"],
+                values: [1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null
+                ]);
 
             migrationBuilder.InsertData(
                 table: "RefreshTokenFamilies",
-                columns: new[] { "Id", "UserId" },
-                values: new object[] { 1L, 1L });
+                columns: ["Id", "UserId"],
+                values: [1L, 1L]);
 
             migrationBuilder.InsertData(
                 table: "UserRole",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 2, 1L });
+                columns: ["RoleId", "UserId"],
+                values: [2, 1L]);
         }
 
         /// <inheritdoc />
@@ -73,8 +74,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.DeleteData(
                 table: "UserRole",
-                keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { 2, 1L });
+                keyColumns: ["RoleId", "UserId"],
+                keyValues: [2, 1L]);
 
             migrationBuilder.DeleteData(
                 table: "Users",
@@ -97,18 +98,19 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated" },
-                values: new object[] { -1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null });
+                columns: ["Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated"],
+                values: [-1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null
+                ]);
 
             migrationBuilder.InsertData(
                 table: "RefreshTokenFamilies",
-                columns: new[] { "Id", "UserId" },
-                values: new object[] { -1L, -1L });
+                columns: ["Id", "UserId"],
+                values: [-1L, -1L]);
 
             migrationBuilder.InsertData(
                 table: "UserRole",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 2, -1L });
+                columns: ["RoleId", "UserId"],
+                values: [2, -1L]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
