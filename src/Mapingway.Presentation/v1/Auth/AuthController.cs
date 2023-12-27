@@ -43,9 +43,6 @@ public class AuthController : BaseApiController
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        if (User.Identity is { IsAuthenticated: true })
-            return Conflict("User is already authenticated.");
-
         var command = _requestToCommandMapper.Map(request);
         var result = await Sender.Send(command, cancellationToken);
 
@@ -86,9 +83,8 @@ public class AuthController : BaseApiController
         }
 
         UpdateUserContextToken(result.Value!.UserContextToken);
-        var response = _resultToResponseMapper.Map(result.Value);
 
-        return Ok(response);
+        return Ok(_resultToResponseMapper.Map(result.Value));
     }
 
     #region Metadata
