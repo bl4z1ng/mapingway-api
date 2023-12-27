@@ -28,8 +28,8 @@ builder.Services
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
-
 app.UseGlobalExceptionHandling();
+app.UseRequestLocalization();
 
 app.UseSwagger().UseSwaggerUI();
 
