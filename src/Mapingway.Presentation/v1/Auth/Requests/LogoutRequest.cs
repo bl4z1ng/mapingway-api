@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Mapingway.Presentation.Controllers.Requests.Auth;
+namespace Mapingway.Presentation.v1.Auth.Requests;
 
 public class LogoutRequest
 {

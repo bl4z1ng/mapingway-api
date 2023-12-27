@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Abstractions;
 using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
@@ -12,11 +11,11 @@ namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class AccessTokenService : IAccessTokenService
 {
-    private readonly IJwtTokenParser _jwtTokenParser;
-    private readonly JwtOptions _jwtOptions;
     private readonly IHasher _hasher;
-    private readonly ITokenGenerator _tokenGenerator;
+    private readonly JwtOptions _jwtOptions;
+    private readonly IJwtTokenParser _jwtTokenParser;
     private readonly IPermissionRepository _permissions;
+    private readonly ITokenGenerator _tokenGenerator;
 
 
     public AccessTokenService(

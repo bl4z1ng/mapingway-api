@@ -31,7 +31,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             .Include(user => user.Roles)
             .FirstOrDefaultAsync(user => user.Email == email, ct ?? CancellationToken.None);
     }
-    
+
     public async Task<User?> GetByEmailWithRefreshTokensAsync(string email, CancellationToken? ct = null)
     {
         return await DbSet

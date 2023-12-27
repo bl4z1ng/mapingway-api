@@ -7,9 +7,9 @@ namespace Mapingway.Application.Features.Auth.Logout;
 
 public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
 {
+    private readonly IRefreshTokenService _refreshTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
-    private readonly IRefreshTokenService _refreshTokenService;
 
 
     public LogoutCommandHandler(IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)

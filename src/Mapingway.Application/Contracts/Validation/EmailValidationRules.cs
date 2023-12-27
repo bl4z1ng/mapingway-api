@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Text.RegularExpressions;
+using FluentValidation;
 
 namespace Mapingway.Application.Contracts.Validation;
 
@@ -11,6 +12,6 @@ public static partial class EmailValidationRules
             .WithMessage("Email is invalid.");
     }
 
-    [System.Text.RegularExpressions.GeneratedRegex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")]
-    private static partial System.Text.RegularExpressions.Regex Email();
+    [GeneratedRegex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")]
+    private static partial Regex Email();
 }

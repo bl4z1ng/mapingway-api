@@ -1,6 +1,6 @@
 using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Authentication;
-using Mapingway.Presentation.Controllers.Response;
+using Mapingway.Presentation.v1.Auth.Responses;
 using Riok.Mapperly.Abstractions;
 
 namespace Mapingway.Presentation.Mapping;

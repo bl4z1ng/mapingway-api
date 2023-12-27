@@ -6,8 +6,8 @@ namespace Mapingway.Infrastructure.Persistence.Repositories;
 
 public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    protected readonly DbSet<TEntity> DbSet;
     protected readonly DbContext Context;
+    protected readonly DbSet<TEntity> DbSet;
 
 
     protected GenericRepository(DbContext context)

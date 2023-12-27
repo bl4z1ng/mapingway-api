@@ -4,25 +4,19 @@ using Mapingway.SharedKernel.ValidationResult;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace Mapingway.Presentation.Controllers;
+namespace Mapingway.Presentation.v1;
 
-[ApiRoute("[controller]")]
-[Produces(MediaTypeNames.Application.Json)]
 [ApiController]
+[Produces(MediaTypeNames.Application.Json)]
 public class BaseApiController : ControllerBase
 {
-    protected delegate IActionResult FailureResultDelegate(object? value);
-    protected readonly ILogger Logger;
     protected readonly ISender Sender;
 
-    public BaseApiController(ILoggerFactory loggerFactory, ISender sender, string controllerType = "BaseController")
+    public BaseApiController(ISender sender)
     {
         Sender = sender;
-        Logger = loggerFactory.CreateLogger(controllerType);
     }
-
 
     [NonAction]
     protected IActionResult Failure(Result result, FailureResultDelegate generateFailureResult)
@@ -44,9 +38,9 @@ public class BaseApiController : ControllerBase
 
 
     private static ProblemDetails CreateProblemDetails(
-        string title, 
-        int status, 
-        Error error, 
+        string title,
+        int status,
+        Error error,
         Error[]? errors = null)
     {
         return new ProblemDetails
@@ -58,4 +52,6 @@ public class BaseApiController : ControllerBase
             Extensions = { { nameof(errors), errors } }
         };
     }
+
+    protected delegate IActionResult FailureResultDelegate(object? value);
 }

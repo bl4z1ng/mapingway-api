@@ -2,8 +2,8 @@
 using Mapingway.Application.Features.Auth.Logout;
 using Mapingway.Application.Features.Auth.Refresh;
 using Mapingway.Application.Features.User.Register;
-using Mapingway.Presentation.Controllers.Requests.Auth;
-using Mapingway.Presentation.Controllers.Requests.User;
+using Mapingway.Presentation.v1.Auth.Requests;
+using Mapingway.Presentation.v1.User.Requests;
 using Riok.Mapperly.Abstractions;
 
 namespace Mapingway.Presentation.Mapping;

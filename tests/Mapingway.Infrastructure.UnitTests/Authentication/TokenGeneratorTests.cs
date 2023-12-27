@@ -10,21 +10,21 @@ namespace Mapingway.Infrastructure.Tests.Authentication;
 
 public class TokenGeneratorTests
 {
-    private static readonly AccessTokenDetails ValidAccessTokenData;
-    private static readonly AccessTokenDetails InvalidAccessTokenData;
+    private static readonly AccessTokenDetails _validAccessTokenData;
+    private static readonly AccessTokenDetails _invalidAccessTokenData;
 
     static TokenGeneratorTests()
     {
-        ValidAccessTokenData = new AccessTokenDetails(
+        _validAccessTokenData = new AccessTokenDetails(
             Issuer: "testIssuer",
             Audience: "testAudience",
             TokenLifeSpan: TimeSpan.FromHours(1),
             SigningKeyBytes: "signingKeyS1gningk3y123qweqweqweqweqwe!"u8.ToArray(),
             Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
-        
-        InvalidAccessTokenData = new AccessTokenDetails(
+
+        _invalidAccessTokenData = new AccessTokenDetails(
             Issuer: string.Empty,
-            Audience: string.Empty, 
+            Audience: string.Empty,
             TokenLifeSpan: TimeSpan.FromHours(-1),
             SigningKeyBytes: ""u8.ToArray(),
             Claims: new List<Claim> { new(ClaimTypes.Name, "testUser") });
@@ -37,15 +37,13 @@ public class TokenGeneratorTests
 
     public static List<object?[]> GenerateInvalidAccessTokenData()
     {
-        return new List<object?[]>
-        {
-            new object?[] { ValidAccessTokenData with { Audience = InvalidAccessTokenData.Audience }, null },
-            new object?[] { ValidAccessTokenData with { Issuer = InvalidAccessTokenData.Issuer }, null },
-            new object?[]
-                { ValidAccessTokenData with { SigningKeyBytes = InvalidAccessTokenData.SigningKeyBytes }, null },
-            new object?[]
-                { ValidAccessTokenData with { TokenLifeSpan = InvalidAccessTokenData.TokenLifeSpan }, null },
-        };
+        return
+        [
+            [_validAccessTokenData with { Audience = _invalidAccessTokenData.Audience }, null],
+            [_validAccessTokenData with { Issuer = _invalidAccessTokenData.Issuer }, null],
+            [_validAccessTokenData with { SigningKeyBytes = _invalidAccessTokenData.SigningKeyBytes }, null],
+            [_validAccessTokenData with { TokenLifeSpan = _invalidAccessTokenData.TokenLifeSpan }, null]
+        ];
     }
 
 
@@ -58,16 +56,16 @@ public class TokenGeneratorTests
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = ValidAccessTokenData.Issuer,
+            ValidIssuer = _validAccessTokenData.Issuer,
             ValidateAudience = true,
-            ValidAudience = ValidAccessTokenData.Audience,
+            ValidAudience = _validAccessTokenData.Audience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey = new SymmetricSecurityKey(ValidAccessTokenData.SigningKeyBytes)
+            IssuerSigningKey = new SymmetricSecurityKey(_validAccessTokenData.SigningKeyBytes)
         };
 
         // act
-        var accessToken = generator.GenerateAccessToken(ValidAccessTokenData);
+        var accessToken = generator.GenerateAccessToken(_validAccessTokenData);
 
         // assert
         accessToken.Should().NotBeNullOrEmpty();

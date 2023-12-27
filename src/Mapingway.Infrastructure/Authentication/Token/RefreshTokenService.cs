@@ -9,13 +9,13 @@ namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class RefreshTokenService : IRefreshTokenService
 {
-    private readonly ILogger _logger;
     private readonly JwtOptions _jwtOptions;
+    private readonly ILogger _logger;
+    private readonly IUsedRefreshTokenFamilyRepository _refreshTokenFamilies;
+    private readonly IRefreshTokenRepository _refreshTokens;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IRefreshTokenRepository _refreshTokens;
     private readonly IUserRepository _users;
-    private readonly IUsedRefreshTokenFamilyRepository _refreshTokenFamilies;
 
 
     public RefreshTokenService(

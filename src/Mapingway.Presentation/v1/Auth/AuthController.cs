@@ -1,32 +1,27 @@
-﻿using Mapingway.SharedKernel.Result;
-using Mapingway.Infrastructure.Authentication.Claims;
-using Mapingway.Presentation.Controllers.Requests.Auth;
-using Mapingway.Presentation.Controllers.Response;
+﻿using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Presentation.Mapping;
-using Mapingway.Presentation.Swagger.Documentation;
 using Mapingway.Presentation.Swagger.Examples.Results.Auth;
+using Mapingway.Presentation.v1.Auth.Requests;
+using Mapingway.Presentation.v1.Auth.Responses;
+using Mapingway.SharedKernel.Result;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.Presentation.Controllers;
+namespace Mapingway.Presentation.v1.Auth;
 
-[SwaggerControllerOrder(1)]
+[Route(Routes.BasePath, Order = 1)]
 public class AuthController : BaseApiController
 {
     private readonly IRequestToCommandMapper _requestToCommandMapper;
     private readonly IResultToResponseMapper _resultToResponseMapper;
 
-
     public AuthController(
-        ILoggerFactory loggerFactory, 
-        ISender sender, 
+        ISender sender,
         IRequestToCommandMapper requestToCommandMapper,
-        IResultToResponseMapper resultToResponseMapper) : 
-        base(loggerFactory, sender, typeof(AuthController).ToString())
+        IResultToResponseMapper resultToResponseMapper) : base(sender)
     {
         _requestToCommandMapper = requestToCommandMapper;
         _resultToResponseMapper = resultToResponseMapper;
@@ -49,8 +44,8 @@ public class AuthController : BaseApiController
     [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
 
     #endregion
+    [HttpPost]
     [AllowAnonymous]
-    [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
         if (User.Identity is { IsAuthenticated: true })
@@ -85,13 +80,13 @@ public class AuthController : BaseApiController
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResultExample))]
 
     #endregion
+    [HttpPost]
     [AllowAnonymous]
-    [HttpPost("[action]")]
     public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var command = _requestToCommandMapper.Map(request);
         var result = await Sender.Send(command, cancellationToken);
-        
+
         if (result.IsFailure)
         {
             return Failure(result, BadRequest);
@@ -116,9 +111,8 @@ public class AuthController : BaseApiController
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResultExample))]
 
     #endregion
+    [HttpPost]
     [Authorize]
-    //TODO: move to common route config
-    [HttpPost("[action]")]
     public async Task<IActionResult> Logout(LogoutRequest request, CancellationToken cancellationToken)
     {
         var email = User.GetEmailClaim();
@@ -160,5 +154,5 @@ public class AuthController : BaseApiController
         Response.Cookies.Delete(CustomClaims.UserContext);
     }
 
-    #endregion 
+    #endregion
 }

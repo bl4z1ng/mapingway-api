@@ -21,12 +21,12 @@ namespace Mapingway.Infrastructure.Tests.Authentication;
 
 public class AuthenticationServiceTests
 {
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IOptions<JwtOptions> _jwtOptions;
-    private readonly ITokenGenerator _tokenGenerator;
     private readonly IHasher _hasher;
+    private readonly IOptions<JwtOptions> _jwtOptions;
     private readonly IJwtTokenParser _jwtTokenParser;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ITokenGenerator _tokenGenerator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthenticationServiceTests()
     {
@@ -59,7 +59,7 @@ public class AuthenticationServiceTests
             _unitOfWork,
             _jwtTokenParser);
     }
-    
+
     [Fact]
     public async Task GenerateAccessToken_ValidUser_ValidToken()
     {

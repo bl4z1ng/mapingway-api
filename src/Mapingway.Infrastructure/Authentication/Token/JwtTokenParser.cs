@@ -8,9 +8,9 @@ namespace Mapingway.Infrastructure.Authentication.Token;
 
 public class JwtTokenParser : IJwtTokenParser
 {
-    private readonly TokenValidationParameters _tokenValidationParameters;
     private readonly TokenValidationParameters _expiredTokenValidationParameters;
     private readonly ILogger<JwtTokenParser> _logger;
+    private readonly TokenValidationParameters _tokenValidationParameters;
 
     public JwtTokenParser(ILoggerFactory loggerFactory, IOptions<TokenValidationParameters> options)
     {

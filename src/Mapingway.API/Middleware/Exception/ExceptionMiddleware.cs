@@ -7,8 +7,8 @@ namespace Mapingway.API.Middleware.Exception;
 
 public class ExceptionMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionMiddleware> _logger;
+    private readonly RequestDelegate _next;
 
 
     public ExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)

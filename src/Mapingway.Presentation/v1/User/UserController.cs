@@ -1,29 +1,25 @@
 using Mapingway.Application.Contracts;
-using Mapingway.SharedKernel.Result;
-using Mapingway.Presentation.Controllers.Requests.User;
 using Mapingway.Presentation.Mapping;
-using Mapingway.Presentation.Swagger.Documentation;
 using Mapingway.Presentation.Swagger.Examples.Results.User;
+using Mapingway.Presentation.v1.User.Requests;
+using Mapingway.SharedKernel.Result;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.Presentation.Controllers;
+namespace Mapingway.Presentation.v1.User;
 
-[SwaggerControllerOrder(0)]
+[Route(Routes.BasePath, Order = 2)]
 public class UserController : BaseApiController
 {
     private readonly IRequestToCommandMapper _requestToCommandMapper;
 
-    public UserController(ILoggerFactory loggerFactory, IRequestToCommandMapper requestToCommandMapper, IMediator mediator) 
-        : base(loggerFactory, mediator, typeof(UserController).ToString())
+    public UserController(IRequestToCommandMapper requestToCommandMapper, ISender sender) : base(sender)
     {
         _requestToCommandMapper = requestToCommandMapper;
     }
-
 
     #region Metadata
 
@@ -40,8 +36,8 @@ public class UserController : BaseApiController
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(Register400ErrorResultExample))]
 
     #endregion
+    [HttpPost]
     [AllowAnonymous]
-    [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
         var command = _requestToCommandMapper.Map(request);
