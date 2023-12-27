@@ -26,26 +26,11 @@ public static class Configuration
                     Url = new Uri("https://www.linkedin.com/in/max-pyte/")
                 }
             });
-            options.OperationFilter<SwaggerLocalizationFilter>();
 
             var xmlFilename = $"{Presentation.AssemblyReference.GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n " +
-                              "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" +
-                              "Example: \"Bearer " +
-                              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-                              ".eyJzdWIiOiJTdXBlckppamEifQ" +
-                              ".FxuEPRdkBjpbq_3bH0cdwTUqvXpMA7IceNNC3ZgYIzId\"",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-            });
-
+            options.OperationFilter<SwaggerLocalizationFilter>();
             options.EnableAnnotations();
             options.ExampleFilters();
             options.AddCommonStatusCodesResponses();
