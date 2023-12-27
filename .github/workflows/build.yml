@@ -48,7 +48,7 @@ jobs:
         run: dotnet restore ./Mapingway.API.sln
 
       - name: Build solution
-        run: dotnet build --no-restore --configuration Release --environment Production
+        run: dotnet build --no-restore --configuration Release
 
       - name: Test solution
         run: dotnet test --no-build --configuration Release
