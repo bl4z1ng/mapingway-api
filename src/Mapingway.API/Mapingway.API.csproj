@@ -42,7 +42,4 @@
       <None Remove="Mapingway.Development.db" />
     </ItemGroup>
 
-
-
-
 </Project>

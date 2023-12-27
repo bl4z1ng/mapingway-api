@@ -70,7 +70,7 @@ jobs:
         if: ${{ inputs.build-artifacts == true }}
         run: |
           dotnet new tool-manifest
-          dotnet tool install dotnet-ef --version 7.0.11
+          dotnet tool install dotnet-ef --version 8.0.0
           dotnet ef migrations bundle --project Mapingway.Infrastructure/Mapingway.Infrastructure.csproj --startup-project Mapingway.API/Mapingway.API.csproj --context Mapingway.Infrastructure.Persistence.ApplicationDbContext --configuration Production --runtime linux-x64 --output efbundle.dll --self-contained --force --verbose
           zip -r ./efbundle.zip efbundle.dll
         working-directory: ./src/
