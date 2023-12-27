@@ -8,12 +8,10 @@ public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationP
 {
     private readonly JwtOptions _jwtOptions;
 
-
     public TokenValidationParametersSetup(IOptions<JwtOptions> jwtOptions)
     {
         _jwtOptions = jwtOptions.Value;
     }
-
 
     public void Configure(TokenValidationParameters options)
     {

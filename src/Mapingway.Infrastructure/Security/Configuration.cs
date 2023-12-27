@@ -13,6 +13,7 @@ public static class Configuration
             .Bind(configuration.GetSection(HashOptions.ConfigurationSection))
             .ValidateOnStart();
 
+        //TODO: change to scoped, if access state
         services.AddTransient<IHasher, Hasher>();
 
         return services;

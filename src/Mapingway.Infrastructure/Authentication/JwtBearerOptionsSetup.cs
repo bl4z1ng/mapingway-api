@@ -1,6 +1,5 @@
 ﻿using Mapingway.Application.Contracts;
 using Mapingway.Infrastructure.Authentication.Claims;
-using Mapingway.Infrastructure.Authentication.Token;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -23,7 +22,6 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
         _hasher = hasher;
         _tokenValidationParameters = tokenValidationParameters.Value;
     }
-
 
     // https://stackoverflow.com/questions/71132926/jwtbeareroptions-configure-method-not-getting-executed
     // The subtility here is that AddJwtBearer() uses a named options delegate.

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -26,7 +27,7 @@ public class CamelCaseDocumentFilter : IDocumentFilter
     {
         var parts = key.Split('/').Select(part => part.Contains('}') ?
             part :
-            System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(part));
+            JsonNamingPolicy.CamelCase.ConvertName(part));
 
         return string.Join('/', parts);
     }

@@ -1,6 +1,6 @@
 ﻿using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Presentation.Mapping;
-using Mapingway.Presentation.Swagger.Examples.Results.Auth;
+using Mapingway.Presentation.Swagger.Examples.Results;
 using Mapingway.Presentation.v1.Auth.Requests;
 using Mapingway.Presentation.v1.Auth.Responses;
 using Mapingway.SharedKernel.Result;
@@ -35,12 +35,12 @@ public class AuthController : BaseApiController
     /// <returns>
     /// A newly generated Bearer token.
     /// </returns>
-    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(AccessTokenResponse), StatusCodes.Status200OK)]
 
     #endregion
     [HttpPost]
     [AllowAnonymous]
+
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
         var command = _requestToCommandMapper.Map(request);
@@ -65,9 +65,9 @@ public class AuthController : BaseApiController
     /// <returns>
     /// A newly generated Bearer access and refresh tokens.
     /// </returns>
-    [ProducesResponseType(typeof(RefreshResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AccessTokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResultExample))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResponseExample))]
 
     #endregion
     [HttpPost]
@@ -96,7 +96,7 @@ public class AuthController : BaseApiController
     /// <response code="400">If the user's access token is invalid.</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResultExample))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResponseExample))]
 
     #endregion
     [HttpPost]
@@ -104,18 +104,12 @@ public class AuthController : BaseApiController
     public async Task<IActionResult> Logout(LogoutRequest request, CancellationToken cancellationToken)
     {
         var email = User.GetEmailClaim();
-        if (email is null)
-        {
-            return BadRequest("Authorization data is invalid.");
-        }
+        if (email is null) return BadRequest("Authorization data is invalid, email was not found.");
 
         var command = _requestToCommandMapper.Map(email, request.RefreshToken);
         var result = await Sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return Failure(result, BadRequest);
-        }
+        if (result.IsFailure) return Failure(result, BadRequest);
 
         RemoveUserContextToken();
 
