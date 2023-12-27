@@ -8,6 +8,7 @@ public class TokenGenerator : ITokenGenerator
 {
     public string? GenerateAccessToken(AccessTokenDetails details)
     {
+        //TODO: add pattern matching
         if(string.IsNullOrEmpty(details.Issuer) ||
            string.IsNullOrEmpty(details.Audience) ||
            details.TokenLifeSpan.Ticks < 0 ||
@@ -15,10 +16,9 @@ public class TokenGenerator : ITokenGenerator
         {
             return null;
         }
-        
+
         var signingKey = new SigningCredentials(
-            new SymmetricSecurityKey(details.SigningKeyBytes), 
-            SecurityAlgorithms.HmacSha256);
+            new SymmetricSecurityKey(details.SigningKeyBytes), SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             details.Issuer,

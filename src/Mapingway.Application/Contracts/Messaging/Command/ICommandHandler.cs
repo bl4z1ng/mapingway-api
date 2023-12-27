@@ -1,7 +1,7 @@
 ﻿using Mapingway.SharedKernel.Result;
 using MediatR;
 
-namespace Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+namespace Mapingway.Application.Contracts.Messaging.Command;
 
 public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand, Result> 
     where TCommand : ICommand

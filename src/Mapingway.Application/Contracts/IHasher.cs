@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Application.Contracts.Abstractions;
+﻿namespace Mapingway.Application.Contracts;
 
 public interface IHasher
 {

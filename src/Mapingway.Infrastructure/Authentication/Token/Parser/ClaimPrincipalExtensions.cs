@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Mapingway.Infrastructure.Authentication.Claims;
 
-namespace Mapingway.Infrastructure.Authentication.Token;
+namespace Mapingway.Infrastructure.Authentication.Token.Parser;
 
 public static class ClaimPrincipalExtensions
 {

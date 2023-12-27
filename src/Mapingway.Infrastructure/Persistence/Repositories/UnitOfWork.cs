@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts.Abstractions;
+﻿using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Authentication;
 using Microsoft.EntityFrameworkCore;
 

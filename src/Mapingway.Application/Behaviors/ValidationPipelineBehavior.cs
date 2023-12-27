@@ -11,25 +11,17 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-
     public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
 
-
-    public async Task<TResult> Handle(
-        TRequest command,
-        RequestHandlerDelegate<TResult> next,
-        CancellationToken cancellationToken)
+    public async Task<TResult> Handle(TRequest command, RequestHandlerDelegate<TResult> next, CancellationToken ct)
     {
-        if (!_validators.Any())
-        {
-            return await next();
-        }
+        if (!_validators.Any()) return await next();
 
         var errors = _validators
-            .Select(v => v.ValidateAsync(command, cancellationToken))
+            .Select(v => v.ValidateAsync(command, ct))
             .SelectMany(vr => vr.Result.Errors)
             .Where(vr => vr is not null)
             .Select(failure => new Error(failure.PropertyName, failure.ErrorMessage))
@@ -43,7 +35,6 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
 
         return await next();
     }
-
 
     private static TResult CreateValidationResult(Error[] errors)
     {

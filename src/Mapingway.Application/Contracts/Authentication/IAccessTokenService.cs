@@ -1,7 +1,8 @@
-﻿namespace Mapingway.Application.Contracts.Authentication;
+﻿using Mapingway.SharedKernel.Result;
+
+namespace Mapingway.Application.Contracts.Authentication;
 
 public interface IAccessTokenService
 {
-    public Task<AccessUnit> GenerateAccessToken(long userId, string email, CancellationToken? ct = null);
-    string? GetEmailFromExpiredToken(string expiredToken);
+    public Task<Result<AccessUnit>> GenerateAccessToken(long userId, string email, CancellationToken ct = default);
 }

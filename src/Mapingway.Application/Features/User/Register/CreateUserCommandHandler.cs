@@ -1,7 +1,6 @@
 ﻿using Mapingway.Application.Contracts;
-using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Application.Contracts.Messaging.Command;
 using Mapingway.Domain.Auth;
 using Mapingway.SharedKernel.Result;
 
@@ -16,7 +15,6 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
     public CreateUserCommandHandler(IHasher hasher, IUnitOfWork unitOfWork)
     {
         _hasher = hasher;
-
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
     }

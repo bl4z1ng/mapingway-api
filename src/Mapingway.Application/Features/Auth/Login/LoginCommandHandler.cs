@@ -1,12 +1,12 @@
 ﻿using Mapingway.Application.Contracts;
-using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Application.Contracts.Errors;
+using Mapingway.Application.Contracts.Messaging.Command;
 using Mapingway.SharedKernel.Result;
 
 namespace Mapingway.Application.Features.Auth.Login;
 
-public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
+public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResult>
 {
     private readonly IAccessTokenService _accessTokenService;
     private readonly IHasher _hasher;
@@ -30,46 +30,28 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationR
     }
 
 
-    public async Task<Result<AuthenticationResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResult>> Handle(LoginCommand request, CancellationToken ct = default)
     {
-        var user = await _users.GetByEmailAsync(request.Email, cancellationToken);
-        if (user is null)
-        {
-            return Result.Failure<AuthenticationResult>(new Error(
-                ErrorCode.NotFound, 
-                "User with given e-mail is not found."));
-        }
+        var user = await _users.GetByEmailAsync(request.Email, ct);
+        if (user is null) return Result.Failure<LoginResult>(UserError.NotFound);
 
         var passwordHash = _hasher.GenerateHash(request.Password, user.PasswordSalt!);
-        if (passwordHash != user.PasswordHash)
-        {
-            return Result.Failure<AuthenticationResult>(new Error(
-                ErrorCode.InvalidCredentials, 
-                "Email or password is incorrect."));
-        }
+        if (passwordHash != user.PasswordHash) return Result.Failure<LoginResult>(AuthError.InvalidPassword);
 
-        var activeRefreshToken = await _refreshTokenService.CreateTokenAsync(user.Email, cancellationToken);
-        if (activeRefreshToken is null)
-        {
-            return Result.Failure<AuthenticationResult>(new Error(
-                ErrorCode.RefreshTokenIsInvalid, 
-                "Refresh token is invalid, try to login again."));
-        }
-        
-        var accessUnit = await _accessTokenService.GenerateAccessToken(user.Id, user.Email, cancellationToken);
-        if (!accessUnit.IsSuccess)
-        {
-            return Result.Failure<AuthenticationResult>(new Error(
-                ErrorCode.InvalidCredentials, 
-                "Failed to generate access token."));
-        }
+        var refreshTokenRequest = await _refreshTokenService.CreateTokenAsync(user.Email, ct);
+        if (refreshTokenRequest.IsFailure) return Result.Failure<LoginResult>(refreshTokenRequest.Error);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return new AuthenticationResult
+        var accessTokenRequest = await _accessTokenService.GenerateAccessToken(user.Id, user.Email, ct);
+        if (accessTokenRequest.IsFailure) return Result.Failure<LoginResult>(accessTokenRequest.Error);
+
+        await _unitOfWork.SaveChangesAsync(ct);
+
+        //TODO: mapster
+        return new LoginResult
         {
-            Token = accessUnit.AccessToken!,
-            UserContextToken = accessUnit.UserContextToken,
-            RefreshToken = activeRefreshToken.Value
+            Token = accessTokenRequest.Value!.AccessToken!,
+            UserContextToken = accessTokenRequest.Value!.UserContextToken,
+            RefreshToken = refreshTokenRequest.Value!.Value
         };
     }
 }

@@ -1,10 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Mapingway.Application.Features.Auth.Refresh;
+using Mapingway.Infrastructure.Authentication.Claims;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Mapingway.Infrastructure.Authentication.Token;
+namespace Mapingway.Infrastructure.Authentication.Token.Parser;
 
 public class JwtTokenParser : IJwtTokenParser
 {
@@ -25,6 +27,11 @@ public class JwtTokenParser : IJwtTokenParser
     }
 
 
+    public string? GetEmailFromExpiredToken(string expiredToken, bool isTokenExpired = false)
+    {
+        return GetPrincipalFromToken(expiredToken, isTokenExpired).GetEmailClaim();
+    }
+
     public ClaimsPrincipal GetPrincipalFromToken(string token, bool isTokenExpired = false)
     {
         var tokenValidationParameters = isTokenExpired ? _expiredTokenValidationParameters : _tokenValidationParameters;
@@ -35,8 +42,8 @@ public class JwtTokenParser : IJwtTokenParser
         try
         {
             principal = tokenValidationHandler.ValidateToken(
-                token, 
-                tokenValidationParameters, 
+                token,
+                tokenValidationParameters,
                 out securityToken);
         }
         catch (ArgumentException e)

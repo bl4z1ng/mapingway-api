@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts.Abstractions;
+﻿using Mapingway.Application.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

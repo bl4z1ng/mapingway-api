@@ -1,4 +1,5 @@
 using Mapingway.Application.Contracts;
+using Mapingway.Application.Features.User.Register;
 using Mapingway.Presentation.Mapping;
 using Mapingway.Presentation.Swagger.Examples.Results.User;
 using Mapingway.Presentation.v1.User.Requests;

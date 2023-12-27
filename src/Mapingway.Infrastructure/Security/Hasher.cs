@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Security;

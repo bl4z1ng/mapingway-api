@@ -2,11 +2,13 @@
 using System.Security.Claims;
 using System.Text;
 using FluentAssertions;
-using Mapingway.Application.Contracts.Abstractions;
+using Mapingway.Application.Contracts;
+using Mapingway.Application.Features.Auth.Refresh;
 using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token;
+using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -18,7 +20,6 @@ public class AuthenticationServiceTests
 {
     private readonly IHasher _hasher;
     private readonly IOptions<JwtOptions> _jwtOptions;
-    private readonly IJwtTokenParser _jwtTokenParser;
     private readonly ILoggerFactory _loggerFactory;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
@@ -28,8 +29,7 @@ public class AuthenticationServiceTests
         _loggerFactory = Substitute.For<ILoggerFactory>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _hasher = Substitute.For<IHasher>();
-        _jwtTokenParser = Substitute.For<IJwtTokenParser>();
-        
+
         var jwtOptions = new JwtOptions
         {
             Issuer = "Mapingway",
@@ -51,8 +51,7 @@ public class AuthenticationServiceTests
             _jwtOptions,
             _tokenGenerator,
             _hasher,
-            _unitOfWork,
-            _jwtTokenParser);
+            _unitOfWork);
     }
 
     [Fact]
@@ -106,8 +105,8 @@ public class AuthenticationServiceTests
         var token = await accessTokenService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
 
         // Assert
-        token.AccessToken.Should().NotBeNullOrWhiteSpace();
-        token.AccessToken.Should().Be(validAccessToken);
+        token.Value!.AccessToken.Should().NotBeNullOrWhiteSpace();
+        token.Value!.AccessToken.Should().Be(validAccessToken);
         _tokenGenerator.Received(1);
     }
 }

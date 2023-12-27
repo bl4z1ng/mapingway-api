@@ -1,7 +1,9 @@
-﻿using Mapingway.Application.Contracts.Abstractions;
+﻿using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Application.Contracts.Errors;
 using Mapingway.Domain.Auth;
 using Mapingway.Infrastructure.Authentication.Exceptions;
+using Mapingway.SharedKernel.Result;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -17,15 +19,14 @@ public class RefreshTokenService : IRefreshTokenService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
 
-
     public RefreshTokenService(
         ILoggerFactory loggerFactory,
-        IOptions<JwtOptions> jwtOptions, 
+        IOptions<JwtOptions> jwtOptions,
         ITokenGenerator tokenGenerator,
         IUnitOfWork unitOfWork)
     {
         _logger = loggerFactory.CreateLogger<RefreshTokenService>();
-        
+
         _jwtOptions = jwtOptions.Value;
         _tokenGenerator = tokenGenerator;
 
@@ -36,41 +37,36 @@ public class RefreshTokenService : IRefreshTokenService
     }
 
 
-    public async Task<RefreshToken?> CreateTokenAsync(
-        string email, 
-        CancellationToken? cancellationToken = null)
+    public async Task<Result<RefreshToken>> CreateTokenAsync(string email, CancellationToken ct = default)
     {
-        var user = await _users.GetByEmailWithRefreshTokensAsync(email, cancellationToken);
-        if (user is null) return null;
-        
-        var newToken = _tokenGenerator.GenerateRandomToken();
-        
-        return await AddRefreshTokenAsync(
-            user.RefreshTokensFamily,
-            newToken,
-            cancellationToken: cancellationToken ?? CancellationToken.None);
+        var user = await _users.GetByEmailWithRefreshTokensAsync(email, ct);
+        if (user is null) return Result.Failure<RefreshToken>(UserError.NotFound);
+
+        var newRefreshToken = _tokenGenerator.GenerateRandomToken();
+
+        return await AddRefreshTokenAsync(user.RefreshTokensFamily, newRefreshToken, ct);
     }
 
-    public async Task<RefreshToken?> RefreshTokenAsync(
-        string email, 
-        string oldTokenKey, 
-        CancellationToken? cancellationToken = null)
+    public async Task<Result<RefreshToken>> RefreshTokenAsync(
+        string email,
+        string oldTokenKey, CancellationToken ct = default)
     {
-        var user = await _users.GetByEmailWithRefreshTokensAsync(email, cancellationToken);
-        if (user is null) return null;
+        //TODO: refactor
+        var user = await _users.GetByEmailWithRefreshTokensAsync(email, ct);
+        if (user is null) return Result.Failure<RefreshToken>(UserError.NotFound);
 
         var oldToken = user.RefreshTokensFamily.Tokens.FirstOrDefault(token => token.Value == oldTokenKey);
 
-        if (oldToken is null || oldToken.ExpiresAt < DateTime.UtcNow) return null;
+        if (oldToken is null || oldToken.ExpiresAt < DateTime.UtcNow) return null;//TODO: pass error
         if (oldToken.IsUsed)
         {
             user.RefreshTokensFamily.InvalidateAllActiveTokens();
-            await _unitOfWork.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
+            await _unitOfWork.SaveChangesAsync(ct);
 
             _logger.LogWarning(
                 "An attempt to use token {OldToken} (for user: id {UserId}, email {UserEmail}), " +
                 "that is already used", oldTokenKey, user.Id, user.Email);
-        
+
             throw new RefreshTokenUsedException($"{oldTokenKey}");
         }
 
@@ -80,35 +76,32 @@ public class RefreshTokenService : IRefreshTokenService
         var result = await AddRefreshTokenAsync(
             user.RefreshTokensFamily,
             newToken,
-            cancellationToken: cancellationToken ?? CancellationToken.None);
+            ct: ct);
 
         return result;
     }
 
-    public async Task<bool> InvalidateTokenAsync(
-        string userEmail, 
-        string oldTokenKey, 
-        CancellationToken? ct = null)
+    public async Task<Result> InvalidateTokenAsync(string userEmail, string oldToken, CancellationToken ct = default)
     {
-        var user = await _users.GetByEmailWithRefreshTokensAsync(userEmail, ct ?? CancellationToken.None);
-        if (user is null) return false;
+        var user = await _users.GetByEmailWithRefreshTokensAsync(userEmail, ct);
+        if (user is null) return Result.Failure(UserError.NotFound);
 
-        var token = user.RefreshTokensFamily.Tokens.FirstOrDefault(token => token.Value == oldTokenKey);
-        if (token is null) return false;
+        var token = user.RefreshTokensFamily.Tokens.FirstOrDefault(token => token.Value == oldToken);
+        if (token is null) return Result.Failure(TokenError.NotFound);
 
         user.RefreshTokensFamily.InvalidateRefreshToken(token.Value);
 
         _refreshTokenFamilies.Update(user.RefreshTokensFamily);
         _refreshTokens.Update(token);
 
-        return true;
+        return Result.Success();
     }
 
 
-    private async Task<RefreshToken?> AddRefreshTokenAsync(
-        RefreshTokenFamily tokenFamily, 
+    private async Task<Result<RefreshToken>> AddRefreshTokenAsync(
+        RefreshTokenFamily tokenFamily,
         string newTokenKey,
-        CancellationToken? cancellationToken = null)
+        CancellationToken ct = default)
     {
         var newRefreshToken = RefreshTokenExtensions.CreateNotUsed(
             newTokenKey,
@@ -116,7 +109,7 @@ public class RefreshTokenService : IRefreshTokenService
 
         tokenFamily.Tokens.Add(newRefreshToken);
 
-        await _refreshTokens.CreateAsync(newRefreshToken, cancellationToken);
+        await _refreshTokens.CreateAsync(newRefreshToken, ct);
         _refreshTokenFamilies.Update(tokenFamily);
 
         return newRefreshToken;

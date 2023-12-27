@@ -17,7 +17,7 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : c
     }
 
 
-    public virtual async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken? ct = null)
+    public virtual async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken ct = default)
     {
         var query = (IQueryable<TEntity>)DbSet;
 
@@ -26,17 +26,17 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : c
             query = query.Where(filter);
         }
 
-        return await query.ToListAsync(ct ?? CancellationToken.None);
+        return await query.ToListAsync(ct);
     }
 
-    public virtual async Task<TEntity?> GetByIdAsync(object? id, CancellationToken? ct = null)
+    public virtual async Task<TEntity?> GetByIdAsync(object? id, CancellationToken ct = default)
     {
-        return await DbSet.FindAsync(new[] { id }, cancellationToken: ct ?? CancellationToken.None);
+        return await DbSet.FindAsync([id], cancellationToken: ct);
     }
 
-    public virtual async Task CreateAsync(TEntity user, CancellationToken? ct = null)
+    public virtual async Task CreateAsync(TEntity user, CancellationToken ct = default)
     {
-        await DbSet.AddAsync(user, ct ?? CancellationToken.None);
+        await DbSet.AddAsync(user, ct);
     }
 
     public virtual void Update(TEntity entity)
@@ -45,15 +45,12 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : c
         DbSet.Entry(entity).State = EntityState.Modified;
     }
 
-    public virtual async Task DeleteAsync(int id, CancellationToken? ct = null)
+    public virtual async Task DeleteAsync(int id, CancellationToken ct = default)
     {
-        var entity = await DbSet.FindAsync(new object?[] { id }, 
-            cancellationToken: ct ?? CancellationToken.None);
+        var entity = await DbSet.FindAsync([id], cancellationToken: ct);
 
         if (entity is not null)
-        {
             Delete(entity);
-        }
     }
 
     public virtual void Delete(TEntity entityToDelete)
@@ -62,6 +59,7 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : c
         {
             DbSet.Attach(entityToDelete);
         }
+
         DbSet.Remove(entityToDelete);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Mapingway.Application.Contracts;
-using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+using Mapingway.Application.Contracts.Messaging.Command;
 
 namespace Mapingway.Application.Features.User.Register;
 

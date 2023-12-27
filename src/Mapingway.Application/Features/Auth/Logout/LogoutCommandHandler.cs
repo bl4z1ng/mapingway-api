@@ -1,44 +1,26 @@
-﻿using Mapingway.Application.Contracts.Abstractions;
-using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+﻿using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Application.Contracts.Messaging.Command;
 using Mapingway.SharedKernel.Result;
 
 namespace Mapingway.Application.Features.Auth.Logout;
 
+// ReSharper disable once UnusedType.Global
 public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
 {
     private readonly IRefreshTokenService _refreshTokenService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserRepository _userRepository;
 
-
-    public LogoutCommandHandler(IUnitOfWork unitOfWork, IRefreshTokenService refreshTokenService)
+    public LogoutCommandHandler(IRefreshTokenService refreshTokenService, IUnitOfWork unitOfWork)
     {
-        _unitOfWork = unitOfWork;
-        _userRepository = unitOfWork.Users;
-
         _refreshTokenService = refreshTokenService;
+        _unitOfWork = unitOfWork;
     }
-
 
     public async Task<Result> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
-        var userExists = await _userRepository.DoesUserExistsByEmailAsync(request.Email, cancellationToken);
-        if (!userExists)
-        {
-            return Result.Failure(new Error(
-                ErrorCode.InvalidCredentials,
-                "Access token is invalid"));
-        }
-
-        var userHadActiveToken =
-            await _refreshTokenService.InvalidateTokenAsync(request.Email, request.RefreshToken);
-        if (!userHadActiveToken)
-        {
-            return Result.Failure(new Error(
-                ErrorCode.NotFound,
-                "User is not found or has no active refresh token, try to log-in again."));
-        }
+        var invalidateRequest = await _refreshTokenService.InvalidateTokenAsync(request.Email, request.RefreshToken);
+        if (invalidateRequest.IsFailure) return Result.Failure(invalidateRequest.Error);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

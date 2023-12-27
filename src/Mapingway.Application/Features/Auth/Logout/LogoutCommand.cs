@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts.Abstractions.Messaging.Command;
+﻿using Mapingway.Application.Contracts.Messaging.Command;
 
 namespace Mapingway.Application.Features.Auth.Logout;
 

@@ -6,10 +6,8 @@ public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenComman
 {
     public RefreshTokenCommandValidator()
     {
-        RuleFor(c => c.ExpiredToken)
-            .NotEmpty();
+        RuleFor(c => c.ExpiredToken).NotEmpty();
 
-        RuleFor(c => c.RefreshToken)
-            .NotEmpty();
+        RuleFor(c => c.RefreshToken).NotEmpty();
     }
 }

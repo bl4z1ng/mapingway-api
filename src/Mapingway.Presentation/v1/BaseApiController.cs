@@ -26,8 +26,8 @@ public class BaseApiController : ControllerBase
             throw new InvalidOperationException();
         }
 
-        return result.IsValidationResult()
-            ? BadRequest(
+        return result is ValidationResult
+            ? UnprocessableEntity(
             CreateProblemDetails(
                 "Validation Error",
                 StatusCodes.Status400BadRequest,
