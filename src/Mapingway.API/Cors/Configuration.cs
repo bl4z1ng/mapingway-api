@@ -1,4 +1,6 @@
-﻿namespace Mapingway.API.Cors;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Mapingway.API.Cors;
 
 public static class Configuration
 {

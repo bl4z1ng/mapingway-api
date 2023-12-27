@@ -19,16 +19,16 @@ public class Hasher : IHasher
     public string GenerateHash(string rawValue, string? salt = null)
     {
         var iterations = _hashOptions.Iterations;
-        
+
         while (iterations > 0)
         {
             iterations--;
 
             var passwordSaltPepper = $"{rawValue}{salt ?? ""}{_hashOptions.Pepper}";
             var bytes = Encoding.UTF8.GetBytes(passwordSaltPepper);
-            
+
             var byteHash = SHA256.HashData(bytes);
-            
+
             rawValue = Convert.ToBase64String(byteHash);
         }
 
@@ -39,7 +39,7 @@ public class Hasher : IHasher
     {
         var rng = RandomNumberGenerator.Create();
         var byteSalt = new byte[16];
-        
+
         rng.GetBytes(byteSalt);
 
         var salt = Convert.ToBase64String(byteSalt);

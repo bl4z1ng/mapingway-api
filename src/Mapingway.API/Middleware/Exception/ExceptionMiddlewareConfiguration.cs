@@ -1,4 +1,6 @@
-﻿namespace Mapingway.API.Middleware.Exception;
+﻿using Microsoft.AspNetCore.Builder;
+
+namespace Mapingway.API.Middleware.Exception;
 
 public static class ExceptionMiddlewareConfiguration
 {

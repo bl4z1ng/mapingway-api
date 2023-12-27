@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using FluentAssertions;
 using Mapingway.Application;
 using Mapingway.Domain;

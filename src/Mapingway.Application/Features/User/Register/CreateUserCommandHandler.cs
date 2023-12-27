@@ -16,7 +16,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
     public CreateUserCommandHandler(IHasher hasher, IUnitOfWork unitOfWork)
     {
         _hasher = hasher;
-        
+
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.Users;
     }

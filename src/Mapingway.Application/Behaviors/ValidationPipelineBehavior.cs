@@ -19,8 +19,8 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
 
 
     public async Task<TResult> Handle(
-        TRequest command, 
-        RequestHandlerDelegate<TResult> next, 
+        TRequest command,
+        RequestHandlerDelegate<TResult> next,
         CancellationToken cancellationToken)
     {
         if (!_validators.Any())
