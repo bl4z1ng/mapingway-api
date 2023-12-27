@@ -22,7 +22,7 @@ public class RefreshTokenFamily
     {
         var notUsedTokens = Tokens.Where(token => !token.IsUsed).ToList();
 
-        var isTokenInvalidatedFlags = 
+        var isTokenInvalidatedFlags =
             notUsedTokens.Select(token => InvalidateRefreshToken(token.Value));
 
         var isErrorOccured = isTokenInvalidatedFlags.Any(invalidated => !invalidated);

@@ -27,16 +27,16 @@ public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
         if (!userExists)
         {
             return Result.Failure(new Error(
-                ErrorCode.InvalidCredentials, 
+                ErrorCode.InvalidCredentials,
                 "Access token is invalid"));
         }
 
-        var userHadActiveToken = 
+        var userHadActiveToken =
             await _refreshTokenService.InvalidateTokenAsync(request.Email, request.RefreshToken);
         if (!userHadActiveToken)
         {
             return Result.Failure(new Error(
-                ErrorCode.NotFound, 
+                ErrorCode.NotFound,
                 "User is not found or has no active refresh token, try to log-in again."));
         }
 

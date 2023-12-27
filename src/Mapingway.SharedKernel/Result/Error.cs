@@ -33,8 +33,8 @@ public sealed class Error : IEquatable<Error>
     }
 
 
-    public static implicit operator string(Error? error) => error is null || error.Code == ErrorCode.None.ToString() 
-        ? string.Empty 
+    public static implicit operator string(Error? error) => error is null || error.Code == ErrorCode.None.ToString()
+        ? string.Empty
         : error.Code;
 
     public static bool operator ==(Error? a, Error? b)
