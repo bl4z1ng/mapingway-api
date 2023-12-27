@@ -10,8 +10,8 @@ namespace Mapingway.Infrastructure.Authentication;
 public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly IHasher _hasher;
-    private readonly TokenValidationParameters _tokenValidationParameters;
     private readonly JwtOptions _jwtOptions;
+    private readonly TokenValidationParameters _tokenValidationParameters;
 
 
     public JwtBearerOptionsSetup(

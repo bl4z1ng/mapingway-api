@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using Mapingway.Presentation.Swagger.Documentation;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -9,16 +6,12 @@ namespace Mapingway.Presentation.Swagger;
 
 public static class Configuration
 {
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     public static IServiceCollection ConfigureSwagger(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
-        
-        var swaggerControllerOrder = new SwaggerControllerOrder<ControllerBase>(Assembly.GetEntryAssembly());
+
         services.AddSwaggerGen(options =>
         {
-            options.OrderActionsBy((apiDesc) 
-                => $"{swaggerControllerOrder.SortKey(apiDesc.ActionDescriptor.RouteValues["controller"])}");
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Mapingway API",
@@ -51,9 +44,9 @@ public static class Configuration
             });
             options.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
-                    new OpenApiSecurityScheme 
+                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference 
+                        Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"

@@ -1,5 +1,4 @@
-﻿using Mapingway.Domain.Auth;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Permission = Mapingway.Infrastructure.Authentication.Permissions.Permission;
 

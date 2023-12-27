@@ -1,4 +1,4 @@
-﻿using Mapingway.Presentation.Controllers.Requests.User;
+﻿using Mapingway.Presentation.v1.User.Requests;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.Presentation.Swagger.Examples.Requests.User;

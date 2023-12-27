@@ -7,10 +7,6 @@ namespace Mapingway.Infrastructure.Persistence.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DbContext _context;
-    public IUserRepository Users { get; }
-    public IPermissionRepository Permissions { get; }
-    public IRefreshTokenRepository RefreshTokens { get; }
-    public IUsedRefreshTokenFamilyRepository RefreshTokenFamilies { get; }
 
 
     public UnitOfWork(
@@ -27,6 +23,11 @@ public class UnitOfWork : IUnitOfWork
         RefreshTokens = refreshTokens;
         RefreshTokenFamilies = usedRefreshTokenFamilies;
     }
+
+    public IUserRepository Users { get; }
+    public IPermissionRepository Permissions { get; }
+    public IRefreshTokenRepository RefreshTokens { get; }
+    public IUsedRefreshTokenFamilyRepository RefreshTokenFamilies { get; }
 
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

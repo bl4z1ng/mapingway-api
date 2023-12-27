@@ -9,9 +9,9 @@ namespace Mapingway.Application.Features.User.Register;
 
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, RegisterResult>
 {
+    private readonly IHasher _hasher;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
-    private readonly IHasher _hasher;
 
     public CreateUserCommandHandler(IHasher hasher, IUnitOfWork unitOfWork)
     {

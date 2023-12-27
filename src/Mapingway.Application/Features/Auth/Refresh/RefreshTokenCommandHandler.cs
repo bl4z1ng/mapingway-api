@@ -7,10 +7,10 @@ namespace Mapingway.Application.Features.Auth.Refresh;
 
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, RefreshTokenResult>
 {
+    private readonly IAccessTokenService _accessTokenService;
     private readonly IRefreshTokenService _refreshTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
-    private readonly IAccessTokenService _accessTokenService;
 
 
     public RefreshTokenCommandHandler(

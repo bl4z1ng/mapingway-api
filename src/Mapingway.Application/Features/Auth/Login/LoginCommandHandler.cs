@@ -8,11 +8,11 @@ namespace Mapingway.Application.Features.Auth.Login;
 
 public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationResult>
 {
+    private readonly IAccessTokenService _accessTokenService;
     private readonly IHasher _hasher;
     private readonly IRefreshTokenService _refreshTokenService;
-    private readonly IAccessTokenService _accessTokenService;
-    private readonly IUserRepository _users;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _users;
 
 
     public LoginCommandHandler(

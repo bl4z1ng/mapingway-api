@@ -1,6 +1,6 @@
-namespace Mapingway.Presentation.Controllers.Response;
+namespace Mapingway.Presentation.v1.Auth.Responses;
 
-public class RefreshResponse
+public class LoginResponse
 {
     public string Token { get; init; } = null!;
     public string RefreshToken { get; init; } = null!;
