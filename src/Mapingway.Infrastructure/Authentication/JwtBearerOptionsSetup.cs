@@ -1,4 +1,4 @@
-﻿using Mapingway.Application.Contracts;
+﻿using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

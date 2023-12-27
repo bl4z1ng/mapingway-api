@@ -1,6 +1,4 @@
-﻿using Mapingway.Application.Contracts.Authentication;
-
-namespace Mapingway.Application.Contracts;
+﻿namespace Mapingway.Application.Contracts.Authentication;
 
 public interface IUnitOfWork
 {

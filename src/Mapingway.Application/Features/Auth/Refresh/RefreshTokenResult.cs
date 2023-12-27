@@ -1,4 +1,4 @@
-﻿namespace Mapingway.Application.Contracts.Authentication;
+﻿namespace Mapingway.Application.Features.Auth.Refresh;
 
 public class RefreshTokenResult
 {

@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Features.User.Register;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.Presentation.Swagger.Examples.Results;
+namespace Mapingway.Presentation.Swagger.Examples;
 
 public class RegisterResultExample : IExamplesProvider<RegisterResult>
 {

@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using FluentAssertions;
-using Mapingway.Application.Contracts;
+using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;

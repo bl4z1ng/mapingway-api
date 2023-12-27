@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Mapingway.Presentation.Mapping;
 using Mapingway.Presentation.Swagger;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,8 +9,9 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services.AddControllers();
-        services.AddMappers();
         services.ConfigureSwagger();
+
+        Mappings.Add();
 
         return services;
     }

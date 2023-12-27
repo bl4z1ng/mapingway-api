@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Mapingway.Application.Contracts;
 using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Application.Contracts.Errors;
 using Mapingway.Infrastructure.Authentication.Claims;

@@ -1,8 +1,8 @@
 using Mapingway.Application.Features.User.Register;
-using Mapingway.Presentation.Mapping;
-using Mapingway.Presentation.Swagger.Examples.Results;
+using Mapingway.Presentation.Swagger.Examples;
 using Mapingway.Presentation.v1.User.Requests;
 using Mapingway.SharedKernel.Result;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +14,7 @@ namespace Mapingway.Presentation.v1.User;
 [Route(Routes.BasePath, Order = 2)]
 public class UserController : BaseApiController
 {
-    private readonly IRequestToCommandMapper _requestToCommandMapper;
-
-    public UserController(IRequestToCommandMapper requestToCommandMapper, ISender sender) : base(sender)
-    {
-        _requestToCommandMapper = requestToCommandMapper;
-    }
+    public UserController(ISender sender, IMapper mapper) : base(sender, mapper) { }
 
     #region Metadata
 
@@ -40,10 +35,11 @@ public class UserController : BaseApiController
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct = default)
     {
-        var command = _requestToCommandMapper.Map(request);
+        var command = Mapper.Map<CreateUserCommand>(request);
 
         var result = await Sender.Send(command, ct);
 
+        //TODO: split response and result
         return result.IsSuccess ? Ok(result.Value) : Failure(result, BadRequest);
     }
 }
