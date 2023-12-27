@@ -51,7 +51,4 @@
       <None Remove="Logs\**" />
     </ItemGroup>
 
-
-
-
 </Project>
