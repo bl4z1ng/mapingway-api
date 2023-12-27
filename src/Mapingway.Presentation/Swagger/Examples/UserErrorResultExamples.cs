@@ -1,7 +1,7 @@
 ﻿using Mapingway.SharedKernel.Result;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Mapingway.Presentation.Swagger.Examples.Results;
+namespace Mapingway.Presentation.Swagger.Examples;
 
 public class Register400ErrorResultExample : IExamplesProvider<Error>
 {

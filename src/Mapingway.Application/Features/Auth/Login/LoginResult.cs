@@ -2,7 +2,7 @@
 
 public class LoginResult
 {
-    public string Token { get; init; } = null!;
-    public string RefreshToken { get; init; } = null!;
-    public string UserContextToken { get; init; } = null!;
+    public required string Token { get; init; } = null!;
+    public required string RefreshToken { get; init; } = null!;
+    public required string UserContextToken { get; init; } = null!;
 }

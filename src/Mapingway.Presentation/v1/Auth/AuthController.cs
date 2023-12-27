@@ -1,9 +1,12 @@
-﻿using Mapingway.Infrastructure.Authentication.Claims;
-using Mapingway.Presentation.Mapping;
-using Mapingway.Presentation.Swagger.Examples.Results;
+﻿using Mapingway.Application.Features.Auth.Login;
+using Mapingway.Application.Features.Auth.Logout;
+using Mapingway.Application.Features.Auth.Refresh;
+using Mapingway.Infrastructure.Authentication.Claims;
+using Mapingway.Presentation.Swagger.Examples;
 using Mapingway.Presentation.v1.Auth.Requests;
 using Mapingway.Presentation.v1.Auth.Responses;
 using Mapingway.SharedKernel.Result;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,17 +18,7 @@ namespace Mapingway.Presentation.v1.Auth;
 [Route(Routes.BasePath, Order = 1)]
 public class AuthController : BaseApiController
 {
-    private readonly IRequestToCommandMapper _requestToCommandMapper;
-    private readonly IResultToResponseMapper _resultToResponseMapper;
-
-    public AuthController(
-        ISender sender,
-        IRequestToCommandMapper requestToCommandMapper,
-        IResultToResponseMapper resultToResponseMapper) : base(sender)
-    {
-        _requestToCommandMapper = requestToCommandMapper;
-        _resultToResponseMapper = resultToResponseMapper;
-    }
+    public AuthController(ISender sender, IMapper mapper) : base(sender, mapper) { }
 
     #region Metadata
 
@@ -40,19 +33,19 @@ public class AuthController : BaseApiController
     #endregion
     [HttpPost]
     [AllowAnonymous]
-
-    public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<AccessTokenResponse>> Login([FromBody] LoginRequest request, CancellationToken ct)
     {
-        var command = _requestToCommandMapper.Map(request);
-        var result = await Sender.Send(command, cancellationToken);
+        var command = Mapper.Map<LoginCommand>(request);
 
-        if (!result.IsSuccess)
+        var result = await Sender.Send(command, ct);
+
+        if (result.IsFailure)
         {
             return Failure(result, Unauthorized);
         }
 
         UpdateUserContextToken(result.Value!.UserContextToken);
-        var response = _resultToResponseMapper.Map(result.Value);
+        var response = Mapper.Map<AccessTokenResponse>(result.Value);
 
         return Ok(response);
     }
@@ -72,19 +65,17 @@ public class AuthController : BaseApiController
     #endregion
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken ct)
     {
-        var command = _requestToCommandMapper.Map(request);
-        var result = await Sender.Send(command, cancellationToken);
+        var command = Mapper.Map<RefreshTokenCommand>(request);
 
-        if (result.IsFailure)
-        {
-            return Failure(result, BadRequest);
-        }
+        var result = await Sender.Send(command, ct);
+        if (result.IsFailure) return Failure(result, BadRequest);
 
         UpdateUserContextToken(result.Value!.UserContextToken);
+        var response = Mapper.Map<AccessTokenResponse>(result.Value);
 
-        return Ok(_resultToResponseMapper.Map(result.Value));
+        return Ok(response);
     }
 
     #region Metadata
@@ -101,18 +92,17 @@ public class AuthController : BaseApiController
     #endregion
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Logout(LogoutRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Logout(LogoutRequest request, CancellationToken ct)
     {
         var email = User.GetEmailClaim();
         if (email is null) return BadRequest("Authorization data is invalid, email was not found.");
 
-        var command = _requestToCommandMapper.Map(email, request.RefreshToken);
-        var result = await Sender.Send(command, cancellationToken);
+        var command = Mapper.Map<LogoutCommand>((email, request.RefreshToken));
 
+        var result = await Sender.Send(command, ct);
         if (result.IsFailure) return Failure(result, BadRequest);
 
         RemoveUserContextToken();
-
         return Ok();
     }
 

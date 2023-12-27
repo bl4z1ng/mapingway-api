@@ -1,5 +1,4 @@
-﻿using Mapingway.Application.Contracts;
-using Mapingway.Application.Contracts.Authentication;
+﻿using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Application.Contracts.Messaging.Command;
 using Mapingway.Domain.Auth;
 using Mapingway.SharedKernel.Result;

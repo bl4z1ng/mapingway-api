@@ -1,5 +1,4 @@
-﻿using Mapingway.Application.Contracts.Authentication;
-using Mapingway.Application.Contracts.Messaging.Command;
+﻿using Mapingway.Application.Contracts.Messaging.Command;
 
 namespace Mapingway.Application.Features.Auth.Refresh;
 
