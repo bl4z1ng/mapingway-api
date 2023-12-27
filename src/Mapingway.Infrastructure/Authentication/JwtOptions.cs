@@ -13,6 +13,7 @@ public class JwtOptions
 
     [BindRequired]
     public TimeSpan AccessTokenLifetime { get; init; }
+
     [BindRequired]
     public TimeSpan RefreshTokenLifetime { get; init; }
 }

@@ -1,5 +1,4 @@
-﻿using Mapingway.Application.Contracts;
-using Mapingway.Application.Contracts.Messaging.Command;
+﻿using Mapingway.Application.Contracts.Messaging.Command;
 
 namespace Mapingway.Application.Features.Auth.Login;
 

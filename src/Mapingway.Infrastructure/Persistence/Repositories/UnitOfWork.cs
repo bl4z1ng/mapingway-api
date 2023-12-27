@@ -8,10 +8,9 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly DbContext _context;
 
-
     public UnitOfWork(
-        DbContext context, 
-        IUserRepository users, 
+        DbContext context,
+        IUserRepository users,
         IPermissionRepository permissions,
         IRefreshTokenRepository refreshTokens,
         IUsedRefreshTokenFamilyRepository usedRefreshTokenFamilies)

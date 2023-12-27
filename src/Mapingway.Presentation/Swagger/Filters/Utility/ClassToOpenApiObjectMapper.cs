@@ -53,12 +53,7 @@ public static class ClassToOpenApiObjectMapper
     }
 
 
-
-
-
     //TODO: REMOVE THE FUCKING MAPPER, YOU ONLY NEED ONE MAPPING
-
-
 
 
     private static OpenApiObject ErrorToOpenApiObject(ProblemDetails problemDetails, bool namesToLowerInvariant = false)

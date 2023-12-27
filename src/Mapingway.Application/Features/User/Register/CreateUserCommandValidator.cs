@@ -17,6 +17,10 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             //TODO: think about common number for all validation rules
             .MaximumLength(256);
 
+        RuleFor(c => c.LastName)
+            //TODO: think about common number for all validation rules
+            .MaximumLength(256).When(command => command.LastName is not null);
+
         RuleFor(c => c.Email)
             .NotEmpty()
             .ValidEmail()

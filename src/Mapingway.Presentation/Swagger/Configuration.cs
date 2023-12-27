@@ -19,14 +19,13 @@ public static class Configuration
                 Title = "Mapingway API",
                 Description = "An ASP.NET Core Web API for managing routes and checkpoints of Mapingway Web Cient",
                 Version = "v1",
-                Contact = new OpenApiContact()
+                Contact = new OpenApiContact
                 {
                     Name = "Max Pyte",
                     Email = "without.auth0@gmail.com",
                     Url = new Uri("https://www.linkedin.com/in/max-pyte/")
                 }
             });
-            options.OperationFilter<SwaggerLocalizationFilter>();
 
             var xmlFilename = $"{Presentation.AssemblyReference.GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -46,6 +45,7 @@ public static class Configuration
                 Type = SecuritySchemeType.ApiKey,
             });
 
+            options.OperationFilter<SwaggerLocalizationFilter>();
             options.EnableAnnotations();
             options.ExampleFilters();
             options.AddCommonStatusCodesResponses();
