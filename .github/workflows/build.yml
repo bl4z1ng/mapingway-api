@@ -18,6 +18,10 @@ on:
         type: boolean
         required: true
         default: false
+      environment:
+        type: string
+        required: true
+        default: Development
 
 jobs:
   build:
