@@ -21,3 +21,4 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       build-artifacts: true
+      environment: Production
