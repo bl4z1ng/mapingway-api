@@ -10,7 +10,7 @@ public class Hasher : IHasher
     private readonly HashOptions _hashOptions;
 
 
-    public Hasher(IOptions<HashOptions> hashOptions)
+    public Hasher(IOptionsSnapshot<HashOptions> hashOptions)
     {
         _hashOptions = hashOptions.Value;
     }

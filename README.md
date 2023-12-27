@@ -1,6 +1,8 @@
 # Mapingway API
 
-Backend application for travel routes managing
+[![email](https://img.shields.io/badge/Contact_the-Author-8A2BE2)](mailto:maksim.pytiel.00@gmail.com)
+
+[Mapingway](https://github.com/bl4z1ng/mapingway-api) is a ASP.NET Core API for travel routes and checkpoints management.
 
 ## Deployment
 
@@ -28,16 +30,3 @@ To enable HTTPS on local machine you need to:
 
 After local deployment you can connect to containerised database using credentials from the **.env** file:
 ![localdb-connection.png](.github/readmecontent/localdb-connection.png)
-
-
-
-
-
-
-
-
-
-
-
-
-[Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
