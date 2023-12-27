@@ -1,12 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Mapingway.Presentation.v1.Auth.Requests;
+﻿namespace Mapingway.Presentation.v1.Auth.Requests;
 
 public sealed class LoginRequest
 {
-    [Required]
-    public string Email { get; init; } = null!;
-
-    [Required]
-    public string Password { get; init; } = null!;
+    public required string Email { get; init; }
+    public required string Password { get; init; }
 }

@@ -35,12 +35,7 @@ public class AuthController : BaseApiController
     /// <returns>
     /// A newly generated Bearer token.
     /// </returns>
-    /// <response code="200">User is successfully logged in.</response>
-    /// <response code="401">If user credentials are not valid.</response>
-    /// <response code="409">If the user is already authenticated.</response>
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
-    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(Authentication401ErrorResultExample))]
     [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
 
     #endregion
@@ -48,9 +43,6 @@ public class AuthController : BaseApiController
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        if (User.Identity is { IsAuthenticated: true })
-            return Conflict("User is already authenticated.");
-
         var command = _requestToCommandMapper.Map(request);
         var result = await Sender.Send(command, cancellationToken);
 
@@ -73,8 +65,6 @@ public class AuthController : BaseApiController
     /// <returns>
     /// A newly generated Bearer access and refresh tokens.
     /// </returns>
-    /// <response code="200">Returns the newly created access and refresh tokens.</response>
-    /// <response code="400">If the refresh token is invalid or already used.</response>
     [ProducesResponseType(typeof(RefreshResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResultExample))]
@@ -93,9 +83,8 @@ public class AuthController : BaseApiController
         }
 
         UpdateUserContextToken(result.Value!.UserContextToken);
-        var response = _resultToResponseMapper.Map(result.Value);
 
-        return Ok(response);
+        return Ok(_resultToResponseMapper.Map(result.Value));
     }
 
     #region Metadata
@@ -105,7 +94,6 @@ public class AuthController : BaseApiController
     /// </summary>
     /// <response code="200">Token is successfully invalidated.</response>
     /// <response code="400">If the user's access token is invalid.</response>
-    /// <response code="401">If user context is missing.</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResultExample))]

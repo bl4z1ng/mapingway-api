@@ -14,15 +14,11 @@ public static class Configuration
     //TODO: cleanup
     internal static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthenticationServices();
-
-        services.ConfigureJwt(configuration);
         services
-            .AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer();
+            .ConfigureJwt(configuration)
+            .AddAuthenticationServices()
+            .AddAuthentication()
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
 
         services
             .AddAuthorization()
@@ -32,17 +28,15 @@ public static class Configuration
         return services;
     }
 
-
     private static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
         // to not use Microsoft claims naming
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
-            .AddOptions<JwtOptions>()
-            .Bind(configuration.GetSection(JwtOptions.ConfigurationSection))
-            .ValidateOnStart();
-        
+            .AddOptionsWithValidateOnStart<JwtOptions>()
+            .BindConfiguration(JwtOptions.ConfigurationSection);
+
         services.ConfigureOptions<TokenValidationParametersSetup>();
         services.ConfigureOptions<JwtBearerOptionsSetup>();
 

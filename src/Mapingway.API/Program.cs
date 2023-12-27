@@ -1,4 +1,5 @@
 using Mapingway.API.Cors;
+using Mapingway.API.Localization;
 using Mapingway.API.Logging;
 using Mapingway.API.Middleware.Exception;
 using Mapingway.Application;
@@ -17,6 +18,8 @@ builder.Services.ConfigureCors(myAllowSpecificOrigins);
 
 builder.ConfigureLogging();
 
+builder.Services.AddLocalizationRules();
+
 builder.Services
     .AddApplication()
     .AddPresentation()
@@ -25,8 +28,8 @@ builder.Services
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
-
 app.UseGlobalExceptionHandling();
+app.UseRequestLocalization();
 
 app.UseSwagger().UseSwaggerUI();
 

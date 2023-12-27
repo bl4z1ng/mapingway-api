@@ -38,7 +38,9 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.2.0" />
       <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Filters.Abstractions" Version="7.0.12" />
     </ItemGroup>
 
 </Project>

@@ -13,7 +13,6 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
 
-
     public JwtBearerOptionsSetup(
         IOptions<TokenValidationParameters> tokenValidationParameters,
         IHasher hasher,
@@ -30,7 +29,7 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     // Instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions
     public void Configure(string? name, JwtBearerOptions options)
     {
-        // to not use Microsoft claims naming 
+        //to not use Microsoft claims naming
         options.MapInboundClaims = false;
         options.TokenValidationParameters = _tokenValidationParameters;
         options.Events = new JwtBearerEvents
@@ -45,17 +44,17 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 
                 if (userContextCookieMissing || userContextHashClaimMissing)
                 {
-                    context.Fail("User context is missing or removed. Try to log-in again");
+                    context.Fail("User context is missing or removed. Try to log-in again.");
 
                     return Task.CompletedTask;
                 }
 
-                var userContextHashClaim = context.Principal.GetUserContextTokenClaim();
+                var userContextHashClaim = context.Principal.GetUserContextClaim();
                 var userContextHashCookie = _hasher.GenerateHash(userContextCookie!, _jwtOptions.UserContextSalt);
 
                 if (userContextHashClaim != userContextHashCookie)
                 {
-                    context.Fail("User context is invalid. Try to log-in again");
+                    context.Fail("User context is invalid. Try to log-in again.");
                 }
 
                 return Task.CompletedTask;
