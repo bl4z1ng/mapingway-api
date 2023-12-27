@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using System.Text.Json;
 using Mapingway.Infrastructure.Authentication.Exceptions;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 
 namespace Mapingway.API.Middleware.Exception;
 
@@ -41,7 +41,7 @@ public class ExceptionMiddleware
         {
             var timeSpan = DateTime.Now;
             _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
-            
+
             // TODO: remove ex.Message, make specific message without token expose
             await HandleException(
                 ExceptionMessage.UsedRefreshTokenException,
@@ -55,7 +55,7 @@ public class ExceptionMiddleware
         {
             var timeSpan = DateTime.Now;
             _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
-            
+
             await HandleException(
                 ExceptionMessage.InvalidAccessToken,
                 ex.Message,
@@ -68,7 +68,7 @@ public class ExceptionMiddleware
         {
             var timeSpan = DateTime.Now;
             _logger.LogError(ex, "In {Time} was caught exception: {Exception}", timeSpan.ToLongTimeString(), ex);
-            
+
             await HandleException(
                 ExceptionMessage.ServerErrorException,
                 ex.Message,
@@ -81,10 +81,10 @@ public class ExceptionMiddleware
 
 
     private async Task HandleException(
-        string message, 
-        string exceptionMessage, 
-        HttpStatusCode httpStatusCode, 
-        HttpContext context, 
+        string message,
+        string exceptionMessage,
+        HttpStatusCode httpStatusCode,
+        HttpContext context,
         DateTime timeSpan)
     {
         var statusCode = (int)httpStatusCode;
@@ -99,6 +99,6 @@ public class ExceptionMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCode;
 
-        await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 }
