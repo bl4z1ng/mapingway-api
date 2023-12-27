@@ -3,8 +3,6 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 {
     /// <inheritdoc />
@@ -157,7 +155,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.InsertData(
                 table: "Permissions",
-                columns: new[] { "Id", "Name" },
+                columns: ["Id", "Name"],
                 values: new object[,]
                 {
                     { 1, "ReadUser" },
@@ -167,7 +165,7 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "Name" },
+                columns: ["Id", "Name"],
                 values: new object[,]
                 {
                     { 1, "User" },
@@ -176,17 +174,18 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated" },
-                values: new object[] { -1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null });
+                columns: ["Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated"],
+                values: [-1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null
+                ]);
 
             migrationBuilder.InsertData(
                 table: "RefreshTokenFamilies",
-                columns: new[] { "Id", "UserId" },
-                values: new object[] { -1L, -1L });
+                columns: ["Id", "UserId"],
+                values: [-1L, -1L]);
 
             migrationBuilder.InsertData(
                 table: "RolePermission",
-                columns: new[] { "PermissionId", "RoleId" },
+                columns: ["PermissionId", "RoleId"],
                 values: new object[,]
                 {
                     { 1, 1 },
@@ -197,8 +196,8 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
 
             migrationBuilder.InsertData(
                 table: "UserRole",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 2, -1L });
+                columns: ["RoleId", "UserId"],
+                values: [2, -1L]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokenFamilies_UserId",
