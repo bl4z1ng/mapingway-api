@@ -9,12 +9,10 @@ public class Hasher : IHasher
 {
     private readonly HashOptions _hashOptions;
 
-
-    public Hasher(IOptionsSnapshot<HashOptions> hashOptions)
+    public Hasher(IOptions<HashOptions> hashOptions)
     {
         _hashOptions = hashOptions.Value;
     }
-
 
     public string GenerateHash(string rawValue, string? salt = null)
     {
