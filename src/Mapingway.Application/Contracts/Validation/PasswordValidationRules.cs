@@ -10,7 +10,7 @@ public static partial class PasswordValidationRules
         //TODO: apply number
         return rule
             .Must(password => LettersRegex().IsMatch(password))
-            .WithMessage((_, email) => $"Email should be valid, provided value: `{email}`.");
+            .WithMessage((_, _) => $"The password must contain at least {numberOfLetters} letters.");
     }
 
     [GeneratedRegex("^(?:[^a-zA-Z]*[a-zA-Z]){3}.*$")]

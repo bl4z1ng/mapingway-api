@@ -41,7 +41,7 @@ public class AuthController : BaseApiController
 
         if (result.IsFailure)
         {
-            return Failure(result, Unauthorized);
+            return Error(result);
         }
 
         UpdateUserContextToken(result.Value!.UserContextToken);
@@ -70,7 +70,7 @@ public class AuthController : BaseApiController
         var command = Mapper.Map<RefreshTokenCommand>(request);
 
         var result = await Sender.Send(command, ct);
-        if (result.IsFailure) return Failure(result, BadRequest);
+        if (result.IsFailure) return Error(result);
 
         UpdateUserContextToken(result.Value!.UserContextToken);
         var response = Mapper.Map<AccessTokenResponse>(result.Value);
@@ -100,7 +100,7 @@ public class AuthController : BaseApiController
         var command = Mapper.Map<LogoutCommand>((email, request.RefreshToken));
 
         var result = await Sender.Send(command, ct);
-        if (result.IsFailure) return Failure(result, BadRequest);
+        if (result.IsFailure) return Error(result);
 
         RemoveUserContextToken();
         return Ok();

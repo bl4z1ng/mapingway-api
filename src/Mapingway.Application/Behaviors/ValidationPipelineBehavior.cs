@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
+using Mapingway.Application.Behaviors.Validation;
 using Mapingway.SharedKernel.Result;
-using Mapingway.SharedKernel.ValidationResult;
 using MediatR;
+using ValidationResult = Mapingway.Application.Behaviors.Validation.ValidationResult;
 
 namespace Mapingway.Application.Behaviors;
 
@@ -16,38 +18,39 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
         _validators = validators;
     }
 
-    public async Task<TResult> Handle(TRequest command, RequestHandlerDelegate<TResult> next, CancellationToken ct)
+    public async Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken ct)
     {
         if (!_validators.Any()) return await next();
 
-        var errors = _validators
-            .Select(v => v.ValidateAsync(command, ct))
-            .SelectMany(vr => vr.Result.Errors)
-            .Where(vr => vr is not null)
-            .Select(failure => new Error(failure.PropertyName, failure.ErrorMessage))
+        var validationResults = await Task.WhenAll(
+            _validators.Select(validator => validator.ValidateAsync(request, ct)));
+
+        var failures = validationResults
+            .Where(vr => !vr.IsValid)
+            .SelectMany(vr => vr.Errors)
             .Distinct()
-            .ToArray();
+            .ToList();
 
-        if (errors.Length != 0)
-        {
-            return CreateValidationResult(errors);
-        }
+        if (failures.Count == 0) return await next();
 
-        return await next();
+         return ValidationFailedResult(failures);
     }
 
-    private static TResult CreateValidationResult(Error[] errors)
+    private static TResult ValidationFailedResult(IEnumerable<ValidationFailure> failures)
     {
         if (typeof(TResult) == typeof(Result))
         {
-            return (ValidationResult.WithErrors(errors) as TResult)!;
+            return (ValidationResult.WithFailures(failures) as TResult)!;
         }
+
+        //If generic version of Result<TValue> used
+        var resultGenericParameter = typeof(TResult).GenericTypeArguments[0];
 
         var result = typeof(ValidationResult<>)
             .GetGenericTypeDefinition()
-            .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
-            .GetMethod(nameof(ValidationResult.WithErrors))!
-            .Invoke(null, [errors]);
+            .MakeGenericType(resultGenericParameter)
+            .GetMethod(nameof(ValidationResult.WithFailures))!
+            .Invoke(null, [failures]);
 
         return (result as TResult)!;
     }
