@@ -1,14 +1,15 @@
+using Hellang.Middleware.ProblemDetails;
 using Mapingway.API.Cors;
 using Mapingway.API.Localization;
 using Mapingway.API.Logging;
-using Mapingway.API.Middleware.Exception;
 using Mapingway.Application;
 using Mapingway.Infrastructure;
+using Mapingway.Infrastructure.Logging;
 using Mapingway.Presentation;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Serilog;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ builder.Services.AddLocalizationRules();
 
 builder.Services.AddMapster();
 
+builder.Services.ConfigureProblemDetails(builder.Environment);
+
 builder.Services
     .AddApplication()
     .AddPresentation()
@@ -30,14 +33,20 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseSerilogRequestLogging();
-app.UseGlobalExceptionHandling();
+//TODO: exception if catched by problem details, but hot logged, need to rethrow exception in problem details and catch it in logging middleware.
+// remove forming of response from this middleware, but get logger here and log the re-throwed exception
+//app.UseGlobalExceptionHandling();
+
+app
+    .UseRequestLogging()
+    .UseProblemDetails();
+
+app.UseHttpsRedirection();
+app.UseCors(myAllowSpecificOrigins);
+
 app.UseRequestLocalization();
 
 app.UseSwagger().UseSwaggerUI();
-
-app.UseCors(myAllowSpecificOrigins);
-app.UseHttpsRedirection();
 
 app
     .UseAuthentication()

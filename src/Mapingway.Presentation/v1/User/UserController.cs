@@ -40,6 +40,6 @@ public class UserController : BaseApiController
         var result = await Sender.Send(command, ct);
 
         //TODO: split response and result
-        return result.IsSuccess ? Ok(result.Value) : Failure(result, BadRequest);
+        return result.IsSuccess ? Ok(result.Value) : Error(result);
     }
 }

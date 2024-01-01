@@ -1,9 +1,8 @@
 ﻿using System.Net.Mime;
+using Mapingway.Application.Behaviors.Validation;
 using Mapingway.SharedKernel.Result;
-using Mapingway.SharedKernel.ValidationResult;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mapingway.Presentation.v1;
@@ -22,38 +21,21 @@ public class BaseApiController : ControllerBase
     }
 
     [NonAction]
-    protected ActionResult Failure(Result result, FailureResultDelegate generateFailureResult)
+    protected ActionResult Error(Result result, FailureResultDelegate? problem = null)
     {
-        if (result.IsSuccess)
+        if ( result.IsSuccess ) throw new InvalidOperationException();
+
+        //TODO: transform error to problem details
+        if ( problem is not null ) return problem(result.Error);
+
+        return result switch
         {
-            throw new InvalidOperationException();
-        }
-
-        //TODO: iterate with problem details
-        return result is ValidationResult
-            ? UnprocessableEntity(
-            CreateProblemDetails(
-                "Validation Error",
-                StatusCodes.Status400BadRequest,
-                result.Error,
-                (result as IValidationResult)!.Errors))
-            : generateFailureResult(result.Error);
-    }
-
-
-    private static ProblemDetails CreateProblemDetails(
-        string title,
-        int status,
-        Error error,
-        Error[]? errors = null)
-    {
-        return new ProblemDetails
-        {
-            Title = title,
-            Type = error.Code,
-            Detail = error.Message,
-            Status = status,
-            Extensions = { { nameof(errors), errors } }
+            IValidationResult validationError => UnprocessableEntity(
+                new ValidationProblemDetails
+                {
+                    Errors = validationError.Failures
+                }),
+            _ => BadRequest(result.Error)
         };
     }
 

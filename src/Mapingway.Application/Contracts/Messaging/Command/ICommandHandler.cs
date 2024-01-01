@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Mapingway.Application.Contracts.Messaging.Command;
 
-public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand, Result> 
+public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand, Result>
     where TCommand : ICommand
 {}
 
