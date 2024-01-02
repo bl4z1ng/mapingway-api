@@ -7,10 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 
-namespace Mapingway.Infrastructure.Logging;
+namespace Mapingway.Infrastructure.ProblemDetails;
 
 [ExcludeFromCodeCoverage]
-public static class ProblemDetailsConfiguration
+public static class Configuration
 {
     public static void ConfigureProblemDetails(this IServiceCollection services, IHostEnvironment environment)
     {
@@ -19,7 +19,7 @@ public static class ProblemDetailsConfiguration
             options.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
             options.ShouldLogUnhandledException = (_, _, _) => false;
             //TODO: add exception logging and uncomment this
-            //options.RethrowAll();
+            options.RethrowAll();
 
             options
                 .MapFluentValidationException()

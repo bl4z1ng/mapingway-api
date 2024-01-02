@@ -3,7 +3,7 @@ EXPOSE 80
 EXPOSE 443
 WORKDIR /src
 
-COPY src/Mapingway.Common/ Mapingway.Common/
+COPY src/Mapingway.SharedKernel/ Mapingway.SharedKernel/
 COPY src/Mapingway.Domain/ Mapingway.Domain/
 COPY src/Mapingway.Application/ Mapingway.Application/
 COPY src/Mapingway.Infrastructure/ Mapingway.Infrastructure/

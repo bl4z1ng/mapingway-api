@@ -28,10 +28,6 @@
       <Content Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Update="appsettings.Development.json">
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <Content Update="configuration.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
