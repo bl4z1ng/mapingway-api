@@ -7,19 +7,22 @@ ENV PATH $PATH:/
 
 RUN mkdir migration/
 
-COPY src/Mapingway.Common/ Mapingway.Common/
+COPY src/Mapingway.SharedKernel/ Mapingway.SharedKernel/
 COPY src/Mapingway.Domain/ Mapingway.Domain/
 COPY src/Mapingway.Application/ Mapingway.Application/
 COPY src/Mapingway.Infrastructure/ Mapingway.Infrastructure/
 COPY src/Mapingway.Presentation/ Mapingway.Presentation/
 COPY src/Mapingway.API/ Mapingway.API/
 
+
+ENV ASPNETCORE_ENVIRONMENT=Production
+
 RUN dotnet ef migrations script  \
     --project Mapingway.Infrastructure/Mapingway.Infrastructure.csproj  \
     --startup-project Mapingway.API/Mapingway.API.csproj  \
-    --context Mapingway.Infrastructure.Persistence.ApplicationDbContext  \
-    --configuration Production  \
+    --context Mapingway.Infrastructure.Persistence.Context.ApplicationDbContext  \
     --idempotent  \
+    --verbose \
     --output migration/init.sql 
 
 FROM postgres:16-alpine3.18 AS final
