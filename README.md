@@ -1,6 +1,6 @@
 # Mapingway API
 
-[![email](https://img.shields.io/badge/Contact_the-Author-8A2BE2)](mailto:maksim.pytiel.00@gmail.com)
+[![email](https://img.shields.io/badge/Email_the-Author-8A2BE2)](mailto:maksim.pytiel.00@gmail.com)
 
 [Mapingway](https://github.com/bl4z1ng/mapingway-api) is a ASP.NET Core API for travel routes and checkpoints management.
 
