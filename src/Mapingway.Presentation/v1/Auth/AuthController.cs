@@ -59,8 +59,8 @@ public class AuthController : BaseApiController
     /// A newly generated Bearer access and refresh tokens.
     /// </returns>
     [ProducesResponseType(typeof(AccessTokenResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(RefreshToken400ErrorResponseExample))]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status422UnprocessableEntity)]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(RefreshToken400ErrorResponseExample))]
 
     #endregion
     [HttpPost]
@@ -86,8 +86,9 @@ public class AuthController : BaseApiController
     /// <response code="200">Token is successfully invalidated.</response>
     /// <response code="400">If the user's access token is invalid.</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(LogoutToken400ErrorResponseExample))]
+    //TODO: change to 422 everywhere
+    [ProducesResponseType(typeof(Error), StatusCodes.Status422UnprocessableEntity)]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(LogoutToken400ErrorResponseExample))]
 
     #endregion
     [HttpPost]
