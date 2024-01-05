@@ -9,7 +9,6 @@ using Mapingway.Presentation;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog.Events;
 
@@ -19,7 +18,6 @@ builder.Configuration.AddJsonFile("configuration.json", optional: false, reloadO
 
 builder.Host.UseSerilog<Program>(opt =>
 {
-    opt.ClearProviders = true;
     opt.MinimumLogLevel = builder.Environment.IsProduction()
         ? LogEventLevel.Warning
         : LogEventLevel.Information;
@@ -39,10 +37,6 @@ builder.Services
     .AddInfrastructure(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
-
-// exception if catched by problem details, but hot logged, need to rethrow exception in problem details and catch it in logging middleware.
-// remove forming of response from this middleware, but get logger here and log the re-throwed exception
-//app.UseGlobalExceptionHandling();
 
 app.UseRequestLoggingWith<ProblemDetailsMiddleware>();
 

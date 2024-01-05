@@ -3,59 +3,59 @@ name: "mapingway"
 services:
   app:
     container_name: api
-    #image: "burn1n9/mapingway"
     build:
       context: ../
       dockerfile: /.docker/app/Dockerfile
     ports:
-      - ${APPLICATION_EXPOSED_PORT_HTTP}:80
-      - ${APPLICATION_EXPOSED_PORT_HTTPS}:443
+      - ${APPLICATION_EXPOSED_PORT_HTTP}:8080
+      - ${APPLICATION_EXPOSED_PORT_HTTPS}:8081
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      #ASPNETCORE_URLS: https://+:443;http://+:80
-      ConnectionStrings__DefaultConnection: Server=localhost;Host=database;Port=5432;Database=${DATABASE};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Pooling=true;Encoding=UTF8;
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ASPNETCORE_HTTPS_PORTS: 8081
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${DATABASE};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Pooling=true;Encoding=UTF8;
       # Do not create development certificate in an environment that will be distributed.
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${ENVIRONMENT_DEFAULT_CERTIFICATE_PASSWORD}
       ASPNETCORE_Kestrel__Certificates__Default__Path: /root/.aspnet/https/Mapingway.API.pfx
-    #depends_on:
-    #  db:
-    #    condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     restart: always
     volumes:
       - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
 
-#  db:
-#    container_name: database
-#    build:
-#      context: ../
-#      dockerfile: /.docker/localdb/Dockerfile
-#    environment:
-#      POSTGRES_DB: ${DATABASE}
-#      POSTGRES_USER: ${DATABASE_USER}
-#      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-#    volumes:
-#      - db-data:/var/lib/postgresql/data
-#    ports:
-#      - ${DATABASE_EXPOSED_PORT}:5432
-#    restart: on-failure
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE}" ]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 5
+  db:
+    container_name: database
+    build:
+      context: ../
+      dockerfile: /.docker/localdb/Dockerfile
+    environment:
+      POSTGRES_DB: ${DATABASE}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - ${DATABASE_EXPOSED_PORT}:5432
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  #seq:
-  #  container_name: logs
-  #  image: datalust/seq:latest
-  #  environment:
-  #    ACCEPT_EULA: Y
-  #  ports:
-  #    - 5300:80
-  #    - 5341:5341
-  #  restart: unless-stopped
+  seq:
+    container_name: logs
+    image: datalust/seq:latest
+    environment:
+      ACCEPT_EULA: Y
+    ports:
+      - ${LOGS_DASHBOARD_EXPOSED_PORT_HTTP}:80
+      - ${LOGS_SINK_EXPOSED_PORT_HTTP}:5341
+    restart: unless-stopped
 
-#volumes:
-#  db-data:
-#    external: false
-  #seq-logs:
-  #  external: false
+volumes:
+  db-data:
+    external: false
+  seq-logs:
+    external: false
