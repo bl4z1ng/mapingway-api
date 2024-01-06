@@ -2,6 +2,7 @@
 using Mapingway.Application.Features.Auth.Logout;
 using Mapingway.Application.Features.Auth.Refresh;
 using Mapingway.Infrastructure.Authentication.Claims;
+using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation.Swagger.Examples;
 using Mapingway.Presentation.v1.Auth.Requests;
 using Mapingway.Presentation.v1.Auth.Responses;
@@ -18,7 +19,10 @@ namespace Mapingway.Presentation.v1.Auth;
 [Route(Routes.BasePath, Order = 1)]
 public class AuthController : BaseApiController
 {
-    public AuthController(ISender sender, IMapper mapper) : base(sender, mapper) { }
+    public AuthController(
+        ISender sender,
+        IMapper mapper,
+        IProblemDetailsFactory factory) : base(sender, mapper, factory) { }
 
     #region Metadata
 
@@ -41,7 +45,7 @@ public class AuthController : BaseApiController
 
         if (result.IsFailure)
         {
-            return Error(result);
+            return Problem(result);
         }
 
         UpdateUserContextToken(result.Value!.UserContextToken);
@@ -70,7 +74,7 @@ public class AuthController : BaseApiController
         var command = Mapper.Map<RefreshTokenCommand>(request);
 
         var result = await Sender.Send(command, ct);
-        if (result.IsFailure) return Error(result);
+        if (result.IsFailure) return Problem(result);
 
         UpdateUserContextToken(result.Value!.UserContextToken);
         var response = Mapper.Map<AccessTokenResponse>(result.Value);
@@ -101,7 +105,7 @@ public class AuthController : BaseApiController
         var command = Mapper.Map<LogoutCommand>((email, request.RefreshToken));
 
         var result = await Sender.Send(command, ct);
-        if (result.IsFailure) return Error(result);
+        if (result.IsFailure) return Problem(result);
 
         RemoveUserContextToken();
         return Ok();

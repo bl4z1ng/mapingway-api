@@ -3,7 +3,6 @@ using FluentValidation.Results;
 using Mapingway.Application.Behaviors.Validation;
 using Mapingway.SharedKernel.Result;
 using MediatR;
-using ValidationResult = Mapingway.Application.Behaviors.Validation.ValidationResult;
 
 namespace Mapingway.Application.Behaviors;
 
@@ -38,19 +37,21 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
 
     private static TResult ValidationFailedResult(IEnumerable<ValidationFailure> failures)
     {
+        var validationError = ValidationError.WithFailures(failures);
         if (typeof(TResult) == typeof(Result))
         {
-            return (ValidationResult.WithFailures(failures) as TResult)!;
+            return (Result.Failure(validationError) as TResult)!;
         }
 
         //If generic version of Result<TValue> used
         var resultGenericParameter = typeof(TResult).GenericTypeArguments[0];
 
-        var result = typeof(ValidationResult<>)
-            .GetGenericTypeDefinition()
-            .MakeGenericType(resultGenericParameter)
-            .GetMethod(nameof(ValidationResult.WithFailures))!
-            .Invoke(null, [failures]);
+        var failure = typeof(Result)
+            .GetMethods()
+            .First(info => info is { Name: nameof(Result.Failure), IsGenericMethod: true } )
+            .MakeGenericMethod(resultGenericParameter);
+
+        var result = failure.Invoke(null, [validationError]);
 
         return (result as TResult)!;
     }

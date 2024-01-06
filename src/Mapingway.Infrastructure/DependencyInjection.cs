@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Mapingway.Infrastructure.Authentication;
+using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
@@ -15,9 +16,11 @@ public static class DependencyInjection
         IConfiguration configuration,
         IHostEnvironment environment)
     {
-        services.AddPersistence(environment);
         services.AddHashing(configuration);
-        services.AddAuth(configuration);
+        services.AddAuth();
+        services.AddPersistence(environment);
+
+        services.AddScoped<IProblemDetailsFactory, CustomProblemDetailsFactory>();
 
         return services;
     }

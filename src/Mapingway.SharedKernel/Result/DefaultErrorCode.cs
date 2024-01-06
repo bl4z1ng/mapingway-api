@@ -1,10 +1,9 @@
 ﻿namespace Mapingway.SharedKernel.Result;
 
-public enum ErrorCode
+public enum DefaultErrorCode
 {
     NotFound,
     InvalidCredentials,
-    RefreshTokenIsInvalid,
     ValidationError,
     None,
 }

@@ -6,7 +6,6 @@ using Mapingway.Infrastructure.Authentication.Token;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mapingway.Infrastructure.Authentication;
@@ -14,45 +13,46 @@ namespace Mapingway.Infrastructure.Authentication;
 public static class Configuration
 {
     //TODO: cleanup
-    internal static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddAuth(this IServiceCollection services)
     {
         services
-            .ConfigureJwt(configuration)
-            .AddAuthenticationServices()
+            .ConfigureJwt()
+            .AddAuthServices()
             .AddAuthentication()
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
 
         services
             .AddAuthorization()
-            .AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>()
-            .AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+            .AddPermissionHandling();
 
         return services;
     }
 
-    private static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection ConfigureJwt(this IServiceCollection services)
     {
         // to not use Microsoft claims naming
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-        services
-            .AddOptionsWithValidateOnStart<JwtOptions>()
-            .BindConfiguration(JwtOptions.ConfigurationSection);
-
-        services.ConfigureOptions<TokenValidationParametersSetup>();
+        services.AddOptionsWithValidateOnStart<JwtOptions>().BindConfiguration(JwtOptions.ConfigurationSection);
         services.ConfigureOptions<JwtBearerOptionsSetup>();
-
-        services.AddTransient<IJwtTokenParser, JwtTokenParser>();
 
         return services;
     }
 
-    private static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
+    private static IServiceCollection AddAuthServices(this IServiceCollection services)
     {
         services.AddScoped<ITokenGenerator, TokenGenerator>();
+        services.AddTransient<IJwtTokenParser, JwtTokenParser>();
         services.AddScoped<IAccessTokenService, AccessTokenService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
         return services;
+    }
+
+    private static IServiceCollection AddPermissionHandling(this IServiceCollection services)
+    {
+        return services
+            .AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>()
+            .AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 }

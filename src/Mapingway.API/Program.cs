@@ -4,23 +4,18 @@ using Mapingway.API.Localization;
 using Mapingway.Application;
 using Mapingway.Infrastructure;
 using Mapingway.Infrastructure.Logging;
-using Mapingway.Infrastructure.ProblemDetails;
+using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("configuration.json", optional: false, reloadOnChange: true);
-
 builder.Host.UseSerilog<Program>(opt =>
 {
-    opt.MinimumLogLevel = builder.Environment.IsProduction()
-        ? LogEventLevel.Warning
-        : LogEventLevel.Information;
+    opt.MinimumLogLevel = builder.Environment.IsProduction() ? LogEventLevel.Warning : LogEventLevel.Information;
 });
 builder.Services.ConfigureProblemDetails(builder.Environment);
 

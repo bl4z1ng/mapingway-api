@@ -25,8 +25,8 @@ public class RefreshTokenFamily
         var isTokenInvalidatedFlags =
             notUsedTokens.Select(token => InvalidateRefreshToken(token.Value));
 
-        var isErrorOccured = isTokenInvalidatedFlags.Any(invalidated => !invalidated);
+        var isErrorOccurred = isTokenInvalidatedFlags.Any(invalidated => !invalidated);
 
-        return isErrorOccured;
+        return isErrorOccurred;
     }
 }

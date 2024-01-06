@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 
-namespace Mapingway.Infrastructure.ProblemDetails;
+namespace Mapingway.Infrastructure.Logging.ProblemDetails;
 
 [ExcludeFromCodeCoverage]
 public static class Configuration
@@ -32,6 +32,8 @@ public static class Configuration
     {
         options.Map<Exception>(exception =>
         {
+            if ( exception.InnerException is not null ) exception = exception.InnerException;
+
             var statusCode = exception switch
             {
                 ArgumentNullException => StatusCodes.Status400BadRequest,
