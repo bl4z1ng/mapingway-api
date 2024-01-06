@@ -35,7 +35,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
         if (string.IsNullOrEmpty(userEmail))
         {
             return Result.Failure<RefreshTokenResult>(new Error(
-                ErrorCode.InvalidCredentials,
+                DefaultErrorCode.InvalidCredentials,
                 "Email is not valid"));
         }
 

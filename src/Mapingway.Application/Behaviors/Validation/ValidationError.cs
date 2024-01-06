@@ -8,7 +8,7 @@ public record ValidationError : Error
     public const string DefaultMessage = "One or more validation errors occur.";
 
     public ValidationError(IDictionary<string, string[]> failures, string? message = null)
-        : base(ErrorCode.ValidationError, message ?? DefaultMessage)
+        : base(DefaultErrorCode.ValidationError, message ?? DefaultMessage)
     {
         Failures = failures;
     }

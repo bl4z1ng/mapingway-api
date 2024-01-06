@@ -1,4 +1,5 @@
 using Mapingway.Application.Features.User.Register;
+using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation.Swagger.Examples;
 using Mapingway.Presentation.v1.User.Requests;
 using Mapingway.SharedKernel.Result;
@@ -14,7 +15,10 @@ namespace Mapingway.Presentation.v1.User;
 [Route(Routes.BasePath, Order = 2)]
 public class UserController : BaseApiController
 {
-    public UserController(ISender sender, IMapper mapper) : base(sender, mapper) { }
+    public UserController(
+        ISender sender,
+        IMapper mapper,
+        IProblemDetailsFactory factory) : base(sender, mapper, factory) { }
 
     #region Metadata
 
@@ -40,6 +44,6 @@ public class UserController : BaseApiController
         var result = await Sender.Send(command, ct);
 
         //TODO: split response and result
-        return result.IsSuccess ? Ok(result.Value) : Error(result);
+        return result.IsSuccess ? Ok(result.Value) : Problem(result);
     }
 }

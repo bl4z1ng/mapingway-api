@@ -1,4 +1,5 @@
-﻿using Mapingway.Application.Contracts.Authentication;
+﻿using System.Text;
+using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,26 +12,34 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly IHasher _hasher;
     private readonly JwtOptions _jwtOptions;
-    private readonly TokenValidationParameters _tokenValidationParameters;
 
-    public JwtBearerOptionsSetup(
-        IOptions<TokenValidationParameters> tokenValidationParameters,
-        IHasher hasher,
-        IOptions<JwtOptions> jwtOptions)
+    public JwtBearerOptionsSetup(IHasher hasher, IOptions<JwtOptions> jwtOptions)
     {
         _jwtOptions = jwtOptions.Value;
         _hasher = hasher;
-        _tokenValidationParameters = tokenValidationParameters.Value;
     }
 
     // https://stackoverflow.com/questions/71132926/jwtbeareroptions-configure-method-not-getting-executed
-    // The subtility here is that AddJwtBearer() uses a named options delegate.
-    // Instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions
+    // The subtility here is that AddJwtBearer() uses a named options delegate, so
+    // instead of implementing IConfigureOptions, need to implement IConfigureNamedOptions.
     public void Configure(string? name, JwtBearerOptions options)
     {
         //to not use Microsoft claims naming
         options.MapInboundClaims = false;
-        options.TokenValidationParameters = _tokenValidationParameters;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = _jwtOptions.Issuer,
+            ValidAudience = _jwtOptions.Audience,
+            ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey)),
+            ClockSkew = TimeSpan.FromSeconds(15)
+        };
+
         options.Events = new JwtBearerEvents
         {
             OnTokenValidated = context =>
