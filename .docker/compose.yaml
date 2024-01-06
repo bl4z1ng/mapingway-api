@@ -13,10 +13,11 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_HTTP_PORTS: 8080
       ASPNETCORE_HTTPS_PORTS: 8081
-      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${DATABASE};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Pooling=true;Encoding=UTF8;
-      # Do not create development certificate in an environment that will be distributed.
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${ENVIRONMENT_DEFAULT_CERTIFICATE_PASSWORD}
       ASPNETCORE_Kestrel__Certificates__Default__Path: /root/.aspnet/https/Mapingway.API.pfx
+      Serilog__WriteTo__2__Args__serverUrl=: http://logs:5341
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${DATABASE};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Pooling=true;Encoding=UTF8;
+      # Do not create development certificate in an environment that will be distributed.
     depends_on:
       db:
         condition: service_healthy

@@ -1,33 +1,35 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace Mapingway.Infrastructure.Logging;
 
+[ExcludeFromCodeCoverage]
 public static class Configuration
 {
-    public static IHostBuilder UseSerilog<T>(this IHostBuilder builder,
-        Action<LoggingOptions>? bindOptions = default)
+    public static WebApplicationBuilder UseSerilog(
+        this WebApplicationBuilder builder,
+        bool clearProviders = true,
+        params string[] propertiesToSkipLogEvent)
     {
-        var options = new LoggingOptions();
-        bindOptions?.Invoke(options);
+        if (clearProviders)
+        {
+            // Remove additional logging providers - logs entry can be duplicated
+            builder.Logging.ClearProviders();
+        }
 
-        // Remove additional logging providers - logs entry can be duplicated
-        if (options.ClearProviders)
-            builder.ConfigureLogging(p => p.ClearProviders());
-
-        builder.UseSerilog((context, configuration) =>
+        builder.Host.UseSerilog((context, configuration) =>
         {
             configuration.ReadFrom.Configuration(context.Configuration);
-        });
 
-        //builder.UseSerilog((ctx, _, configuration) =>
-        //{
-        //    LoggerBuilder.Create(options, configuration)
-        //        .WithDefaultConfiguration()
-        //        .WithAssembly(typeof(T).Assembly);
-//
-        //}, writeToProviders: true);
+            //Exclude infra paths, Swagger and health checks invokes
+            foreach ( var path in propertiesToSkipLogEvent )
+            {
+                configuration.Filter
+                    .ByExcluding(log => log.Properties.Any(p => p.ToString().Contains(path)));
+            }
+        });
 
         return builder;
     }

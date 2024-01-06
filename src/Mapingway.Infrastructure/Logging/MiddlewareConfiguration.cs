@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Builder;
 using Serilog;
 using Serilog.Events;
 
 namespace Mapingway.Infrastructure.Logging;
 
+[ExcludeFromCodeCoverage]
 public static class MiddlewareConfiguration
 {
+    public const string LogMessageTemplate =
+        "{RequestMethod:l} Request {RequestId:l} to {RequestScheme:l}://{RequestHost:l}{RequestPath:l} finished with {StatusCode} in {Elapsed:0.0000} ms.";
+
     public static void UseRequestLoggingWith<T>(this IApplicationBuilder builder)
     {
         builder.UseSerilogRequestLogging(options =>
@@ -16,6 +22,9 @@ public static class MiddlewareConfiguration
                     ? LogEventLevel.Warning
                     : LogEventLevel.Information;
 
+            options.IncludeQueryInRequestPath = true;
+            options.MessageTemplate = LogMessageTemplate;
+
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
                 var request = httpContext.Request;
@@ -25,6 +34,7 @@ public static class MiddlewareConfiguration
                 diagnosticContext.Set("Protocol", request.Protocol);
                 diagnosticContext.Set("TraceId", httpContext.TraceIdentifier);
                 diagnosticContext.Set("ContentType", request.ContentType);
+                diagnosticContext.Set("SpanId", Activity.Current?.SpanId);
             };
         }).UseMiddleware<T>();
     }

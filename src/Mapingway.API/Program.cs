@@ -8,15 +8,14 @@ using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
-using Serilog.Events;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog<Program>(opt =>
-{
-    opt.MinimumLogLevel = builder.Environment.IsProduction() ? LogEventLevel.Warning : LogEventLevel.Information;
-});
+builder.UseSerilog(
+    clearProviders: true,
+    propertiesToSkipLogEvent: ["index", "health"]);
+
 builder.Services.ConfigureProblemDetails(builder.Environment);
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
