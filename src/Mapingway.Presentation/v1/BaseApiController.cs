@@ -16,6 +16,7 @@ public class BaseApiController : ControllerBase
     private readonly IProblemDetailsFactory _factory;
     protected readonly IMapper Mapper;
     protected readonly ISender Sender;
+    private readonly IProblemDetailsFactory _factory;
 
     public BaseApiController(ISender sender, IMapper mapper, IProblemDetailsFactory factory)
     {

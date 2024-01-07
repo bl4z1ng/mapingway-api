@@ -17,6 +17,7 @@ public class CustomProblemDetailsFactory : IProblemDetailsFactory
         string? detail = null)
     {
         statusCode ??= ProblemDetailsDefaults.DefaultStatusCode;
+
         return new Microsoft.AspNetCore.Mvc.ProblemDetails
         {
             Instance = instance,

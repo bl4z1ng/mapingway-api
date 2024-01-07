@@ -11,7 +11,7 @@ public static class MiddlewareConfiguration
 {
     public const string LogMessageTemplate =
         "{RequestMethod:l} Request {RequestId:l} to {RequestScheme:l}://{RequestHost:l}{RequestPath:l} finished with {StatusCode} in {Elapsed:0.0000} ms.";
-
+  
     public static void UseRequestLogging(this IApplicationBuilder builder)
     {
         builder.UseSerilogRequestLogging(options =>
@@ -26,6 +26,9 @@ public static class MiddlewareConfiguration
                     _ => LogEventLevel.Information
                 };
             };
+
+            options.IncludeQueryInRequestPath = true;
+            options.MessageTemplate = LogMessageTemplate;
 
             options.IncludeQueryInRequestPath = true;
             options.MessageTemplate = LogMessageTemplate;

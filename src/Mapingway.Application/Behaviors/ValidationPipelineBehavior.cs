@@ -53,7 +53,7 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
 
         var failure = typeof(Result)
             .GetMethods()
-            .First(info => info is { Name: nameof(Result.Failure), IsGenericMethod: true })
+            .First(info => info is { Name: nameof(Result.Failure), IsGenericMethod: true } )
             .MakeGenericMethod(resultGenericParameter);
 
         var result = failure.Invoke(null, [validationError]);

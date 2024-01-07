@@ -19,7 +19,7 @@ public sealed record HttpError : Error
 
     public static HttpError FromResponse(HttpResponseMessage response)
     {
-        if (response.IsSuccessStatusCode)
+        if ( response.IsSuccessStatusCode )
         {
             throw new InvalidOperationException("Can't create an Error from successful request");
         }
@@ -31,4 +31,3 @@ public sealed record HttpError : Error
         { ResponseStatusCode = (int)response.StatusCode };
     }
 }
-
