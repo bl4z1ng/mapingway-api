@@ -17,7 +17,7 @@ public class InvalidTokenValidationErrors : IMultipleExamplesProvider<ExamplePro
                 Detail = "One or more validation errors occur.",
                 Errors = new Dictionary<string, string[]>
                 {
-                    {"expiredToken", [$"Provided access token was not valid, please, log-in again."]}
+                    {"expiredToken", ["Provided access token was not valid, please, log-in again."]}
                 }
             });
 
@@ -28,7 +28,7 @@ public class InvalidTokenValidationErrors : IMultipleExamplesProvider<ExamplePro
                 Detail = "One or more validation errors occur.",
                 Errors = new Dictionary<string, string[]>
                 {
-                    { "ExpiredToken", [$"Provided access token is not valid anymore, please, log-in again."] }
+                    { "ExpiredToken", ["Provided access token is not valid anymore, please, log-in again."] }
                 }
             });
     }

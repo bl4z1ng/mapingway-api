@@ -5,6 +5,7 @@ using Mapingway.Infrastructure.Logging.CorrelationToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 
 namespace Mapingway.Infrastructure.Logging.ProblemDetails;
@@ -39,6 +40,7 @@ public static class Configuration
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 ArgumentException => StatusCodes.Status400BadRequest,
                 InvalidOperationException => StatusCodes.Status500InternalServerError,
+                SecurityTokenException => StatusCodes.Status401Unauthorized,
                 //Global mapping of HttpClient exceptions, needs further investigation
                 HttpRequestException => StatusCodes.Status503ServiceUnavailable,
                 _ => StatusCodes.Status500InternalServerError

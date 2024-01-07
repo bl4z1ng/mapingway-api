@@ -2,4 +2,4 @@
 
 namespace Mapingway.Application.Features.Auth.Refresh;
 
-public record RefreshTokenCommand(string ExpiredToken, string RefreshToken) : ICommand<RefreshTokenResult>;
+public record RefreshTokenCommand(string Email, string RefreshToken) : ICommand<RefreshTokenResult>;

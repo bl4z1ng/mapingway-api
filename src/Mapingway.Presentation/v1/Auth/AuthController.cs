@@ -2,13 +2,13 @@
 using Mapingway.Application.Features.Auth.Logout;
 using Mapingway.Application.Features.Auth.Refresh;
 using Mapingway.Infrastructure.Authentication.Claims;
+using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation.Shared;
 using Mapingway.Presentation.Swagger.Examples;
 using Mapingway.Presentation.Swagger.Filters.Utility;
 using Mapingway.Presentation.v1.Auth.Requests;
 using Mapingway.Presentation.v1.Auth.Responses;
-using Mapingway.SharedKernel.Result;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -68,9 +68,20 @@ public class AuthController : BaseApiController
     #endregion
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken ct)
+    public async Task<IActionResult> Refresh(
+        [FromBody]RefreshTokenRequest request,
+        [FromServices] IJwtTokenParser tokenParser,
+        CancellationToken ct)
     {
-        var command = Mapper.Map<RefreshTokenCommand>(request);
+        var userEmail = tokenParser
+            .GetPrincipalFromBearer(request.ExpiredToken, tokenExpired: true).GetEmailClaim();
+        if (userEmail is null)
+        {
+            RemoveUserContextToken();
+            return Unauthorized("Provided access token is not valid anymore, please, log-in again.");
+        }
+
+        var command = new RefreshTokenCommand(userEmail, request.RefreshToken);
 
         var result = await Sender.Send(command, ct);
         if (result.IsFailure) return Problem(result);

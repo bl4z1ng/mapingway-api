@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Mapingway.Application.Contracts.Authentication;
-using Mapingway.Application.Features.Auth.Refresh;
 using Mapingway.Infrastructure.Authentication.Permissions;
 using Mapingway.Infrastructure.Authentication.Token;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
@@ -34,6 +33,7 @@ public static class Configuration
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services.AddOptionsWithValidateOnStart<JwtOptions>().BindConfiguration(JwtOptions.ConfigurationSection);
+        services.ConfigureOptions<TokenValidationParametersSetup>();
         services.ConfigureOptions<JwtBearerOptionsSetup>();
 
         return services;
@@ -42,7 +42,7 @@ public static class Configuration
     private static IServiceCollection AddAuthServices(this IServiceCollection services)
     {
         services.AddScoped<ITokenGenerator, TokenGenerator>();
-        services.AddTransient<IJwtTokenParser, JwtTokenParser>();
+        services.AddScoped<IJwtTokenParser, JwtTokenParser>();
         services.AddScoped<IAccessTokenService, AccessTokenService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 

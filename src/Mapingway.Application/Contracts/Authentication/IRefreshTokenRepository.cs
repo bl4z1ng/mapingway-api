@@ -3,5 +3,4 @@ using Mapingway.SharedKernel;
 
 namespace Mapingway.Application.Contracts.Authentication;
 
-public interface IRefreshTokenRepository : IRepository<RefreshToken>
-{}
+public interface IRefreshTokenRepository : IRepository<RefreshToken> {}

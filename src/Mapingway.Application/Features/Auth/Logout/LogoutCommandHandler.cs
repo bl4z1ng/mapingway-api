@@ -4,7 +4,6 @@ using Mapingway.SharedKernel.Result;
 
 namespace Mapingway.Application.Features.Auth.Logout;
 
-// ReSharper disable once UnusedType.Global
 public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
 {
     private readonly IRefreshTokenService _refreshTokenService;
@@ -16,12 +15,13 @@ public class LogoutCommandHandler : ICommandHandler<LogoutCommand>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(LogoutCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(LogoutCommand request, CancellationToken ct)
     {
-        var invalidateRequest = await _refreshTokenService.InvalidateTokenAsync(request.Email, request.RefreshToken);
+        var invalidateRequest =
+            await _refreshTokenService.InvalidateTokenAsync(request.Email, request.RefreshToken, ct);
         if (invalidateRequest.IsFailure) return Result.Failure(invalidateRequest.Error);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

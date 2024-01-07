@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Mapingway.Presentation.v1;
+using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-
-using Microsoft.AspNetCore.Http;
 
 namespace Mapingway.Presentation.Swagger.Filters.Operation.StatusCode;
 
