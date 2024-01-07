@@ -4,18 +4,15 @@ using Mapingway.API.Localization;
 using Mapingway.Application;
 using Mapingway.Infrastructure;
 using Mapingway.Infrastructure.Logging;
+using Mapingway.Infrastructure.Logging.CorrelationToken;
 using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.UseSerilog(
-    clearProviders: true,
-    propertiesToSkipLogEvent: ["index", "health"]);
-
+builder.UseSerilog(clearDefaultProviders: true);
 builder.Services.ConfigureProblemDetails(builder.Environment);
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -32,7 +29,9 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseRequestLoggingWith<ProblemDetailsMiddleware>();
+app.UseCorrelationToken();
+app.UseRequestLogging();
+app.UseProblemDetails();
 
 app.UseHttpsRedirection();
 app.UseCors(myAllowSpecificOrigins);

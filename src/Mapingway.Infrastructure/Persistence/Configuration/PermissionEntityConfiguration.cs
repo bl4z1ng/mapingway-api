@@ -9,7 +9,7 @@ public class PermissionEntityConfiguration : IEntityTypeConfiguration<Domain.Aut
     public void Configure(EntityTypeBuilder<Domain.Auth.Permission> builder)
     {
         builder.ToTable("Permissions");
-        
+
         builder.HasKey(permission => permission.Id);
 
         builder.Property(permission => permission.Name).IsRequired();

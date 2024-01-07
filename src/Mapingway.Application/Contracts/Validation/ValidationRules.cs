@@ -5,8 +5,8 @@ namespace Mapingway.Application.Contracts.Validation;
 public static class ValidationRules
 {
     public static IRuleBuilder<T, string> InclusiveBetween<T>(
-        this IRuleBuilder<T, string> rule, 
-        int? minLength = null, 
+        this IRuleBuilder<T, string> rule,
+        int? minLength = null,
         int? maxLength = null)
     {
         if (minLength != null)

@@ -6,7 +6,7 @@ namespace Mapingway.Infrastructure.Authentication.Permissions;
 public sealed class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {
     protected override Task HandleRequirementAsync(
-        AuthorizationHandlerContext context, 
+        AuthorizationHandlerContext context,
         PermissionRequirement requirement)
     {
         var permissions = context.User.Claims

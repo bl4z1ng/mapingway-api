@@ -9,7 +9,7 @@ public class RoleEntityConfiguration : IEntityTypeConfiguration<Role>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("Roles");
-        
+
         builder.HasKey(role => role.Id);
         builder.HasAlternateKey(role => role.Name);
 

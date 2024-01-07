@@ -9,25 +9,20 @@ namespace Mapingway.Infrastructure.Logging.ProblemDetails;
 
 public class CustomProblemDetailsFactory : IProblemDetailsFactory
 {
-    public const string StatusCodesUrl = "https://httpstatuses.io/";
-    public const int DefaultStatusCode = StatusCodes.Status500InternalServerError;
-    public const int DefaultValidationStatusCode = StatusCodes.Status422UnprocessableEntity;
-
-
     public Microsoft.AspNetCore.Mvc.ProblemDetails CreateFromError(
         Error error,
         string instance,
-        int? statusCode = DefaultStatusCode,
+        int? statusCode = null,
         string? type = null,
         string? detail = null)
     {
-        statusCode ??= DefaultStatusCode;
+        statusCode ??= ProblemDetailsDefaults.DefaultStatusCode;
 
         return new Microsoft.AspNetCore.Mvc.ProblemDetails
         {
             Instance = instance,
             Status = statusCode,
-            Type = type ?? StatusCodesUrl + statusCode,
+            Type = type ?? ProblemDetailsDefaults.StatusCodesUrl + statusCode,
             Detail = detail ?? error.Message ?? ReasonPhrases.GetReasonPhrase(statusCode.Value)
         };
     }
@@ -39,12 +34,12 @@ public class CustomProblemDetailsFactory : IProblemDetailsFactory
         string? type = null,
         string? detail = null)
     {
-        statusCode ??= DefaultValidationStatusCode;
+        statusCode ??= ProblemDetailsDefaults.ValidationStatusCode;
         return new ValidationProblemDetails
         {
             Instance = instance,
             Status = statusCode,
-            Type = type ?? StatusCodesUrl + statusCode,
+            Type = type ?? ProblemDetailsDefaults.StatusCodesUrl + statusCode,
             Detail = detail ?? "One or more validation errors occured.",
             Errors = validationError.Failures
         };
@@ -64,4 +59,12 @@ public class CustomProblemDetailsFactory : IProblemDetailsFactory
             type: type,
             detail: detail);
     }
+}
+
+public class ProblemDetailsDefaults
+{
+    public const string TraceIdProperty = "traceId";
+    public const string StatusCodesUrl = "https://httpstatuses.io/";
+    public const int DefaultStatusCode = StatusCodes.Status500InternalServerError;
+    public const int ValidationStatusCode = StatusCodes.Status422UnprocessableEntity;
 }

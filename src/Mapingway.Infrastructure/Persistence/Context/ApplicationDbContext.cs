@@ -10,14 +10,14 @@ public class ApplicationDbContext : DbContext
     protected readonly DbOptions Configuration;
 
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<DbOptions> configuration):
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<DbOptions> configuration) :
         base(options)
     {
         Configuration = configuration.Value;
     }
 
 
-    protected ApplicationDbContext(DbContextOptions options, IOptions<DbOptions> configuration):
+    protected ApplicationDbContext(DbContextOptions options, IOptions<DbOptions> configuration) :
         base(options)
     {
         Configuration = configuration.Value;

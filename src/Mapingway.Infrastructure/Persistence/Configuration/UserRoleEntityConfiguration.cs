@@ -9,7 +9,7 @@ public class UserRoleEntityConfiguration : IEntityTypeConfiguration<UserRole>
     public void Configure(EntityTypeBuilder<UserRole> builder)
     {
         builder.HasKey(x => new { x.UserId, x.RoleId });
-        
+
         builder
             .HasOne(ur => ur.User)
             .WithMany(u => u.UserRoles)
@@ -33,10 +33,10 @@ public class UserRoleEntityConfiguration : IEntityTypeConfiguration<UserRole>
 
     private static IEnumerable<UserRole> Create(long userId, IEnumerable<Role> roles)
     {
-        return roles.Select(role => 
+        return roles.Select(role =>
                 new UserRole
                 {
-                    RoleId = role.Id, 
+                    RoleId = role.Id,
                     UserId = userId
                 })
             .ToList();

@@ -5,7 +5,7 @@ using Permission = Mapingway.Infrastructure.Authentication.Permissions.Permissio
 
 namespace Mapingway.Infrastructure.Persistence.Configuration;
 
-public class RolePermissionEntityConfiguration: IEntityTypeConfiguration<RolePermission>
+public class RolePermissionEntityConfiguration : IEntityTypeConfiguration<RolePermission>
 {
     public void Configure(EntityTypeBuilder<RolePermission> builder)
     {
@@ -22,17 +22,17 @@ public class RolePermissionEntityConfiguration: IEntityTypeConfiguration<RolePer
             Permission.UpdateUser,
             Permission.DeleteUser
         }));
-        
+
         builder.HasData(rolePermissions);
     }
 
 
     private static IEnumerable<RolePermission> Create(Role role, IEnumerable<Permission> permissions)
     {
-        return permissions.Select(permission => 
+        return permissions.Select(permission =>
             new RolePermission
             {
-                RoleId = role.Id, 
+                RoleId = role.Id,
                 PermissionId = (int)permission
             })
             .ToList();

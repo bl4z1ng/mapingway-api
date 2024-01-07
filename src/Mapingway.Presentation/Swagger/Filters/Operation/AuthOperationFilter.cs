@@ -15,10 +15,10 @@ public class AuthOperationFilter : IOperationFilter
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         context.ApiDescription.TryGetMethodInfo(out var methodInfo);
-        if ( methodInfo == null || methodInfo.MemberType != MemberTypes.Method ) return;
+        if (methodInfo == null || methodInfo.MemberType != MemberTypes.Method) return;
 
         var isPublicAction = false;
-        if ( methodInfo is { DeclaringType: not null } )
+        if (methodInfo is { DeclaringType: not null })
         {
             // Check the controller or the method itself has no Auth required
             // (AllowAnonymous because can be different type of authorization besides Authorize inheritance)
@@ -27,7 +27,7 @@ public class AuthOperationFilter : IOperationFilter
                     .Union(methodInfo.GetCustomAttributes(true).OfType<AllowAnonymousAttribute>())
                     .Any();
         }
-        if ( isPublicAction ) return;
+        if (isPublicAction) return;
 
         // Adds the "Padlock" icon to the endpoint in swagger,
         // we can also pass through the names of the policies in the List<string>()

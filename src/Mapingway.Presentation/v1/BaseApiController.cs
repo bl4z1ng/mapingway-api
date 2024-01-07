@@ -13,6 +13,7 @@ namespace Mapingway.Presentation.v1;
 [Produces(MediaTypeNames.Application.Json)]
 public class BaseApiController : ControllerBase
 {
+    private readonly IProblemDetailsFactory _factory;
     protected readonly IMapper Mapper;
     protected readonly ISender Sender;
     private readonly IProblemDetailsFactory _factory;
@@ -27,11 +28,11 @@ public class BaseApiController : ControllerBase
     [NonAction]
     protected ActionResult Problem(Result result, Func<object?, ActionResult>? problem = null)
     {
-        if ( result.IsSuccess ) throw new InvalidOperationException();
+        if (result.IsSuccess) throw new InvalidOperationException();
 
         var instance = HttpContext.Request.Path.ToUriComponent();
 
-        if ( problem is not null )
+        if (problem is not null)
         {
             var problemDetails = _factory.CreateFromError(result.Error, instance, detail: result.Error.Message);
             return problem(problemDetails);
