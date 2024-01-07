@@ -45,10 +45,13 @@ public static class Configuration
                 Type = SecuritySchemeType.ApiKey,
             });
 
-            options.OperationFilter<SwaggerLocalizationFilter>();
             options.EnableAnnotations();
             options.ExampleFilters();
-            options.AddCommonStatusCodesResponses();
+
+            options.AddCommonStatusCodeResponses();
+
+            options.AddAcceptLanguageDropdown();
+            options.AddCorrelationTokenParameter();
 
             options.ConvertRoutesToCamelCase();
         });

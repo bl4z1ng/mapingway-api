@@ -1,37 +1,34 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Mapingway.Presentation.Swagger.Filters.Utility;
-using Mapingway.SharedKernel.Result;
 using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.Presentation.Swagger.Examples;
 
 [ExcludeFromCodeCoverage]
-public class RegisterValidationErrors : IMultipleExamplesProvider<ExampleProblemDetails>
+public class InvalidTokenValidationErrors : IMultipleExamplesProvider<ExampleProblemDetails>
 {
     public IEnumerable<SwaggerExample<ExampleProblemDetails>> GetExamples()
     {
         yield return SwaggerExample.Create(
-            "One or more validation errors occur.",
+            "Invalid access token",
             new ExampleProblemDetails(StatusCodes.Status422UnprocessableEntity)
             {
-                Detail = $"{DefaultErrorCode.InvalidCredentials}",
-                Instance = "api/v1/user/register/",
+                Detail = "One or more validation errors occur.",
                 Errors = new Dictionary<string, string[]>
                 {
-                    {"Email", ["User with such email is already registered."]}
+                    {"expiredToken", [$"Provided access token was not valid, please, log-in again."]}
                 }
             });
 
         yield return SwaggerExample.Create(
-            $"",
+            "Email was not found",
             new ExampleProblemDetails(StatusCodes.Status422UnprocessableEntity)
             {
                 Detail = "One or more validation errors occur.",
-                Instance = "api/v1/user/register/",
                 Errors = new Dictionary<string, string[]>
                 {
-                    {"Email", ["Email must be valid.", "Password should contain at least 3 letters."]}
+                    { "ExpiredToken", [$"Provided access token is not valid anymore, please, log-in again."] }
                 }
             });
     }

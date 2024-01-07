@@ -7,7 +7,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mapingway.Presentation.v1;
+namespace Mapingway.Presentation.Shared;
 
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
