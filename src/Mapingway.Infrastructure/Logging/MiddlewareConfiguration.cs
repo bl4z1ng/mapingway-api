@@ -12,7 +12,7 @@ public static class MiddlewareConfiguration
     public const string LogMessageTemplate =
         "{RequestMethod:l} Request {RequestId:l} to {RequestScheme:l}://{RequestHost:l}{RequestPath:l} finished with {StatusCode} in {Elapsed:0.0000} ms.";
 
-    public static void UseRequestLoggingWith<T>(this IApplicationBuilder builder)
+    public static void UseRequestLogging(this IApplicationBuilder builder)
     {
         builder.UseSerilogRequestLogging(options =>
         {
@@ -41,6 +41,6 @@ public static class MiddlewareConfiguration
                 diagnosticContext.Set("ContentType", request.ContentType);
                 diagnosticContext.Set("SpanId", Activity.Current?.SpanId);
             };
-        }).UseMiddleware<T>();
+        });
     }
 }

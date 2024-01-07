@@ -9,14 +9,14 @@ public interface IProblemDetailsFactory
     public Microsoft.AspNetCore.Mvc.ProblemDetails CreateFromError(
         Error error,
         string instance,
-        int? statusCode = null,
+        int? statusCode =  null,
         string? type = null,
         string? detail = null);
 
     public Microsoft.AspNetCore.Mvc.ProblemDetails CreateFromValidationError(
         ValidationError validationError,
         string instance,
-        int? statusCode = null,
+        int? statusCode =  null,
         string? type = null,
         string? detail = null);
 
