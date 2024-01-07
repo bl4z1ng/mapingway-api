@@ -8,12 +8,11 @@ using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.UseSerilog(
-    clearProviders: true,
+    clearDefaultProviders: true,
     propertiesToSkipLogEvent: ["index", "health"]);
 
 builder.Services.ConfigureProblemDetails(builder.Environment);

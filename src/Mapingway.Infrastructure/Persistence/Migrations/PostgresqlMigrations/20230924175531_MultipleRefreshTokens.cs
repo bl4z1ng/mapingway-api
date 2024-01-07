@@ -50,7 +50,14 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: ["Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated"],
-                values: [1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null
+                values: [1L,
+                    null,
+                    "admin.map@rambler.ru",
+                    "Admin",
+                    "Super",
+                    "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=",
+                    "u4ya35ZFIvfkqC+ObHlNFQ==",
+                    null
                 ]);
 
             migrationBuilder.InsertData(
@@ -99,7 +106,14 @@ namespace Mapingway.Infrastructure.Persistence.Migrations.PostgresqlMigrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: ["Id", "Created", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Updated"],
-                values: [-1L, null, "admin.map@rambler.ru", "Admin", "Super", "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=", "u4ya35ZFIvfkqC+ObHlNFQ==", null
+                values: [-1L,
+                    null,
+                    "admin.map@rambler.ru",
+                    "Admin",
+                    "Super",
+                    "ODrNkGKssc+CWOvKQhJAQQNMocAsUaJ73pBaIfIufy4=",
+                    "u4ya35ZFIvfkqC+ObHlNFQ==",
+                    null
                 ]);
 
             migrationBuilder.InsertData(

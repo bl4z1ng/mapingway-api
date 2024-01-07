@@ -5,7 +5,7 @@ namespace Mapingway.Infrastructure.Persistence.Context;
 
 public class DevelopmentDbContext : ApplicationDbContext
 {
-    public DevelopmentDbContext(DbContextOptions<DevelopmentDbContext> options, IOptions<DbOptions> configuration) 
+    public DevelopmentDbContext(DbContextOptions<DevelopmentDbContext> options, IOptions<DbOptions> configuration)
         : base(options, configuration)
     {
     }

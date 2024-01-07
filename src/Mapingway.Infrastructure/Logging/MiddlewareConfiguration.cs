@@ -16,11 +16,16 @@ public static class MiddlewareConfiguration
     {
         builder.UseSerilogRequestLogging(options =>
         {
-            options.GetLevel = (httpContext, _, ex) => ex != null
-                ? LogEventLevel.Error
-                : httpContext.Response.StatusCode is 401 or 403
-                    ? LogEventLevel.Warning
-                    : LogEventLevel.Information;
+            options.GetLevel = (httpContext, _, ex) =>
+            {
+                if (ex != null) return LogEventLevel.Error;
+
+                return httpContext.Response.StatusCode switch
+                {
+                    401 or 403 => LogEventLevel.Warning,
+                    _ => LogEventLevel.Information
+                };
+            };
 
             options.IncludeQueryInRequestPath = true;
             options.MessageTemplate = LogMessageTemplate;

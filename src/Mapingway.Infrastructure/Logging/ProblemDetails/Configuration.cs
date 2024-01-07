@@ -17,7 +17,7 @@ public static class Configuration
         services.AddProblemDetails(options =>
         {
             options.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
-            options.ShouldLogUnhandledException = (_, _, _) => false;
+            options.ShouldLogUnhandledException = (_, _, _) => true;
             //TODO: add exception logging and uncomment this
             options.RethrowAll();
 
@@ -32,13 +32,13 @@ public static class Configuration
     {
         options.Map<Exception>(exception =>
         {
-            if ( exception.InnerException is not null ) exception = exception.InnerException;
+            if (exception.InnerException is not null) exception = exception.InnerException;
 
             var statusCode = exception switch
             {
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 ArgumentException => StatusCodes.Status400BadRequest,
-                InvalidOperationException => StatusCodes.Status400BadRequest,
+                InvalidOperationException => StatusCodes.Status500InternalServerError,
                 //Global mapping of HttpClient exceptions, needs further investigation
                 HttpRequestException => StatusCodes.Status503ServiceUnavailable,
                 _ => StatusCodes.Status500InternalServerError

@@ -33,10 +33,10 @@ public class ArchitectureTests
             new object[]{ applicationAssembly,
                 new[]
                 {
-                    infrastructureNamespace, 
+                    infrastructureNamespace,
                     presentationNamespace
                 }},
-            new object[]{ infrastructureAssembly, 
+            new object[]{ infrastructureAssembly,
                 new[] { presentationNamespace }}
         };
     }

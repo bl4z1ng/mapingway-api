@@ -18,7 +18,7 @@ public static class OpenApiOperationStatusCodesExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type =  statusCodesUrl + statusCode,
+            Type = statusCodesUrl + statusCode,
             Title = ReasonPhrases.GetReasonPhrase(statusCode),
             Status = statusCode,
             Extensions = new Dictionary<string, object?>
