@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace Mapingway.Presentation.Swagger.Examples;
 
-public class RegisterResultExample : IExamplesProvider<RegisterResult>
+public class RegisterResponseExample : IExamplesProvider<RegisterResult>
 {
     public RegisterResult GetExamples()
     {
