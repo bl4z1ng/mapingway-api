@@ -2,19 +2,18 @@
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace Mapingway.Infrastructure.Authentication;
 
 public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly IHasher _hasher;
     private readonly JwtOptions _jwtOptions;
 
-    public JwtBearerOptionsSetup(IHasher hasher, IOptions<JwtOptions> jwtOptions)
+    public JwtBearerOptionsSetup(IOptions<JwtOptions> jwtOptions)
     {
         _jwtOptions = jwtOptions.Value;
-        _hasher = hasher;
     }
 
     // https://stackoverflow.com/questions/71132926/jwtbeareroptions-configure-method-not-getting-executed
@@ -43,7 +42,8 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
                 }
 
                 var userContextHashClaim = context.Principal.GetUserContextClaim();
-                var userContextHashCookie = _hasher.GenerateHash(userContextCookie!, _jwtOptions.UserContextSalt);
+                var hasher = context.HttpContext.RequestServices.GetRequiredService<IHasher>();
+                var userContextHashCookie = hasher.GenerateHash(userContextCookie!, _jwtOptions.UserContextSalt);
 
                 if (userContextHashClaim != userContextHashCookie)
                 {

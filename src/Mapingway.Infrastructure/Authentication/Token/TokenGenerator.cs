@@ -8,14 +8,14 @@ public class TokenGenerator : ITokenGenerator
 {
     public string? GenerateAccessToken(AccessTokenDetails details)
     {
-        //TODO: add pattern matching
-        if (string.IsNullOrEmpty(details.Issuer) ||
-           string.IsNullOrEmpty(details.Audience) ||
-           details.TokenLifeSpan.Ticks < 0 ||
-           details.SigningKeyBytes.Length < 16)
-        {
+        if (details is not
+            {
+                Issuer: not null,
+                Audience: not null,
+                TokenLifeSpan.Ticks: > 0,
+                SigningKeyBytes.Length: >= 16
+            })
             return null;
-        }
 
         var signingKey = new SigningCredentials(
             new SymmetricSecurityKey(details.SigningKeyBytes), SecurityAlgorithms.HmacSha256);
