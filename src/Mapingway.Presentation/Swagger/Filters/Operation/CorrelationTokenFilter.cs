@@ -9,6 +9,7 @@ public class CorrelationTokenFilter : IOperationFilter
     {
         AddCorrelationTokenHeader(operation);
     }
+
     private void AddCorrelationTokenHeader(OpenApiOperation operation)
     {
         var tokenParameter = new OpenApiParameter

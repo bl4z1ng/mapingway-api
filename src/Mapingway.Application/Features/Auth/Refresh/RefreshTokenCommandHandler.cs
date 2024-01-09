@@ -8,7 +8,6 @@ namespace Mapingway.Application.Features.Auth.Refresh;
 public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, RefreshTokenResult>
 {
     private readonly IAccessTokenService _accessTokenService;
-    private readonly IJwtTokenParser _jwtTokenParser;
     private readonly IRefreshTokenService _refreshTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _users;
@@ -16,12 +15,10 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
     public RefreshTokenCommandHandler(
         IRefreshTokenService refreshTokenService,
         IAccessTokenService accessTokenService,
-        IJwtTokenParser jwtTokenParser,
         IUnitOfWork unitOfWork)
     {
         _refreshTokenService = refreshTokenService;
         _accessTokenService = accessTokenService;
-        _jwtTokenParser = jwtTokenParser;
 
         _unitOfWork = unitOfWork;
         _users = unitOfWork.Users;
@@ -30,16 +27,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
     public async Task<Result<RefreshTokenResult>> Handle(RefreshTokenCommand command, CancellationToken ct)
     {
-        //TODO: parse token on infra or presentation layer
-        var userEmail = _jwtTokenParser.GetEmailFromExpiredToken(command.ExpiredToken);
-        if (string.IsNullOrEmpty(userEmail))
-        {
-            return Result.Failure<RefreshTokenResult>(new Error(
-                DefaultErrorCode.InvalidCredentials,
-                "Email is not valid"));
-        }
-
-        var user = await _users.GetByEmailAsync(userEmail, ct);
+        var user = await _users.GetByEmailAsync(command.Email, ct);
         if (user is null) return Result.Failure<RefreshTokenResult>(UserError.NotFound);
 
         var newRefreshTokenRequest =

@@ -3,5 +3,4 @@ using Mapingway.SharedKernel;
 
 namespace Mapingway.Application.Contracts.Authentication;
 
-public interface IUsedRefreshTokenFamilyRepository : IRepository<RefreshTokenFamily>
-{}
+public interface IUsedRefreshTokenFamilyRepository : IRepository<RefreshTokenFamily>;

@@ -1,22 +1,19 @@
-﻿using System.Text;
-using Mapingway.Application.Contracts.Authentication;
+﻿using Mapingway.Application.Contracts.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Mapingway.Infrastructure.Authentication;
 
 public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly IHasher _hasher;
     private readonly JwtOptions _jwtOptions;
 
-    public JwtBearerOptionsSetup(IHasher hasher, IOptions<JwtOptions> jwtOptions)
+    public JwtBearerOptionsSetup(IOptions<JwtOptions> jwtOptions)
     {
         _jwtOptions = jwtOptions.Value;
-        _hasher = hasher;
     }
 
     // https://stackoverflow.com/questions/71132926/jwtbeareroptions-configure-method-not-getting-executed
@@ -26,19 +23,6 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     {
         //to not use Microsoft claims naming
         options.MapInboundClaims = false;
-
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidateLifetime = true,
-            ValidIssuer = _jwtOptions.Issuer,
-            ValidAudience = _jwtOptions.Audience,
-            ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey)),
-            ClockSkew = TimeSpan.FromSeconds(15)
-        };
 
         options.Events = new JwtBearerEvents
         {
@@ -58,7 +42,8 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
                 }
 
                 var userContextHashClaim = context.Principal.GetUserContextClaim();
-                var userContextHashCookie = _hasher.GenerateHash(userContextCookie!, _jwtOptions.UserContextSalt);
+                var hasher = context.HttpContext.RequestServices.GetRequiredService<IHasher>();
+                var userContextHashCookie = hasher.GenerateHash(userContextCookie!, _jwtOptions.UserContextSalt);
 
                 if (userContextHashClaim != userContextHashCookie)
                 {

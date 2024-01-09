@@ -3,7 +3,6 @@ using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation.Shared;
 using Mapingway.Presentation.Swagger.Examples;
 using Mapingway.Presentation.v1.User.Requests;
-using Mapingway.SharedKernel.Result;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,9 +29,7 @@ public class UserController : BaseApiController
     /// Data about user registration and user details for caching.
     /// </returns>
     /// <response code="200">Token is successfully invalidated.</response>
-    /// <response code="422">If user data is invalid.</response>
     [ProducesResponseType(typeof(RegisterResult), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(RegisterValidationErrors))]
 
     #endregion
