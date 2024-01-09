@@ -10,8 +10,8 @@ public class TokenGenerator : ITokenGenerator
     {
         if (details is not
             {
-                Issuer: not null,
-                Audience: not null,
+                Issuer.Length: > 0,
+                Audience.Length: > 0,
                 TokenLifeSpan.Ticks: > 0,
                 SigningKeyBytes.Length: >= 16
             })
