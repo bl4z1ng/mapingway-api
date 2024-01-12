@@ -11,7 +11,6 @@ namespace Mapingway.Infrastructure.Authentication;
 
 public static class Configuration
 {
-    //TODO: cleanup
     internal static IServiceCollection AddAuth(this IServiceCollection services)
     {
         services
