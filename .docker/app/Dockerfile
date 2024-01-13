@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8081
+ENV ASPNETCORE_HTTP_PORTS=8080
+ENV ASPNETCORE_HTTPS_PORTS=8081
 WORKDIR /src
 
 COPY src/Mapingway.SharedKernel/ Mapingway.SharedKernel/

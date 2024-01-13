@@ -26,7 +26,6 @@ public class ExampleProblemDetails : ProblemDetails
         Errors = errors;
     }
 
-
     public string? TraceId { get; init; }
     public IDictionary<string, string[]>? Errors { get; set; }
 }

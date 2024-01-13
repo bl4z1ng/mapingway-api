@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Mapingway.Presentation.Swagger;
+using Mapingway.Presentation.v1;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mapingway.Presentation;

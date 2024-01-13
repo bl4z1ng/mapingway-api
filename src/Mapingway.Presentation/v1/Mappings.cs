@@ -1,7 +1,7 @@
 ﻿using Mapingway.Application.Features.Auth.Logout;
 using Mapster;
 
-namespace Mapingway.Presentation;
+namespace Mapingway.Presentation.v1;
 
 public static class Mappings
 {
