@@ -11,8 +11,6 @@ services:
       - ${APPLICATION_EXPOSED_PORT_HTTPS}:8081
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_HTTP_PORTS: 8080
-      ASPNETCORE_HTTPS_PORTS: 8081
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${ENVIRONMENT_DEFAULT_CERTIFICATE_PASSWORD}
       ASPNETCORE_Kestrel__Certificates__Default__Path: /root/.aspnet/https/Mapingway.API.pfx
       Serilog__WriteTo__2__Args__serverUrl=: http://logs:5341
