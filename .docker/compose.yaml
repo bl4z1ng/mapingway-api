@@ -7,15 +7,17 @@ services:
       context: ../
       dockerfile: /.docker/app/Dockerfile
     ports:
-      - ${APPLICATION_EXPOSED_PORT_HTTP}:8080
-      - ${APPLICATION_EXPOSED_PORT_HTTPS}:8081
+      - ${APPLICATION_EXPOSED_PORT_HTTP}:80
+      - ${APPLICATION_EXPOSED_PORT_HTTPS}:443
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ENV ASPNETCORE_HTTP_PORTS: 80
+      ENV ASPNETCORE_HTTPS_PORTS: 443
+      # Do not create development certificate in an environment that will be distributed.
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${ENVIRONMENT_DEFAULT_CERTIFICATE_PASSWORD}
       ASPNETCORE_Kestrel__Certificates__Default__Path: /root/.aspnet/https/Mapingway.API.pfx
-      Serilog__WriteTo__2__Args__serverUrl=: http://logs:5341
       ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${DATABASE};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Pooling=true;Encoding=UTF8;
-      # Do not create development certificate in an environment that will be distributed.
+      Serilog__WriteTo__1__Args__serverUrl: http://logs:5341
     depends_on:
       db:
         condition: service_healthy
