@@ -2,7 +2,7 @@
 
 namespace Mapingway.Presentation.v1.User.Requests;
 
-public class RegisterRequest
+public record RegisterRequest
 {
     /// <summary>
     /// The email, will be used as unique identifier.

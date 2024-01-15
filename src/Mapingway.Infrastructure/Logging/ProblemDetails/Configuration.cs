@@ -49,24 +49,4 @@ public static class Configuration
             return StatusCodeProblemDetails.Create(statusCode);
         });
     }
-
-    // private static ProblemDetailsOptions MapFluentValidationException(this ProblemDetailsOptions options)
-    // {
-    //     options.Map<ValidationException>((ctx, ex) =>
-    //     {
-    //         var factory = ctx.RequestServices.GetRequiredService<ProblemDetailsFactory>();
-    //         var errors = ex.Errors
-    //             .GroupBy(x => x.PropertyName)
-    //             .ToDictionary(
-    //                 x => x.Key,
-    //                 x => x.Select(e => e.ErrorMessage).ToArray());
-    //
-    //         var problemDetails = factory.CreateValidationProblemDetails(ctx, errors);
-    //         problemDetails.Instance = ctx.Request.Path.ToUriComponent();
-    //
-    //         return problemDetails;
-    //     });
-    //
-    //     return options;
-    // }
 }

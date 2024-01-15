@@ -69,16 +69,16 @@ public class AuthController : BaseApiController
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Refresh(
-        [FromBody]RefreshTokenRequest request,
+        [FromBody] RefreshTokenRequest request,
         [FromServices] IJwtTokenParser tokenParser,
         CancellationToken ct)
     {
-        var userEmail = tokenParser
-            .GetPrincipalFromBearer(request.ExpiredToken, tokenExpired: true).GetEmailClaim();
+        var userEmail = tokenParser.GetPrincipalFromBearer(request.ExpiredToken).GetEmailClaim();
+
         if (userEmail is null)
         {
             RemoveUserContextToken();
-            return Unauthorized("Provided access token is not valid anymore, please, log-in again.");
+            return Unauthorized("Provided access token is not valid, please, log-in again.");
         }
 
         var command = new RefreshTokenCommand(userEmail, request.RefreshToken);
@@ -109,7 +109,7 @@ public class AuthController : BaseApiController
         if (email is null)
         {
             RemoveUserContextToken();
-            return Unauthorized("Authorization data is invalid, email was not found.");
+            return Unauthorized("Provided access token is not valid, please, log-in again.");
         }
 
         var command = Mapper.Map<LogoutCommand>((email, request.RefreshToken));
