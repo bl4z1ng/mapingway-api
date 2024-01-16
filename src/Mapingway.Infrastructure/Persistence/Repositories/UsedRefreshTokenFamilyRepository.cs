@@ -1,10 +1,9 @@
-﻿using Mapingway.Application.Contracts.Authentication;
-using Mapingway.Domain.Auth;
+﻿using Mapingway.Domain.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mapingway.Infrastructure.Persistence.Repositories;
 
-public class UsedRefreshTokenFamilyRepository : GenericRepository<RefreshTokenFamily>, IUsedRefreshTokenFamilyRepository
+public class UsedRefreshTokenFamilyRepository : GenericRepository<RefreshTokenFamily>
 {
     public UsedRefreshTokenFamilyRepository(DbContext context) : base(context)
     {

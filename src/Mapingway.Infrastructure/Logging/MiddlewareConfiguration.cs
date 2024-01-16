@@ -9,7 +9,7 @@ namespace Mapingway.Infrastructure.Logging;
 [ExcludeFromCodeCoverage]
 public static class MiddlewareConfiguration
 {
-    public const string LogMessageTemplate =
+    private const string _logMessageTemplate =
         "{RequestMethod:l} Request {RequestId:l} to {RequestScheme:l}://{RequestHost:l}{RequestPath:l} finished with {StatusCode} in {Elapsed:0.0000} ms.";
 
     public static void UseRequestLogging(this IApplicationBuilder builder)
@@ -28,11 +28,7 @@ public static class MiddlewareConfiguration
             };
 
             options.IncludeQueryInRequestPath = true;
-            options.MessageTemplate = LogMessageTemplate;
-
-            options.IncludeQueryInRequestPath = true;
-            options.MessageTemplate = LogMessageTemplate;
-
+            options.MessageTemplate = _logMessageTemplate;
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
                 var request = httpContext.Request;

@@ -32,14 +32,9 @@ public class ValidationPipelineBehavior<TRequest, TResult> : IPipelineBehavior<T
 
         if (failures.Count == 0) return await next();
 
-        //throw new ValidationException(failures);
-
         return ValidationFailedResult(failures);
     }
 
-
-    // Context: tried multiple versions of it to not throw exceptions, didn't find the solution not using reflection
-    // or dynamic type usage
     private static TResult ValidationFailedResult(IEnumerable<ValidationFailure> failures)
     {
         var validationError = ValidationError.WithFailures(failures);

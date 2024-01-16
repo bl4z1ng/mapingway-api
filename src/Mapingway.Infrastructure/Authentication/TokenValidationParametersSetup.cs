@@ -1,10 +1,11 @@
 ﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Mapingway.Infrastructure.Authentication;
 
-public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationParameters>
+public class TokenValidationParametersSetup : IConfigureNamedOptions<TokenValidationParameters>
 {
     private readonly JwtOptions _jwtOptions;
 
@@ -13,7 +14,7 @@ public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationP
         _jwtOptions = jwtOptions.Value;
     }
 
-    public void Configure(TokenValidationParameters options)
+    public void Configure(string? name, TokenValidationParameters options)
     {
         options.ValidateIssuer = true;
         options.ValidateAudience = true;
@@ -25,4 +26,7 @@ public class TokenValidationParametersSetup : IConfigureOptions<TokenValidationP
         options.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SigningKey));
         options.ClockSkew = TimeSpan.FromSeconds(15);
     }
+
+    public void Configure(TokenValidationParameters options) =>
+        Configure(JwtBearerDefaults.AuthenticationScheme, options);
 }

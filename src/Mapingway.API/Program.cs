@@ -25,7 +25,7 @@ builder.Services.AddMapster();
 builder.Services
     .AddApplication()
     .AddPresentation()
-    .AddInfrastructure(builder.Configuration, builder.Environment);
+    .AddInfrastructure(builder.Environment);
 
 var app = builder.Build();
 

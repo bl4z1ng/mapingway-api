@@ -7,7 +7,6 @@ using Mapingway.Domain;
 using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Authentication.Claims;
 using Mapingway.Infrastructure.Authentication.Token;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.Equivalency;
@@ -18,15 +17,14 @@ public class AuthenticationServiceTests
 {
     private readonly IHasher _hasher;
     private readonly IOptions<JwtOptions> _jwtOptions;
-    private readonly ILoggerFactory _loggerFactory;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
 
     public AuthenticationServiceTests()
     {
-        _loggerFactory = Substitute.For<ILoggerFactory>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _hasher = Substitute.For<IHasher>();
+        _tokenGenerator = Substitute.For<ITokenGenerator>();
 
         var jwtOptions = new JwtOptions
         {
@@ -35,22 +33,13 @@ public class AuthenticationServiceTests
             SigningKey = "Map",
             AccessTokenLifetime = new TimeSpan(0, 5, 0),
             RefreshTokenLifetime = new TimeSpan(24, 0, 0),
+            UserContextSigningKey = "salt"
         };
         _jwtOptions = Substitute.For<IOptions<JwtOptions>>();
         _jwtOptions.Value.Returns(jwtOptions);
-
-        _tokenGenerator = Substitute.For<ITokenGenerator>();
     }
 
-    private AccessTokenService Subject()
-    {
-        return new AccessTokenService(
-            _loggerFactory,
-            _jwtOptions,
-            _tokenGenerator,
-            _hasher,
-            _unitOfWork);
-    }
+    private AccessTokenService Subject() => new(_jwtOptions, _tokenGenerator, _hasher, _unitOfWork);
 
     [Fact]
     public async Task GenerateAccessToken_ValidUser_ValidToken()
@@ -68,14 +57,16 @@ public class AuthenticationServiceTests
             PasswordHash = "123",
             PasswordSalt = "123"
         };
+
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email)
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(CustomClaims.UserContext, userContextTokenHash)
         };
         var permissions = new HashSet<string> { "ReadUser", "UpdateUser", "DeleteUser" };
         claims.AddRange(permissions.Select(p => new Claim(CustomClaims.Permissions, p)));
-        claims.Add(new Claim(CustomClaims.UserContext, userContextTokenHash));
+
         var accessTokenDetails = new AccessTokenDetails
         (
             _jwtOptions.Value.Issuer,
@@ -85,22 +76,15 @@ public class AuthenticationServiceTests
             claims
         );
 
-        _unitOfWork.Permissions
-            .GetPermissionsAsync(1, CancellationToken.None)
-            .Returns(permissions);
-        _tokenGenerator
-            .GenerateAccessToken(ArgEx.IsEquivalentTo(accessTokenDetails))
-            .Returns(validAccessToken);
-        _tokenGenerator
-            .GenerateRandomToken()
-            .Returns(userContextToken);
-        _hasher
-            .GenerateHash(userContextToken)
-            .Returns(userContextTokenHash);
+        _unitOfWork.Permissions.GetPermissionsAsync(1, CancellationToken.None).Returns(permissions);
+        _tokenGenerator.GenerateAccessToken(ArgEx.IsEquivalentTo(accessTokenDetails)).Returns(validAccessToken);
+        _tokenGenerator.GenerateRandomToken().Returns(userContextToken);
+        _hasher.GenerateHash(userContextToken, _jwtOptions.Value.UserContextSigningKey).Returns(userContextTokenHash);
         var accessTokenService = Subject();
 
         // Act
-        var token = await accessTokenService.GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
+        var token = await accessTokenService
+            .GenerateAccessToken(user.Id, user.Email, CancellationToken.None);
 
         // Assert
         token.Value!.AccessToken.Should().NotBeNullOrWhiteSpace();

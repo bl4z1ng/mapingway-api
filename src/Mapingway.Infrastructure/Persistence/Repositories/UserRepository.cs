@@ -47,9 +47,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         await DbSet.AddAsync(user, ct);
 
         foreach (var role in user.Roles)
-        {
             Context.Entry(role).State = EntityState.Unchanged;
-        }
     }
 
     public Task<bool> DoesUserExistsByEmailAsync(string email, CancellationToken ct = default)

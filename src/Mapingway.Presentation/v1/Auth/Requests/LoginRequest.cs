@@ -2,7 +2,7 @@
 
 namespace Mapingway.Presentation.v1.Auth.Requests;
 
-public sealed class LoginRequest
+public record LoginRequest
 {
     /// <summary>
     /// The email, will be used as unique identifier.

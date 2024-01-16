@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mapingway.Presentation.v1.Auth.Requests;
 
-public class LogoutRequest
+public record LogoutRequest
 {
     /// <summary>
     /// Refresh token to be invalidated (also the user context cookie will be removed).

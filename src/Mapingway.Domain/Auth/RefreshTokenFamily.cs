@@ -7,8 +7,7 @@ public class RefreshTokenFamily
     public User User { get; init; } = null!;
     public ICollection<RefreshToken> Tokens { get; init; } = new List<RefreshToken>();
 
-
-    public bool InvalidateRefreshToken(string refreshTokenKey)
+    public bool InvalidateToken(string refreshTokenKey)
     {
         var refreshToken = Tokens.FirstOrDefault(token => token.Value == refreshTokenKey);
         if (refreshToken is null) return false;
@@ -23,7 +22,7 @@ public class RefreshTokenFamily
         var notUsedTokens = Tokens.Where(token => !token.IsUsed).ToList();
 
         var isTokenInvalidatedFlags =
-            notUsedTokens.Select(token => InvalidateRefreshToken(token.Value));
+            notUsedTokens.Select(token => InvalidateToken(token.Value));
 
         var isErrorOccurred = isTokenInvalidatedFlags.Any(invalidated => !invalidated);
 

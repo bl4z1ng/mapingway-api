@@ -3,20 +3,17 @@ using Mapingway.Infrastructure.Authentication;
 using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Infrastructure.Persistence;
 using Mapingway.Infrastructure.Security;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Mapingway.Infrastructure;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        IHostEnvironment environment)
+        this IServiceCollection services, IWebHostEnvironment environment)
     {
-        services.AddHashing(configuration);
+        services.AddHashing();
         services.AddAuth();
         services.AddPersistence(environment);
 
@@ -29,4 +26,19 @@ public static class DependencyInjection
 public class Infrastructure
 {
     public static readonly Assembly AssemblyReference = typeof(Infrastructure).Assembly;
+}
+
+public static class ServiceCollectionOptionsExtensions
+{
+    public static IServiceCollection AddValidatedOptions<TOptions>(
+        this IServiceCollection services,
+        string configurationSection) where TOptions : class
+    {
+        services
+            .AddOptionsWithValidateOnStart<TOptions>()
+            .ValidateDataAnnotations()
+            .BindConfiguration(configurationSection);
+
+        return services;
+    }
 }

@@ -9,4 +9,10 @@ public static class ClaimPrincipalExtensions
     {
         return user.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Email)?.Value;
     }
+
+    public static string? GetUserContextClaim(this ClaimsPrincipal user)
+    {
+        return user.Claims.
+            FirstOrDefault(claim => claim.Type == CustomClaims.UserContext)?.Value;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Mapingway.Presentation.v1.Auth.Requests;
 
-public class RefreshTokenRequest
+public record RefreshTokenRequest
 {
     /// <summary>
     /// JWT Bearer token, used as an access token (expired or not).
