@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using Mapingway.Infrastructure.Authentication.Token;
 using Mapingway.Infrastructure.Logging.CorrelationToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,10 +40,13 @@ public static class Configuration
             {
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 ArgumentException => StatusCodes.Status400BadRequest,
-                InvalidOperationException => StatusCodes.Status500InternalServerError,
+
                 SecurityTokenException => StatusCodes.Status401Unauthorized,
+                RefreshTokenUsedException => StatusCodes.Status401Unauthorized,
+
                 //Global mapping of HttpClient exceptions, needs further investigation
                 HttpRequestException => StatusCodes.Status503ServiceUnavailable,
+                InvalidOperationException => StatusCodes.Status500InternalServerError,
                 _ => StatusCodes.Status500InternalServerError
             };
 

@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Infrastructure.Authentication.Claims.Parser;
 using Mapingway.Infrastructure.Authentication.Permissions;
 using Mapingway.Infrastructure.Authentication.Token;
-using Mapingway.Infrastructure.Authentication.Token.Parser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;

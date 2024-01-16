@@ -1,6 +1,8 @@
 ﻿using Mapingway.Application.Contracts.Authentication;
+using Mapingway.Domain.Auth;
 using Mapingway.Infrastructure.Persistence.Context;
 using Mapingway.Infrastructure.Persistence.Repositories;
+using Mapingway.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,9 +13,7 @@ public static class PersistenceConfiguration
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IHostEnvironment environment)
     {
-        services
-            .ConfigureOptions<DbOptionsSetup>()
-            .AddRepositoriesAndUnitOfWork();
+        services.ConfigureOptions<DbOptionsSetup>().AddRepositoriesAndUnitOfWork();
 
         if (environment.IsDevelopment())
         {
@@ -32,8 +32,8 @@ public static class PersistenceConfiguration
         return services
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IPermissionRepository, PermissionRepository>()
-            .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>()
-            .AddScoped<IUsedRefreshTokenFamilyRepository, UsedRefreshTokenFamilyRepository>()
+            .AddScoped<IRepository<RefreshToken>, RefreshTokenRepository>()
+            .AddScoped<IRepository<RefreshTokenFamily>, UsedRefreshTokenFamilyRepository>()
 
             .AddScoped<IUnitOfWork, UnitOfWork>();
     }

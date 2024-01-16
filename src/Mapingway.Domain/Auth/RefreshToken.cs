@@ -8,4 +8,14 @@ public class RefreshToken
     public RefreshTokenFamily? TokenFamily { get; init; }
     public bool IsUsed { get; set; }
     public DateTime ExpiresAt { get; init; }
+
+    public static RefreshToken Create(string value, TimeSpan lifetime)
+    {
+        return new RefreshToken
+        {
+            Value = value,
+            IsUsed = false,
+            ExpiresAt = DateTime.UtcNow.Add(lifetime)
+        };
+    }
 }

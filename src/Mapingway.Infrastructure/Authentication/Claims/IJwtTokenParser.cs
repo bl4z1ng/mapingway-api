@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Mapingway.Infrastructure.Authentication.Token.Parser;
+namespace Mapingway.Infrastructure.Authentication.Claims.Parser;
 
 public interface IJwtTokenParser
 {

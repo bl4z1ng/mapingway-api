@@ -12,7 +12,6 @@ public class DbOptionsSetup : IConfigureOptions<DbOptions>
         _configuration = configuration;
     }
 
-
     public void Configure(DbOptions options)
     {
         var connectionString = _configuration.GetConnectionString("DefaultConnection");

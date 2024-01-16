@@ -22,13 +22,6 @@ public class RefreshTokenFamilyEntityConfiguration : IEntityTypeConfiguration<Re
             .WithOne(token => token.TokenFamily)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasData(new List<RefreshTokenFamily>
-        {
-            new()
-            {
-                Id = 1,
-                UserId = 1
-            }
-        });
+        builder.HasData(new List<RefreshTokenFamily> { new() { Id = 1, UserId = 1 } });
     }
 }

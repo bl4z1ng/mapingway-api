@@ -9,7 +9,6 @@ public class ApplicationDbContext : DbContext
 {
     protected readonly DbOptions Configuration;
 
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<DbOptions> configuration) :
         base(options)
     {

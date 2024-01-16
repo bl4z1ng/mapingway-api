@@ -31,7 +31,7 @@ public class UserRoleEntityConfiguration : IEntityTypeConfiguration<UserRole>
         builder.HasData(Create(1, new List<Role> { Role.Admin }));
     }
 
-    private static IEnumerable<UserRole> Create(long userId, IEnumerable<Role> roles)
+    private static List<UserRole> Create(long userId, IEnumerable<Role> roles)
     {
         return roles.Select(role =>
                 new UserRole

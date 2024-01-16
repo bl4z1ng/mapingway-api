@@ -15,9 +15,7 @@ public sealed class PermissionAuthorizationHandler : AuthorizationHandler<Permis
             .ToHashSet();
 
         if (permissions.Contains(requirement.Permission))
-        {
             context.Succeed(requirement);
-        }
 
         return Task.CompletedTask;
     }

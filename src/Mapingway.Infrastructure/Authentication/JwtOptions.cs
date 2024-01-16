@@ -9,7 +9,7 @@ public class JwtOptions
     public required string Issuer { get; init; }
     public required string Audience { get; init; }
     public required string SigningKey { get; init; }
-    public string UserContextSalt { get; init; } = null!;
+    public string UserContextSigningKey { get; init; } = null!;
 
     [BindRequired]
     public TimeSpan AccessTokenLifetime { get; init; }

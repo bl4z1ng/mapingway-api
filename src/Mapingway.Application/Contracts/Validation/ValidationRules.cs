@@ -9,11 +9,8 @@ public static class ValidationRules
         int? minLength = null,
         int? maxLength = null)
     {
-        if (minLength != null)
-            rule.MinimumLength(minLength.Value);
-
-        if (maxLength != null)
-            rule.MaximumLength(maxLength.Value);
+        if (minLength != null) rule.MinimumLength(minLength.Value);
+        if (maxLength != null) rule.MaximumLength(maxLength.Value);
 
         return rule;
     }

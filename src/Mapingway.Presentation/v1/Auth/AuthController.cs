@@ -2,7 +2,7 @@
 using Mapingway.Application.Features.Auth.Logout;
 using Mapingway.Application.Features.Auth.Refresh;
 using Mapingway.Infrastructure.Authentication.Claims;
-using Mapingway.Infrastructure.Authentication.Token.Parser;
+using Mapingway.Infrastructure.Authentication.Claims.Parser;
 using Mapingway.Infrastructure.Logging.ProblemDetails;
 using Mapingway.Presentation.Shared;
 using Mapingway.Presentation.Swagger.Examples;
@@ -112,7 +112,7 @@ public class AuthController : BaseApiController
             return Unauthorized("Provided access token is not valid, please, log-in again.");
         }
 
-        var command = Mapper.Map<LogoutCommand>((email, request.RefreshToken));
+        var command = new LogoutCommand(email, request.RefreshToken);
 
         var result = await Sender.Send(command, ct);
         if (result.IsFailure) return Problem(result);

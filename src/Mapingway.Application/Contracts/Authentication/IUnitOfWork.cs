@@ -1,11 +1,14 @@
-﻿namespace Mapingway.Application.Contracts.Authentication;
+﻿using Mapingway.Domain.Auth;
+using Mapingway.SharedKernel;
+
+namespace Mapingway.Application.Contracts.Authentication;
 
 public interface IUnitOfWork
 {
     IUserRepository Users { get; }
     IPermissionRepository Permissions { get; }
-    IRefreshTokenRepository RefreshTokens { get; }
-    IUsedRefreshTokenFamilyRepository RefreshTokenFamilies { get; }
+    IRepository<RefreshToken> RefreshTokens { get; }
+    IRepository<RefreshTokenFamily> RefreshTokenFamilies { get; }
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }

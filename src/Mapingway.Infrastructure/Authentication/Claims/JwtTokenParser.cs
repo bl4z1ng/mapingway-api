@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Mapingway.Infrastructure.Authentication.Token.Parser;
+namespace Mapingway.Infrastructure.Authentication.Claims.Parser;
 
 public class JwtTokenParser : IJwtTokenParser
 {

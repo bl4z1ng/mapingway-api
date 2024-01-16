@@ -22,5 +22,9 @@
       <Folder Include="Features\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Contracts\Authentication\IUserCheckRepository.cs" />
+    </ItemGroup>
+
 
 </Project>

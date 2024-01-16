@@ -22,7 +22,7 @@ public class Hasher : IHasher
         {
             iterations--;
 
-            var passwordSaltPepper = $"{rawValue}{salt ?? ""}{_hashOptions.Pepper}";
+            var passwordSaltPepper = $"{rawValue}{salt}{_hashOptions.Pepper}";
             var bytes = Encoding.UTF8.GetBytes(passwordSaltPepper);
 
             var byteHash = SHA256.HashData(bytes);
