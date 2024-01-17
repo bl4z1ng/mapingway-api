@@ -40,10 +40,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Authentication\Exceptions\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Authentication\Exceptions\RefreshTokenUsedException.cs" />
       <Compile Remove="Authentication\Token\RefreshTokenExtensions.cs" />
       <Compile Remove="Security\HashOptions.cs" />

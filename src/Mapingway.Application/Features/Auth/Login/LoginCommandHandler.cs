@@ -45,7 +45,6 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResult>
 
         await _unitOfWork.SaveChangesAsync(ct);
 
-        //TODO: mapster
         return new LoginResult
         {
             Token = accessTokenRequest.Value!.AccessToken!,

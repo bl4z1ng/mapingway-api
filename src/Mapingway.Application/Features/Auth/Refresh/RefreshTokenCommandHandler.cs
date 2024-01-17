@@ -39,7 +39,6 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, R
 
         await _unitOfWork.SaveChangesAsync(ct);
 
-        //TODO: Mapster
         return new RefreshTokenResult
         {
             Token = accessTokenRequest.Value!.AccessToken,
